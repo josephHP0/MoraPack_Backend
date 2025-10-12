@@ -10,14 +10,14 @@ import org.hibernate.annotations.ColumnDefault;
 @Getter
 @Setter
 @Entity
-@Table(name = "t08_ciudad", schema = "morapack", uniqueConstraints = {
-        @UniqueConstraint(name = "uq_ciudad_nombre", columnNames = {"T08_nombre"})
+@Table(name = "t08_ciudad", schema = "morapack2", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_ciudad_nombre", columnNames = {"T08_nombre"})
 })
 public class T08Ciudad {
     @Id
-    @Size(max = 32)
-    @Column(name = "T08_idCiudad", nullable = false, length = 32)
-    private String t08Idciudad;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "T08_idCiudad", nullable = false)
+    private Integer id;
 
     @Size(max = 80)
     @NotNull
@@ -25,13 +25,11 @@ public class T08Ciudad {
     private String t08Nombre;
 
     @Size(max = 40)
-    @NotNull
-    @Column(name = "T08_continente", nullable = false, length = 40)
+    @Column(name = "T08_continente", length = 40)
     private String t08Continente;
 
-    @Size(max = 40)
-    @NotNull
-    @Column(name = "T08_zonaHoraria", nullable = false, length = 40)
+    @Size(max = 64)
+    @Column(name = "T08_zonaHoraria", length = 64)
     private String t08Zonahoraria;
 
     @ColumnDefault("0")

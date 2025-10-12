@@ -10,14 +10,14 @@ import org.hibernate.annotations.ColumnDefault;
 @Getter
 @Setter
 @Entity
-@Table(name = "t11_avion", schema = "morapack", uniqueConstraints = {
-        @UniqueConstraint(name = "uq_t11_matricula", columnNames = {"T11_matricula"})
+@Table(name = "t11_avion", schema = "morapack2", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_avion_matricula", columnNames = {"T11_matricula"})
 })
 public class T11Avion {
     @Id
-    @Size(max = 32)
-    @Column(name = "T11_idAvion", nullable = false, length = 32)
-    private String t11Idavion;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "T11_idAvion", nullable = false)
+    private Integer id;
 
     @Size(max = 16)
     @NotNull
@@ -25,22 +25,20 @@ public class T11Avion {
     private String t11Matricula;
 
     @Size(max = 40)
-    @NotNull
-    @Column(name = "T11_modelo", nullable = false, length = 40)
+    @Column(name = "T11_modelo", length = 40)
     private String t11Modelo;
 
     @NotNull
     @Column(name = "T11_capacidadMax", nullable = false)
-    private Short t11Capacidadmax;
+    private Integer t11Capacidadmax;
 
     @Size(max = 40)
-    @NotNull
-    @Column(name = "T11_operador", nullable = false, length = 40)
+    @Column(name = "T11_operador", length = 40)
     private String t11Operador;
 
-    @NotNull
-    @ColumnDefault("1")
-    @Column(name = "T11_activo", nullable = false)
-    private Boolean t11Activo = false;
+    @ColumnDefault("'DISPONIBLE'")
+    @Lob
+    @Column(name = "T11_activo")
+    private String t11Activo;
 
 }

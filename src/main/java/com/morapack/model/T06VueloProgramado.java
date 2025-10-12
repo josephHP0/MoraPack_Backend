@@ -2,7 +2,6 @@ package com.morapack.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -12,56 +11,51 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "t06_vuelo_programado", schema = "morapack", uniqueConstraints = {
-        @UniqueConstraint(name = "uq_t06_ruta_fecha", columnNames = {"T06_idAeropuertoOrigen", "T06_idAeropuertoDestino", "T06_fechaSalida"})
+@Table(name = "t06_vuelo_programado", schema = "morapack2", indexes = {
+        @Index(name = "idx_vuelo_o", columnList = "T01_idAeropuertoOrigen"),
+        @Index(name = "idx_vuelo_d", columnList = "T01_idAeropuertoDestino"),
+        @Index(name = "idx_vuelo_avion", columnList = "T11_idAvion")
 })
 public class T06VueloProgramado {
     @Id
-    @Size(max = 32)
-    @Column(name = "T06_idTramo", nullable = false, length = 32)
-    private String t06Idtramo;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "T06_idTramoVuelo", nullable = false)
+    private Integer id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "T06_idAeropuertoOrigen", nullable = false)
-    private T01Aeropuerto t06Idaeropuertoorigen;
+    @JoinColumn(name = "T01_idAeropuertoOrigen", nullable = false)
+    private T01Aeropuerto t01Idaeropuertoorigen;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "T06_idAeropuertoDestino", nullable = false)
-    private T01Aeropuerto t06Idaeropuertodestino;
+    @JoinColumn(name = "T01_idAeropuertoDestino", nullable = false)
+    private T01Aeropuerto t01Idaeropuertodestino;
 
-    @NotNull
-    @Column(name = "T06_fechaSalida", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "T11_idAvion")
+    private T11Avion t11Idavion;
+
+    @Column(name = "T06_fechaSalida")
     private Instant t06Fechasalida;
 
-    @NotNull
-    @Column(name = "T06_fechaLlegada", nullable = false)
+    @Column(name = "T06_fechaLlegada")
     private Instant t06Fechallegada;
 
-    @NotNull
-    @Lob
-    @Column(name = "T06_tipo", nullable = false)
-    private String t06Tipo;
+    @Column(name = "T06_capacidadTotal")
+    private Integer t06Capacidadtotal;
 
-    @NotNull
-    @Column(name = "T06_capacidadMax", nullable = false)
-    private Integer t06Capacidadmax;
-
-    @NotNull
     @ColumnDefault("0")
-    @Column(name = "T06_ocupacionActual", nullable = false)
+    @Column(name = "T06_ocupacionActual")
     private Integer t06Ocupacionactual;
 
-    @Size(max = 40)
-    @NotNull
-    @ColumnDefault("'PACK'")
-    @Column(name = "T06_operador", nullable = false, length = 40)
-    private String t06Operador;
+    @ColumnDefault("'PROGRAMADO'")
+    @Lob
+    @Column(name = "T06_estado")
+    private String t06Estado;
 
-    @NotNull
-    @ColumnDefault("0")
-    @Column(name = "T06_cancelado", nullable = false)
-    private Boolean t06Cancelado = false;
-
+    @ColumnDefault("'NORMAL'")
+    @Lob
+    @Column(name = "T06_estadoCapacidad")
+    private String t06Estadocapacidad;
 }

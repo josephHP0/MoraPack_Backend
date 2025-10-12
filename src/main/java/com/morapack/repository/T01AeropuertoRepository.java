@@ -1,32 +1,24 @@
 package com.morapack.repository;
 
 import com.morapack.model.T01Aeropuerto;
+import com.morapack.model.T08Ciudad;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface T01AeropuertoRepository extends JpaRepository<T01Aeropuerto, String> {
-    Optional<T01Aeropuerto> findByT01Codigoicao(String t01Codigoicao);
+public interface T01AeropuertoRepository extends JpaRepository<T01Aeropuerto, Integer> {
+    // Búsqueda por ICAO (unique)
+    Optional<T01Aeropuerto> findByT01Codigoicao(String icao);
 
-    // Verificar existencia por IATA (para validación de duplicados)
-    boolean existsByT01Codigoicao(String codigoIATA);
+    // Verificar existencia por ICAO (para duplicados)
+    boolean existsByT01Codigoicao(String icao);
 
-    // JPQL no soporta LIMIT, se usa Spring Data para obtener el primero ordenado descendentemente
-    @Query("SELECT a.t0Idaeropuerto FROM T01Aeropuerto a ORDER BY a.t0Idaeropuerto DESC")
-    List<String> findUltimoIdAeropuertoLista();
+    // Opcional: Por ciudad (FK)
+    List<T01Aeropuerto> findByT08Idciudad(T08Ciudad ciudad);
 
-    // Helper para obtener el último ID como Optional<String>
-    default Optional<String> findUltimoIdAeropuerto() {
-        List<String> lista = findUltimoIdAeropuertoLista();
-        return lista.isEmpty() ? Optional.empty() : Optional.ofNullable(lista.get(0));
-    }
-
-    // Opcional: Búsqueda por continente y GMT
-    @Query("SELECT a FROM T01Aeropuerto a WHERE a.t01Continente = :continente AND a.t01GmtOffset = :gmtOffset")
-    List<T01Aeropuerto> findByContinenteAndGmtOffset(@Param("continente") String continente, @Param("gmtOffset") Byte gmtOffset);
+    // Por capacidad o GMT (ej. para queries futuras)
+    List<T01Aeropuerto> findByT01CapacidadGreaterThanEqual(Integer minCapacidad);
 }
