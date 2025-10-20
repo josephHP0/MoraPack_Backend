@@ -58,6 +58,26 @@ public class VueloController {
         return ResponseEntity.ok(respuesta);
     }
 
+    /** GET /api/vuelos */
+    @GetMapping("/instances")
+    public ResponseEntity<RespuestaDTO> obtenerFlightsDTO() {
+        RespuestaDTO respuesta = vueloService.obtenerFlightsDTO();
+        return ResponseEntity.ok(respuesta);
+    }
+
+// VueloController.java
+
+    @GetMapping("/instances2")
+    public ResponseEntity<RespuestaDTO> obtenerFlightsDTO2(
+            // Por defecto, comienza en la página 0 y devuelve 1000 vuelos.
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "1000") int size) {
+
+        // El servicio ahora recibe los parámetros de paginación
+        RespuestaDTO respuesta = vueloService.obtenerFlightsDTO2(page, size);
+        return ResponseEntity.ok(respuesta);
+    }
+
     /** GET /api/vuelos/{icaoCodigo} */
     @GetMapping("/{icaoCodigo}")
     public ResponseEntity<RespuestaDTO> obtenerVuelosPorAeropuerto(
