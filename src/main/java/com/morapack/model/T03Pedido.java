@@ -48,9 +48,9 @@ public class T03Pedido {
     @Column(name = "T03_plazoCompromiso")
     private Instant t03Plazocompromiso;
 
-    @ColumnDefault("'PENDIENTE'")
-    @Lob
-    @Column(name = "T03_estadoGlobal")
+    @Column(name = "T03_estadoGlobal", nullable = false, length = 30)
+    @org.hibernate.annotations.ColumnDefault("'PENDIENTE'")
     private String t03Estadoglobal;
+
 
 }
