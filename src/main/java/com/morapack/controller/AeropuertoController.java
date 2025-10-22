@@ -76,7 +76,7 @@ public class AeropuertoController {
     public ResponseEntity<AeropuertoOutputDto> obtenerAeropuertoPorIcao(@PathVariable String icao) {
         AeropuertoOutputDto dto = aeropuertoService.obtenerAeropuertoPorIcao(icao);
         return ResponseEntity.ok(dto);
-    } 
+    }
 
 
 

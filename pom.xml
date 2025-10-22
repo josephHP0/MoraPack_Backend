@@ -17,11 +17,9 @@
     <name>morapack-backend</name>
     <description>morapack-backend</description>
 
-    <!-- ✅ Java 17 por defecto -->
+    <!-- ✅ Java 21 configurado -->
     <properties>
-        <java.version>17</java.version>
-        <!-- Si instalas JDK 21, cambia la línea anterior por esta:
-             <java.version>21</java.version> -->
+        <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -44,7 +42,7 @@
             <artifactId>spring-boot-starter-web-services</artifactId>
         </dependency>
 
-        <!-- 🔄 Swagger/OpenAPI (manteniendo 2.3.0) -->
+        <!-- 🔄 Swagger/OpenAPI -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -97,14 +95,12 @@
         </resources>
 
         <plugins>
-            <!-- Compilador Java 17 (cambia a 21 si instalas nuevo JDK) -->
+            <!-- Compilador Java 21 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <release>17</release>
-                    <!-- Si cambias a JDK 21, cambia también esta línea:
-                         <release>21</release> -->
+                    <release>21</release>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
@@ -114,7 +110,7 @@
                 </configuration>
             </plugin>
 
-            <!--Resources UTF-8 -->
+            <!-- Resources UTF-8 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -124,7 +120,7 @@
                 </configuration>
             </plugin>
 
-            <!--Spring Boot -->
+            <!-- Spring Boot -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
