@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import com.morapack.dto.AeropuertoOutputDto;
+import java.util.List;
 
 /**
  * Controlador REST para la gestión de Aeropuertos y Ciudades.
@@ -55,4 +57,27 @@ public class AeropuertoController {
         RespuestaDTO respuesta = aeropuertoService.obtenerTodosAeropuertos();
         return ResponseEntity.ok(respuesta);
     }
+
+    // ========================================================================
+    // ENDPOINTS DE CONSULTA PARA EL FRONT (GET /api/aeropuertos/listar ...)
+    // ==========================================================================
+    /**
+     * GET /api/aeropuertos/listar
+     * Devuelve todos los aeropuertos en formato AeropuertoOutputDto (AirportData[] del front)
+     */
+    @GetMapping("/todos")
+    public ResponseEntity<List<AeropuertoOutputDto>> listarAeropuertosParaApi() {
+        List<AeropuertoOutputDto> lista = aeropuertoService.listarAeropuertosParaApi();
+        return ResponseEntity.ok(lista);
+    }
+
+
+    @GetMapping("/buscar/{icao}")
+    public ResponseEntity<AeropuertoOutputDto> obtenerAeropuertoPorIcao(@PathVariable String icao) {
+        AeropuertoOutputDto dto = aeropuertoService.obtenerAeropuertoPorIcao(icao);
+        return ResponseEntity.ok(dto);
+    }
+
+
+
 }

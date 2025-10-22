@@ -21,4 +21,6 @@ public interface T01AeropuertoRepository extends JpaRepository<T01Aeropuerto, In
 
     // Por capacidad o GMT (ej. para queries futuras)
     List<T01Aeropuerto> findByT01CapacidadGreaterThanEqual(Integer minCapacidad);
+
+    
 }

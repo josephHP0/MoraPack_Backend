@@ -36,9 +36,7 @@ public class T11Avion {
     @Column(name = "T11_operador", length = 40)
     private String t11Operador;
 
-    @ColumnDefault("'DISPONIBLE'")
-    @Lob
-    @Column(name = "T11_activo")
+    @Column(name = "T11_activo", nullable = false, length = 30)
     private String t11Activo;
 
 }

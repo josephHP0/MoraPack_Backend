@@ -1,6 +1,7 @@
 package com.morapack.service;
 
 
+import com.morapack.dto.Flight_instances_DTO;
 import com.morapack.dto.RespuestaDTO;
 import com.morapack.dto.T06VueloProgramadoDto;
 import com.morapack.dto.VueloInputDto;
@@ -19,15 +20,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneOffset;
+import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -177,6 +173,203 @@ public class VueloService {
             return new RespuestaDTO("error", "Error al obtener vuelos por aeropuerto: " + e.getMessage(), null);
         }
     }
+
+    private Flight_instances_DTO flight_instances_DTO(T06VueloProgramado vuelo) {
+        // 1. Preparar formatos y datos base
+        // Usamos el formatter ISO 8601 (el formato que usa la Z)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
+        // Asumiendo que T06VueloProgramado tiene las relaciones a las entidades Aeropuerto
+        // y que estas entidades tienen el campo T01_codigoIcao.
+        String codigoIcaoOrigen = vuelo.getT01Idaeropuertoorigen().getT01Codigoicao();
+        String codigoIcaoDestino = vuelo.getT01Idaeropuertodestino().getT01Codigoicao();
+
+        // 2. Generar campos de Flight
+        // MP-XXX (ej. MP-001)
+        String flightId = "MP-" + String.format("%03d", vuelo.getId());
+
+        // Formatear fechas a UTC (Z)
+        String depUtc = vuelo.getT06Fechasalida().atZone(ZoneOffset.UTC).format(formatter);
+        String arrUtc = vuelo.getT06Fechallegada().atZone(ZoneOffset.UTC).format(formatter);
+
+        // 3. Construir Instance ID
+        // MP-"IDDEVUELO"#"AÑO"-"MES"-"DIA"T"HORA",00Z (El formato de hora debe ser 24h)
+        // Usamos la fecha de salida (depUtc) para el Instance ID, simplificando la cadena a la hora
+        // exacta que necesitamos antes de la Z.
+        String depTimeForInstanceId = vuelo.getT06Fechasalida().atZone(ZoneOffset.UTC)
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")); // Sin segundos ni Z
+
+        // El formato solicitado tiene una coma y dos ceros (",00Z"), que parece un error tipográfico.
+        // Lo más cercano al estándar ISO 8601 es terminar en .000Z
+        String instanceId = String.format("MP-%03d#%s:00.000Z",
+                vuelo.getId(),
+                depTimeForInstanceId);
+
+        // 4. Crear y devolver el DTO
+        return new Flight_instances_DTO(
+                instanceId,
+                flightId,
+                codigoIcaoOrigen,
+                codigoIcaoDestino,
+                depUtc,
+                arrUtc,
+                vuelo.getT06Capacidadtotal()
+        );
+    }
+
+    public RespuestaDTO obtenerFlightsDTO() {
+        try {
+            // 1. Obtener todas las entidades
+            List<T06VueloProgramado> vuelos = vueloProgramadoRepository.findAll();
+
+            // 2. Mapear la lista de entidades al DTO de salida (VueloSalidaDto)
+            List<Flight_instances_DTO> dtos = vuelos.stream()
+                    .map(this::flight_instances_DTO) // Usa el nuevo método de mapeo
+                    .toList();
+
+            // 3. Respuesta
+            Map<String, Object> data = Map.of(
+                    "vuelos", dtos,
+                    "total", dtos.size()
+            );
+
+            return new RespuestaDTO("success",
+                    String.format("Se encontraron %d vuelos programados.", dtos.size()),
+                    data);
+
+        } catch (Exception e) {
+            // Manejo de errores, incluyendo posibles NullPointer si las relaciones de Aeropuerto son nulas
+            return new RespuestaDTO("error", "Error al obtener la lista de vuelos: " + e.getMessage(), null);
+        }
+    }
+
+    public RespuestaDTO obtenerFlightsDTO2(int page, int size) {
+        try {
+            // 1. Obtener la data base (2866 vuelos) UNA SOLA VEZ.
+            List<T06VueloProgramado> vuelosBase = vueloProgramadoRepository.findAll();
+
+            // Lista para almacenar TODOS los 20,000+ vuelos generados
+            List<Flight_instances_DTO> todosLosVuelos = new ArrayList<>();
+            long flightIdCounter = 1; // Contador global para el nuevo Flight ID
+
+            // La fecha de inicio es HOY (usando la zona UTC para que sea consistente)
+            LocalDate fechaInicio = LocalDate.now(ZoneOffset.UTC);
+
+            // Definir formatos
+            // Formato de salida requerido para depUtc y arrUtc (ISO 8601 con Z)
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            // Formato para el Instance ID (sin segundos ni milisegundos)
+            DateTimeFormatter instanceIdFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+
+            // 2. Iterar 7 veces (para los 7 días de la semana)
+            for (int i = 0; i < 7; i++) {
+                LocalDate fechaActual = fechaInicio.plusDays(i);
+
+                // 3. Iterar sobre la lista base de vuelos para cada día
+                for (T06VueloProgramado vueloBase : vuelosBase) {
+
+                    // --- 3.a) Obtener datos y Offsets ---
+                    T01Aeropuerto aeropuertoOrigen = vueloBase.getT01Idaeropuertoorigen();
+                    T01Aeropuerto aeropuertoDestino = vueloBase.getT01Idaeropuertodestino();
+
+                    if (aeropuertoOrigen == null || aeropuertoDestino == null) {
+                        throw new IllegalStateException("Aeropuerto no cargado para el vuelo ID: " + vueloBase.getId());
+                    }
+
+                    // Se asume que getT01GmtOffset() devuelve un Integer o Short (ej. -5, 3)
+                    ZoneOffset offsetOrigen = ZoneOffset.ofHours(aeropuertoOrigen.getT01GmtOffset());
+                    ZoneOffset offsetDestino = ZoneOffset.ofHours(aeropuertoDestino.getT01GmtOffset());
+
+                    // --- 3.b) Conversión y Cálculo de Fechas (usando ZonedDateTime) ---
+
+                    // 1. Hora de Salida Base (Asumiendo que T06Fechasalida es Instant en la entidad)
+                    ZonedDateTime zdtSalidaBase = vueloBase.getT06Fechasalida().atZone(offsetOrigen);
+
+                    // 2. Hora de Llegada Base
+                    ZonedDateTime zdtLlegadaBase = vueloBase.getT06Fechallegada().atZone(offsetDestino);
+
+                    // 3. Reemplazar la fecha de la hora base con la fecha de la iteración,
+                    //    manteniendo la HORA y el OFFSET (ZDT en hora local)
+                    ZonedDateTime zdtSalidaDiaActual = zdtSalidaBase
+                            .withDayOfMonth(fechaActual.getDayOfMonth())
+                            .withMonth(fechaActual.getMonthValue())
+                            .withYear(fechaActual.getYear());
+
+                    // 4. Calcular la duración del vuelo base y aplicarla a la nueva hora de salida
+                    long durationSeconds = ChronoUnit.SECONDS.between(zdtSalidaBase, zdtLlegadaBase);
+                    ZonedDateTime zdtLlegadaDiaActual = zdtSalidaDiaActual.plusSeconds(durationSeconds);
+
+
+                    // --- 3.c) Generación de Strings y IDs ---
+
+                    // Formato UTC final para el DTO (ej. "2025-10-20T06:58:00.000Z")
+                    String depUtc = zdtSalidaDiaActual.withZoneSameInstant(ZoneOffset.UTC).format(formatter);
+                    String arrUtc = zdtLlegadaDiaActual.withZoneSameInstant(ZoneOffset.UTC).format(formatter);
+
+                    // IDs
+                    String flightIdBase = String.format("MP-%03d", vueloBase.getId());
+                    String flightIdNuevo = "MP-" + String.format("%04d", flightIdCounter);
+
+                    // Instance ID (ej. "MP-001#2025-10-20T01:58:00.000Z")
+                    String depTimeForInstanceId = zdtSalidaDiaActual.format(instanceIdFormatter);
+
+                    String instanceId = String.format("%s#%s:00.000Z",
+                            flightIdBase,
+                            depTimeForInstanceId);
+
+                    // 3.d) Construir y agregar DTO a la lista maestra
+                    Flight_instances_DTO dto = new Flight_instances_DTO(
+                            instanceId,
+                            flightIdNuevo,
+                            aeropuertoOrigen.getT01Codigoicao(),
+                            aeropuertoDestino.getT01Codigoicao(),
+                            depUtc,
+                            arrUtc,
+                            vueloBase.getT06Capacidadtotal()
+                    );
+
+                    todosLosVuelos.add(dto);
+                    flightIdCounter++;
+                }
+            }
+
+            // --- 4. LÓGICA DE PAGINACIÓN ---
+
+            int totalItems = todosLosVuelos.size();
+            int startIndex = page * size;
+            int endIndex = Math.min(startIndex + size, totalItems);
+
+            // Validar límites de página
+            if (startIndex >= totalItems || startIndex < 0 || size <= 0) {
+                // Devolver la estructura esperada con una lista vacía
+                return new RespuestaDTO("success",
+                        "No hay más vuelos o parámetros inválidos.",
+                        Map.of("vuelos", Collections.emptyList(),
+                                "totalItems", totalItems,
+                                "paginaActual", page));
+            }
+
+            // Obtener el subconjunto (página) de vuelos
+            List<Flight_instances_DTO> dtosPagina = todosLosVuelos.subList(startIndex, endIndex);
+
+            // 5. Respuesta de la página actual
+            Map<String, Object> data = Map.of(
+                    "vuelos", dtosPagina,
+                    "totalItems", totalItems,
+                    "itemsEnPagina", dtosPagina.size(),
+                    "paginaActual", page
+            );
+
+            return new RespuestaDTO("success",
+                    String.format("Página %d: Mostrando %d vuelos de %d totales.", page, dtosPagina.size(), totalItems),
+                    data);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new RespuestaDTO("error", "Error al obtener la lista de vuelos: " + e.getMessage(), null);
+        }
+    }
+
 
     // ========================================================================
     // MÉTODOS AUXILIARES
