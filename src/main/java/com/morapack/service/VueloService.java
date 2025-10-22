@@ -83,6 +83,10 @@ public class VueloService {
 
             // Esta lista solo la usaremos para contar
             int totalGuardados = 0;
+            System.out.println("=== DEPURACIÓN DE ARCHIVO DE VUELOS ===");
+            List<VueloInputDto> vuelos = UtilArchivos.cargarVuelos(archivo);
+            System.out.println("Líneas leídas del archivo: " + vuelos.size());
+            vuelos.forEach(v -> System.out.println(v.getIcaoOrigen() + " → " + v.getIcaoDestino()));
 
             for (VueloInputDto inputDto : inputDtos) {
 

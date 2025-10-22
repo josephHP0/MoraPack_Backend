@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestController
 @RequestMapping("/api/aeropuertos") // Ruta base CLAVE
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:5173")
 public class AeropuertoController {
 
     @Autowired

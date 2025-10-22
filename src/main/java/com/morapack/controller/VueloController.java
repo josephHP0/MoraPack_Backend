@@ -16,7 +16,8 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/api/vuelos") // Ruta base CLAVE
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:5173")
+
 public class VueloController {
 
     @Autowired
