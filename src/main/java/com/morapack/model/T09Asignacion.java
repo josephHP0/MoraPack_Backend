@@ -38,9 +38,8 @@ public class T09Asignacion {
     @Column(name = "T09_orden", nullable = false)
     private Integer t09Orden;
 
-    @ColumnDefault("'PENDIENTE'")
-    @Lob
-    @Column(name = "T09_estadoAsignacion")
+    @Column(name = "T09_estadoAsignacion", nullable = false, length = 30)
+    @org.hibernate.annotations.ColumnDefault("'PENDIENTE'")
     private String t09Estadoasignacion;
 
 }

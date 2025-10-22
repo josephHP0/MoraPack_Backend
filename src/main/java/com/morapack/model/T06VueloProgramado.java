@@ -49,13 +49,12 @@ public class T06VueloProgramado {
     @Column(name = "T06_ocupacionActual")
     private Integer t06Ocupacionactual;
 
-    @ColumnDefault("'PROGRAMADO'")
-    @Lob
-    @Column(name = "T06_estado")
+
+    @Column(name = "T06_estado", nullable = false, length = 30)
+    @org.hibernate.annotations.ColumnDefault("'PROGRAMADO'")
     private String t06Estado;
 
-    @ColumnDefault("'NORMAL'")
-    @Lob
-    @Column(name = "T06_estadoCapacidad")
+    @Column(name = "T06_estadoCapacidad", nullable = false, length = 30)
+    @org.hibernate.annotations.ColumnDefault("'NORMAL'")
     private String t06Estadocapacidad;
 }

@@ -20,6 +20,9 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.morapack.dto.AeropuertoOutputDto;
+import jakarta.transaction.Transactional;
+import java.util.NoSuchElementException;
 
 @Service
 public class AeropuertoService {
@@ -258,5 +261,53 @@ public class AeropuertoService {
         nuevaCiudad.setT08Eshub(esHub);
         return nuevaCiudad;
     }
+
+    @Transactional(Transactional.TxType.SUPPORTS)
+    public List<AeropuertoOutputDto> listarAeropuertosParaApi() {
+        List<T01Aeropuerto> entidades = aeropuertoRepository.findAll();
+        return entidades.stream()
+                .map(this::toOutputDto)
+                .toList();
+    }
+
+    // ========================================================================
+    // MÉTODOS GET PARA API (FRONT)
+    // ========================================================================
+    @Transactional(Transactional.TxType.SUPPORTS)
+    public AeropuertoOutputDto obtenerAeropuertoPorIcao(String icao) {
+        T01Aeropuerto a = aeropuertoRepository.findByT01Codigoicao(icao)
+                .orElseThrow(() -> new NoSuchElementException("No existe aeropuerto con ICAO " + icao));
+        return toOutputDto(a);
+    }
+
+    private AeropuertoOutputDto toOutputDto(T01Aeropuerto a) {
+        T08Ciudad c = a.getT08Idciudad();
+
+        String id        = a.getId() != null ? String.valueOf(a.getId()) : "";
+        String code      = a.getT01Codigoicao();
+        String name      = (a.getT01Alias() != null && !a.getT01Alias().isBlank()) ? a.getT01Alias() : code;
+
+        // Placeholders hasta que tengas país/elevación reales
+        String country   = (c != null && c.getT08Nombre() != null) ? c.getT08Nombre() : "";
+        String abbreviation = code;
+        int utcOffset    = a.getT01GmtOffset() != null ? a.getT01GmtOffset() : 0;
+        int elevation    = 0;
+
+        String latitude  = a.getT01Lat() != null ? a.getT01Lat().toPlainString() : "0";
+        String longitude = a.getT01Lon() != null ? a.getT01Lon().toPlainString() : "0";
+        String continent = (c != null && c.getT08Continente() != null) ? c.getT08Continente() : "";
+
+        return new AeropuertoOutputDto(
+                id, code, name, country, abbreviation, utcOffset, elevation, latitude, longitude, continent
+        );
+    }
+
+
+
+
+
+
+
+
 
 }
