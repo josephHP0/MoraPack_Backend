@@ -35,14 +35,7 @@ public class PedidoService {
     @Autowired private T01AeropuertoRepository aeropuertoRepository;
 
     private static final String ICAO_HUB_ORIGEN = "SKBO"; // Mantenemos el HUB de origen fijo
-    private T01Aeropuerto aeropuertoOrigenHub;
     private static final LocalDateTime FECHA_BASE = LocalDateTime.of(2025, 1, 1, 0, 0);
-
-    @PostConstruct
-    public void init() {
-        aeropuertoOrigenHub = aeropuertoRepository.findByT01Codigoicao(ICAO_HUB_ORIGEN)
-                .orElseThrow(() -> new IllegalStateException("El Aeropuerto HUB de origen (" + ICAO_HUB_ORIGEN + ") no se encuentra en la base de datos."));
-    }
 
     // ========================================================================
     // LÓGICA DE PROCESAMIENTO
@@ -51,7 +44,14 @@ public class PedidoService {
     @Transactional
     public RespuestaDTO procesarPedido(PedidoInputDto inputDto) {
 
-        // 1. Obtener Aeropuertos
+        // 1. Obtener Aeropuerto HUB de origen
+        Optional<T01Aeropuerto> origenOpt = aeropuertoRepository.findByT01Codigoicao(ICAO_HUB_ORIGEN);
+        if (origenOpt.isEmpty()) {
+            return new RespuestaDTO("error", "Aeropuerto HUB de origen (" + ICAO_HUB_ORIGEN + ") no encontrado. Debe cargar aeropuertos primero.", null);
+        }
+        T01Aeropuerto aeropuertoOrigen = origenOpt.get();
+
+        // 2. Obtener Aeropuerto de destino
         Optional<T01Aeropuerto> destinoOpt = aeropuertoRepository.findByT01Codigoicao(inputDto.getIcaoDestino());
         if (destinoOpt.isEmpty()) {
             return new RespuestaDTO("error", "Aeropuerto ICAO de destino no encontrado: " + inputDto.getIcaoDestino(), null);
@@ -94,11 +94,12 @@ public class PedidoService {
 
         // 4. Crear el Pedido (T03Pedido)
         T03Pedido pedido = new T03Pedido();
-        pedido.setT01Idaeropuertoorigen(aeropuertoOrigenHub);
+        pedido.setT01Idaeropuertoorigen(aeropuertoOrigen);
         pedido.setT01Idaeropuertodestino(destino);
         pedido.setT03Idcliente(cliente);
         pedido.setT03Cantidadpaquetes(inputDto.getTamanho());
         pedido.setT03Fechacreacion(fechaSolicitud);
+        pedido.setT03Estadoglobal("PENDIENTE"); // Estado inicial del pedido
 
         // 5. Guardar
         T03Pedido pedidoGuardado = pedidoRepository.save(pedido);
