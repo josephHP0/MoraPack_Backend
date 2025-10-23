@@ -283,22 +283,20 @@ public class AeropuertoService {
     private AeropuertoOutputDto toOutputDto(T01Aeropuerto a) {
         T08Ciudad c = a.getT08Idciudad();
 
-        String id        = a.getId() != null ? String.valueOf(a.getId()) : "";
-        String code      = a.getT01Codigoicao();
-        String name      = (a.getT01Alias() != null && !a.getT01Alias().isBlank()) ? a.getT01Alias() : code;
+        String icao = a.getT01Codigoicao();
+        String iata = null; // Opcional: podrías tener este campo en la BD
+        String name = (a.getT01Alias() != null && !a.getT01Alias().isBlank()) ? a.getT01Alias() : icao;
+        String city = (c != null && c.getT08Nombre() != null) ? c.getT08Nombre() : "";
+        String country = ""; // Podrías agregar un campo país en T08Ciudad
 
-        // Placeholders hasta que tengas país/elevación reales
-        String country   = (c != null && c.getT08Nombre() != null) ? c.getT08Nombre() : "";
-        String abbreviation = code;
-        int utcOffset    = a.getT01GmtOffset() != null ? a.getT01GmtOffset() : 0;
-        int elevation    = 0;
+        double lat = a.getT01Lat() != null ? a.getT01Lat().doubleValue() : 0.0;
+        double lon = a.getT01Lon() != null ? a.getT01Lon().doubleValue() : 0.0;
 
-        String latitude  = a.getT01Lat() != null ? a.getT01Lat().toPlainString() : "0";
-        String longitude = a.getT01Lon() != null ? a.getT01Lon().toPlainString() : "0";
-        String continent = (c != null && c.getT08Continente() != null) ? c.getT08Continente() : "";
+        Integer warehouseCapacity = a.getT01Capacidad();
+        Boolean infiniteSource = (c != null && c.getT08Eshub() != null) ? c.getT08Eshub() : false;
 
         return new AeropuertoOutputDto(
-                id, code, name, country, abbreviation, utcOffset, elevation, latitude, longitude, continent
+                icao, iata, name, city, country, lat, lon, warehouseCapacity, infiniteSource
         );
     }
 
