@@ -33,6 +33,9 @@ public class T09Asignacion {
     @Column(name = "T09_cantidadAsignada", nullable = false)
     private Integer t09Cantidadasignada;
 
+    @Column(name = "T09_ruta", columnDefinition = "json")
+    private String t09Ruta;
+
     @NotNull
     @ColumnDefault("1")
     @Column(name = "T09_orden", nullable = false)
@@ -41,5 +44,33 @@ public class T09Asignacion {
     @Column(name = "T09_estadoAsignacion", nullable = false, length = 30)
     @org.hibernate.annotations.ColumnDefault("'PENDIENTE'")
     private String t09Estadoasignacion;
+
+    // Campo transitorio para la ruta
+    @Transient
+    private com.morapack.nucleo.Ruta ruta;
+
+    public com.morapack.nucleo.Ruta getRuta() {
+        if (ruta == null && t09Ruta != null) {
+            ruta = com.morapack.util.JsonConverter.fromJson(t09Ruta, com.morapack.nucleo.Ruta.class);
+        }
+        return ruta;
+    }
+
+    public void setRuta(com.morapack.nucleo.Ruta ruta) {
+        this.ruta = ruta;
+        this.t09Ruta = com.morapack.util.JsonConverter.toJson(ruta);
+    }
+
+    public T03Pedido getPedido() {
+        return t03Idpedido;
+    }
+
+    public Integer getPaquetesAsignados() {
+        return t09Cantidadasignada;
+    }
+
+    public void setPaquetesAsignados(Integer cantidad) {
+        this.t09Cantidadasignada = cantidad;
+    }
 
 }

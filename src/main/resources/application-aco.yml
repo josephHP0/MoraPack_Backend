@@ -1,0 +1,28 @@
+# Parámetros para el algoritmo ACO
+planificador.aco:
+  # Parámetros básicos ACO
+  alpha: 1.0                   # Influencia de feromonas
+  beta: 3.0                    # Influencia de heurística
+  rho: 0.2                    # Tasa de evaporación
+  pheromone-init: 1.0         # Nivel inicial de feromonas
+  pheromone-floor: 0.01       # Nivel mínimo de feromonas
+
+  # Parámetros de búsqueda
+  max-hops: 4                 # Máximo de tramos por ruta
+  candidate-k: 3              # Tamaño de lista candidata por nodo
+
+  # Pesos de la función heurística
+  w-time: 1.0                 # Peso del tiempo de viaje
+  w-wait: 0.5                 # Peso del tiempo de espera
+  w-sla: 2.0                 # Peso del riesgo SLA
+  w-cong: 1.0                # Peso de la congestión
+  w-hops: 0.1                # Penalización por tramo
+
+  # Tiempos de referencia (en minutos)
+  eta-ref: 720                # Tiempo de viaje de referencia (12h)
+  wait-ref: 240               # Tiempo de espera de referencia (4h)
+  dwell-min: 90              # Tiempo mínimo de conexión (1.5h)
+
+  # Capacidad y congestión
+  reserve-transit-ratio: 0.2  # Ratio de reserva para tránsito
+  headroom-horizon: 1440      # Horizonte para headroom check (24h)

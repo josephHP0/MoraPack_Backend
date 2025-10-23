@@ -20,7 +20,7 @@ public class T03Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "T03_idPedido", nullable = false)
-    private Integer id;
+    public Integer id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
