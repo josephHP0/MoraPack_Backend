@@ -264,8 +264,8 @@ public class UtilArchivos {
             while ((linea = br.readLine()) != null) {
                 contadorLinea++;
 
-                // Ignorar líneas vacías o de encabezado
-                if (linea.trim().isEmpty() || contadorLinea == 1) {
+                // Ignorar líneas vacías
+                if (linea.trim().isEmpty()) {
                     continue;
                 }
 
