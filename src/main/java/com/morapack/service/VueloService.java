@@ -379,7 +379,7 @@ public class VueloService {
     // MÉTODOS AUXILIARES
     // ========================================================================
 
-    private RespuestaDTO procesarVuelo(VueloInputDto inputDto) {
+    RespuestaDTO procesarVuelo(VueloInputDto inputDto) {
 
         // 1. Buscar Aeropuertos (Origen y Destino)
         Optional<T01Aeropuerto> origenOpt = aeropuertoRepository.findByT01Codigoicao(inputDto.getIcaoOrigen());

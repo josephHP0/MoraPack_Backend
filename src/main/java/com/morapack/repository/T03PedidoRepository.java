@@ -21,4 +21,6 @@ public interface T03PedidoRepository extends JpaRepository<T03Pedido, Integer> {
             Integer cantidadPaquetes,
             Instant fechaInicio,
             Instant fechaFin);
+            
+    List<T03Pedido> findByT03FechacreacionBetween(Instant fechaInicio, Instant fechaFin);
 }
