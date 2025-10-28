@@ -44,6 +44,18 @@ public class UtilArchivos {
             this.mensaje = mensaje;
             this.lineaOriginal = lineaOriginal;
         }
+
+        public int getLineaNum() {
+            return lineaNum;
+        }
+
+        public String getMensaje() {
+            return mensaje;
+        }
+
+        public String getLineaOriginal() {
+            return lineaOriginal;
+        }
     }
 
     public static BigDecimal parseDmsToDecimal(String dmsStr, boolean isLat) {
@@ -108,7 +120,8 @@ public class UtilArchivos {
 
                 String[] parts = lineaLimpia.split(",", -1);
                 if (parts.length != 5) {
-                    // errores.add(new ErrorParseo(lineaNum, "Se esperan 5 campos", line));
+                    errores.add(new ErrorParseo(lineaNum, "Se esperan 5 campos, se encontraron " + parts.length, line));
+                    System.err.println("⚠️  Línea " + lineaNum + ": Se esperan 5 campos, se encontraron " + parts.length + " -> " + line);
                     continue;
                 }
 
@@ -128,11 +141,20 @@ public class UtilArchivos {
 
                 } catch (IllegalArgumentException e) {
                     errores.add(new ErrorParseo(lineaNum, "Error en datos: " + e.getMessage(), line));
+                    System.err.println("⚠️  Línea " + lineaNum + ": Error en datos - " + e.getMessage() + " -> " + line);
                 }
             }
         } catch (IOException e) {
             throw new RuntimeException("Error en reader de vuelos: " + e.getMessage(), e);
         }
+
+        // Logging final
+        System.out.println("✅ Parseados " + dtos.size() + " vuelos desde " + fuente);
+        if (!errores.isEmpty()) {
+            System.err.println("❌ Se encontraron " + errores.size() + " errores al parsear vuelos:");
+            errores.forEach(err -> System.err.println("   Línea " + err.getLineaNum() + ": " + err.getMensaje()));
+        }
+
         return dtos;
     }
 

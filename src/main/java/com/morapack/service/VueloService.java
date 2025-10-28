@@ -70,7 +70,6 @@ public class VueloService {
         }
     }
 
-    @Transactional
     public RespuestaDTO cargarVuelosArchivo(MultipartFile archivo) {
         try {
             // Asumo que UtilArchivos.cargarVuelos maneja correctamente el parseo de "0300" a Integer 300.
@@ -80,9 +79,8 @@ public class VueloService {
             // Esta lista solo la usaremos para contar
             int totalGuardados = 0;
             System.out.println("=== DEPURACIÓN DE ARCHIVO DE VUELOS ===");
-            List<VueloInputDto> vuelos = UtilArchivos.cargarVuelos(archivo);
-            System.out.println("Líneas leídas del archivo: " + vuelos.size());
-            vuelos.forEach(v -> System.out.println(v.getIcaoOrigen() + " → " + v.getIcaoDestino()));
+            System.out.println("Líneas leídas del archivo: " + inputDtos.size());
+            inputDtos.forEach(v -> System.out.println(v.getIcaoOrigen() + " → " + v.getIcaoDestino()));
 
             for (VueloInputDto inputDto : inputDtos) {
 
@@ -379,6 +377,7 @@ public class VueloService {
     // MÉTODOS AUXILIARES
     // ========================================================================
 
+    @Transactional
     RespuestaDTO procesarVuelo(VueloInputDto inputDto) {
 
         // 1. Buscar Aeropuertos (Origen y Destino)
@@ -438,8 +437,11 @@ public class VueloService {
         vuelo.setT06Fechasalida(horaSalida); // Hora simple aplicada a la fecha base (en UTC)
         vuelo.setT06Fechallegada(horaLlegada); // Hora simple aplicada a la fecha base (en UTC)
 
-        // 4. Setear campos de capacidad
+        // 4. Setear campos de capacidad y estados
         vuelo.setT06Capacidadtotal(inputDto.getCapacidad());
+        vuelo.setT06Ocupacionactual(0); // Inicialmente sin ocupación
+        vuelo.setT06Estado("PROGRAMADO"); // Estado inicial del vuelo
+        vuelo.setT06Estadocapacidad("NORMAL"); // Estado de capacidad inicial
 
         T06VueloProgramado vueloGuardado = vueloProgramadoRepository.save(vuelo);
 
@@ -499,7 +501,8 @@ public class VueloService {
         // Model y Operador son null o String vacío, según la definición de la entidad.
         nuevoAvion.setT11Modelo(null);
         nuevoAvion.setT11Operador(null);
-        // T11Activo tiene un @ColumnDefault 'DISPONIBLE'
+        // T11Activo debe ser seteado explícitamente (el @ColumnDefault no funciona en JPA para inserts)
+        nuevoAvion.setT11Activo("DISPONIBLE");
 
         return avionRepository.save(nuevoAvion);
     }
