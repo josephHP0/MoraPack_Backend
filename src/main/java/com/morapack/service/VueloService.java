@@ -221,26 +221,90 @@ public class VueloService {
 
     public RespuestaDTO obtenerFlightsDTO() {
         try {
-            // 1. Obtener todas las entidades
-            List<T06VueloProgramado> vuelos = vueloProgramadoRepository.findAll();
+            // 1. Obtener la data base de vuelos
+            List<T06VueloProgramado> vuelosBase = vueloProgramadoRepository.findAll();
 
-            // 2. Mapear la lista de entidades al DTO de salida (VueloSalidaDto)
-            List<Flight_instances_DTO> dtos = vuelos.stream()
-                    .map(this::flight_instances_DTO) // Usa el nuevo método de mapeo
-                    .toList();
+            // Lista para almacenar TODOS los vuelos generados para 7 días
+            List<Flight_instances_DTO> todosLosVuelos = new ArrayList<>();
+            long flightIdCounter = 1; // Contador global para el nuevo Flight ID
 
-            // 3. Respuesta
+            // La fecha de inicio es HOY (usando la zona UTC para que sea consistente)
+            LocalDate fechaInicio = LocalDate.now(ZoneOffset.UTC);
+
+            // Definir formatos
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            DateTimeFormatter instanceIdFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+
+            // 2. Generar instancias para 7 días
+            for (int i = 0; i < 7; i++) {
+                LocalDate fechaActual = fechaInicio.plusDays(i);
+
+                // 3. Iterar sobre la lista base de vuelos para cada día
+                for (T06VueloProgramado vueloBase : vuelosBase) {
+
+                    // Obtener datos y Offsets
+                    T01Aeropuerto aeropuertoOrigen = vueloBase.getT01Idaeropuertoorigen();
+                    T01Aeropuerto aeropuertoDestino = vueloBase.getT01Idaeropuertodestino();
+
+                    if (aeropuertoOrigen == null || aeropuertoDestino == null) {
+                        throw new IllegalStateException("Aeropuerto no cargado para el vuelo ID: " + vueloBase.getId());
+                    }
+
+                    ZoneOffset offsetOrigen = ZoneOffset.ofHours(aeropuertoOrigen.getT01GmtOffset());
+                    ZoneOffset offsetDestino = ZoneOffset.ofHours(aeropuertoDestino.getT01GmtOffset());
+
+                    // Conversión y Cálculo de Fechas
+                    ZonedDateTime zdtSalidaBase = vueloBase.getT06Fechasalida().atZone(offsetOrigen);
+                    ZonedDateTime zdtLlegadaBase = vueloBase.getT06Fechallegada().atZone(offsetDestino);
+
+                    // Reemplazar la fecha manteniendo la HORA y el OFFSET
+                    ZonedDateTime zdtSalidaDiaActual = zdtSalidaBase
+                            .withDayOfMonth(fechaActual.getDayOfMonth())
+                            .withMonth(fechaActual.getMonthValue())
+                            .withYear(fechaActual.getYear());
+
+                    // Calcular la duración del vuelo y aplicarla
+                    long durationSeconds = ChronoUnit.SECONDS.between(zdtSalidaBase, zdtLlegadaBase);
+                    ZonedDateTime zdtLlegadaDiaActual = zdtSalidaDiaActual.plusSeconds(durationSeconds);
+
+                    // Generación de Strings y IDs
+                    String depUtc = zdtSalidaDiaActual.withZoneSameInstant(ZoneOffset.UTC).format(formatter);
+                    String arrUtc = zdtLlegadaDiaActual.withZoneSameInstant(ZoneOffset.UTC).format(formatter);
+
+                    String flightIdBase = String.format("MP-%03d", vueloBase.getId());
+                    String flightIdNuevo = "MP-" + String.format("%04d", flightIdCounter);
+
+                    String depTimeForInstanceId = zdtSalidaDiaActual.format(instanceIdFormatter);
+                    String instanceId = String.format("%s#%s:00.000Z", flightIdBase, depTimeForInstanceId);
+
+                    // Construir y agregar DTO
+                    Flight_instances_DTO dto = new Flight_instances_DTO(
+                            instanceId,
+                            flightIdNuevo,
+                            aeropuertoOrigen.getT01Codigoicao(),
+                            aeropuertoDestino.getT01Codigoicao(),
+                            depUtc,
+                            arrUtc,
+                            vueloBase.getT06Capacidadtotal()
+                    );
+
+                    todosLosVuelos.add(dto);
+                    flightIdCounter++;
+                }
+            }
+
+            // 3. Respuesta con todos los vuelos
             Map<String, Object> data = Map.of(
-                    "vuelos", dtos,
-                    "total", dtos.size()
+                    "vuelos", todosLosVuelos,
+                    "total", todosLosVuelos.size()
             );
 
             return new RespuestaDTO("success",
-                    String.format("Se encontraron %d vuelos programados.", dtos.size()),
+                    String.format("Se generaron %d instancias de vuelos para 7 días.", todosLosVuelos.size()),
                     data);
 
         } catch (Exception e) {
-            // Manejo de errores, incluyendo posibles NullPointer si las relaciones de Aeropuerto son nulas
+            e.printStackTrace();
             return new RespuestaDTO("error", "Error al obtener la lista de vuelos: " + e.getMessage(), null);
         }
     }

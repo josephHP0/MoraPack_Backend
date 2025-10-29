@@ -2,6 +2,7 @@ package com.morapack.nucleo;
 
 import com.morapack.model.*;
 import com.morapack.dto.PlanificacionRespuestaDTO;
+import com.morapack.dto.SplitRutaDTO;
 import java.time.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -9,7 +10,7 @@ import java.util.stream.Collectors;
 public class PlanificadorAco {
     // Constantes
     private static final double EVAPORATION_RATE = 0.1;
-    private static final Duration DEFAULT_DWELL_MIN = Duration.ofMinutes(90);
+    private static final Duration DEFAULT_DWELL_MIN = Duration.ofMinutes(60); // Tiempo mínimo de espera: 1 hora
     private static final double DEFAULT_PHEROMONE_INIT = 0.1;
 
     // Componentes principales
@@ -67,11 +68,11 @@ public class PlanificadorAco {
         if (tStart == null || tEnd == null || tEnd.isBefore(tStart)) {
             throw new IllegalArgumentException("Invalid time window: start and end times must be valid and end must be after start");
         }
-        
+
         if (Duration.between(tStart, tEnd).toDays() > 30) {
             throw new IllegalArgumentException("Time window too large: maximum 30 days");
         }
-        
+
         inicializarVentana(tStart, tEnd);
         indexarVuelos(tStart, tEnd);
         prepararPronosticoCapacidades();
@@ -86,13 +87,37 @@ public class PlanificadorAco {
         Random rnd = new Random(42);
 
         for (T03Pedido pedido : pedidos) {
+            T01Aeropuerto origen = pedido.getT01Idaeropuertoorigen();
             T01Aeropuerto destino = pedido.getT01Idaeropuertodestino();
             int cantidad = pedido.getT03Cantidadpaquetes();
             Instant t0 = max(pedido.getT03Fechacreacion(), wStart);
 
+            // Diagnóstico detallado
+            System.out.println("\n=== Planificando Pedido " + pedido.getId() + " ===");
+            System.out.println("  Origen: " + (origen != null ? origen.getT01Codigoicao() + " (ID:" + origen.getId() + ")" : "NULL"));
+            System.out.println("  Destino: " + (destino != null ? destino.getT01Codigoicao() + " (ID:" + destino.getId() + ")" : "NULL"));
+            System.out.println("  Cantidad: " + cantidad + " paquetes");
+            System.out.println("  Fecha pedido: " + pedido.getT03Fechacreacion());
+            System.out.println("  t0 (inicio búsqueda): " + t0);
+            System.out.println("  Almacenes disponibles: " + almacenesInfinitos);
+
+            // Validar que destino no sea null
+            if (destino == null) {
+                System.err.println("  [ERROR] Destino NULL - PEDIDO NO FACTIBLE");
+                respuesta.add(crearRespuestaVacia(pedido));
+                continue;
+            }
+
+            // Validar que origen y destino sean diferentes
+            if (origen != null && origen.getId().equals(destino.getId())) {
+                System.err.println("  [ERROR] Origen = Destino (" + destino.getT01Codigoicao() + ") - PEDIDO NO FACTIBLE (no tiene sentido logístico)");
+                respuesta.add(crearRespuestaVacia(pedido));
+                continue;
+            }
+
             // Intentaremos asignar el pedido en trozos (chunks) si no hay un vuelo único
             int remaining = cantidad;
-            List<String> vuelosAsignados = new ArrayList<>();
+            List<SplitRutaDTO> splitsAsignados = new ArrayList<>();
             double costeTotalPedido = 0.0;
             boolean failed = false;
 
@@ -109,21 +134,32 @@ public class PlanificadorAco {
                 return max;
             };
 
+            int intentosFallidos = 0;
             while (remaining > 0) {
                 int maxUtil = computeMaxUtilizable.get();
                 if (maxUtil <= 0) {
-                    failed = true;
-                    break;
+                    // Si no hay capacidad, intentar con reserva reducida
+                    if (intentosFallidos < 3) {
+                        intentosFallidos++;
+                        System.out.println("[ACO] Sin capacidad disponible, reduciendo reserva de tránsito temporalmente (intento " + intentosFallidos + ")");
+                        // Continuar para intentar con chunks más pequeños
+                    } else {
+                        failed = true;
+                        break;
+                    }
                 }
 
-                int chunk = Math.min(remaining, maxUtil);
+                int chunk = Math.min(remaining, Math.max(1, maxUtil));
                 RutaSolucion bestChunk = null;
 
-                // Try to find a route for this chunk from any origin
-                for (Integer idOrigen : almacenesInfinitos) {
-                    RutaSolucion sol = buscarRutaACO(idOrigen, destino.getId(), t0, chunk, rnd);
-                    if (sol != null && (bestChunk == null || sol.costoTotal < bestChunk.costoTotal)) {
-                        bestChunk = sol;
+                // Try to find a route for this chunk from any origin - múltiples intentos
+                for (int intento = 0; intento < 5 && bestChunk == null; intento++) {
+                    for (Integer idOrigen : almacenesInfinitos) {
+                        RutaSolucion sol = buscarRutaACO(idOrigen, destino.getId(), t0, chunk, rnd);
+                        if (sol != null && (bestChunk == null || sol.costoTotal < bestChunk.costoTotal)) {
+                            bestChunk = sol;
+                            break; // Encontramos una ruta, salir del loop
+                        }
                     }
                 }
 
@@ -140,21 +176,56 @@ public class PlanificadorAco {
                     if (trial == 1) break;
                 }
 
+                // Último intento: relajar restricciones si aún no hay solución
+                if (bestChunk == null && intentosFallidos < 5) {
+                    intentosFallidos++;
+                    System.err.println("[ACO] Advertencia: No se pudo planificar pedido " + pedido.getId() +
+                        ", cantidad restante: " + remaining + ", intento: " + intentosFallidos);
+
+                    // Intentar con cantidad mínima (1 paquete) para no bloquear completamente
+                    if (remaining > 10) {
+                        trial = 1;
+                        for (Integer idOrigen : almacenesInfinitos) {
+                            RutaSolucion sol = buscarRutaACO(idOrigen, destino.getId(), t0, trial, rnd);
+                            if (sol != null) {
+                                bestChunk = sol;
+                                break;
+                            }
+                        }
+                    }
+                }
+
                 if (bestChunk == null) {
                     failed = true;
+                    System.err.println("[ACO] ERROR: No se pudo encontrar ruta para pedido " + pedido.getId() +
+                        ", cantidad restante: " + remaining + " paquetes");
                     break;
                 }
 
-                // Aplicar compromisos y feromonas para este chunk
-                aplicarCompromisos(bestChunk, trial);
-                depositarFeromonas(bestChunk, trial);
-
-                costeTotalPedido += bestChunk.costoTotal;
-                for (T06VueloProgramado v : bestChunk.ruta) {
-                    vuelosAsignados.add(String.format("MP-%d#%s", v.getId(), v.getT06Fechasalida()));
+                // Determinar cuántos paquetes se asignaron realmente
+                int cantidadAsignada = Math.min(remaining, chunk);
+                if (trial > 0 && trial < cantidadAsignada) {
+                    cantidadAsignada = trial;
                 }
 
-                remaining -= trial;
+                // Aplicar compromisos y feromonas para este chunk
+                aplicarCompromisos(bestChunk, cantidadAsignada);
+                depositarFeromonas(bestChunk, cantidadAsignada);
+
+                costeTotalPedido += bestChunk.costoTotal;
+
+                // Crear un SplitRutaDTO para este chunk
+                SplitRutaDTO split = new SplitRutaDTO();
+                split.setCantidad(cantidadAsignada);
+                split.setCosto(bestChunk.costoTotal);
+                List<String> vuelosRuta = new ArrayList<>();
+                for (T06VueloProgramado v : bestChunk.ruta) {
+                    vuelosRuta.add(String.format("MP-%d#%s", v.getId(), v.getT06Fechasalida()));
+                }
+                split.setVuelosRuta(vuelosRuta);
+                splitsAsignados.add(split);
+
+                remaining -= cantidadAsignada;
             }
 
             if (!failed) {
@@ -162,7 +233,13 @@ public class PlanificadorAco {
                 PlanificacionRespuestaDTO resp = new PlanificacionRespuestaDTO();
                 resp.setPedidoId(pedido.getId());
                 resp.setEstado("PLANIFICADO");
-                resp.setVuelos(vuelosAsignados);
+                resp.setSplits(splitsAsignados);
+                // Mantener vuelos para compatibilidad (lista plana de todos los vuelos)
+                List<String> todosLosVuelos = new ArrayList<>();
+                for (SplitRutaDTO split : splitsAsignados) {
+                    todosLosVuelos.addAll(split.getVuelosRuta());
+                }
+                resp.setVuelos(todosLosVuelos);
                 resp.setCostoTotal(costeTotalPedido);
                 respuesta.add(resp);
             } else {
@@ -217,7 +294,7 @@ public class PlanificadorAco {
 
     private boolean esAlmacenInfinito(T01Aeropuerto aeropuerto) {
         String icao = aeropuerto.getT01Codigoicao();
-        return "SPIM".equals(icao) || "EBBR".equals(icao) || "UBBB".equals(icao);
+        return "SPIM".equals(icao) || "EBCI".equals(icao) || "UBBB".equals(icao);
     }
 
     private void indexarVuelos(Instant tStart, Instant tEnd) {
@@ -643,7 +720,7 @@ public class PlanificadorAco {
             
             rutaActual.add(siguienteVuelo);
             aeropuertoActual = siguienteVuelo.getT01Idaeropuertodestino().getId();
-            tiempoActual = siguienteVuelo.getT06Fechallegada().plus(Duration.ofMinutes(90)); // Tiempo mínimo de conexión
+            tiempoActual = siguienteVuelo.getT06Fechallegada().plus(Duration.ofMinutes(60)); // Tiempo mínimo de conexión: 1 hora
             costoTotal += calcularHeuristica(siguienteVuelo, idDestino, tiempoActual, cantidad);
             
             if (!visitados.add(aeropuertoActual)) {

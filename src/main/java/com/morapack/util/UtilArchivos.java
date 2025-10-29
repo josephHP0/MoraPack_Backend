@@ -320,6 +320,58 @@ public class UtilArchivos {
         return pedidos;
     }
 
+    /**
+     * Carga cancelaciones desde un archivo MultipartFile.
+     * Formato esperado por línea: dia-hora-idVuelo-icaoOrigen-icaoDestino
+     * Ejemplo: 15-14:30-5-SPIM-SKBO
+     */
+    public static List<com.morapack.dto.CancelacionDTO> cargarCancelaciones(MultipartFile archivo) throws IOException {
+        List<com.morapack.dto.CancelacionDTO> cancelaciones = new ArrayList<>();
+
+        if (archivo.isEmpty()) {
+            return cancelaciones;
+        }
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(archivo.getInputStream()))) {
+            String linea;
+            int contadorLinea = 0;
+
+            while ((linea = br.readLine()) != null) {
+                contadorLinea++;
+
+                // Ignorar líneas vacías o comentarios
+                if (linea.trim().isEmpty() || linea.trim().startsWith("#")) {
+                    continue;
+                }
+
+                String[] partes = linea.split("-");
+
+                if (partes.length != 5) {
+                    throw new IllegalArgumentException("Línea " + contadorLinea +
+                        ": Formato incorrecto. Se esperaban 5 campos (dia-hora-idVuelo-origen-destino), se encontraron " + partes.length + ".");
+                }
+
+                try {
+                    com.morapack.dto.CancelacionDTO dto = new com.morapack.dto.CancelacionDTO();
+
+                    dto.setDia(Integer.valueOf(partes[0].trim()));
+                    dto.setHora(partes[1].trim()); // HH:mm
+                    dto.setIdVuelo(Integer.valueOf(partes[2].trim()));
+                    dto.setIcaoOrigen(partes[3].trim().toUpperCase());
+                    dto.setIcaoDestino(partes[4].trim().toUpperCase());
+
+                    cancelaciones.add(dto);
+
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("Línea " + contadorLinea +
+                        ": Error al parsear un campo numérico. Verifique día o ID de vuelo.");
+                }
+            }
+        }
+
+        return cancelaciones;
+    }
+
     // ========================================================================
     // MÉTODOS AUXILIARES
     // ========================================================================

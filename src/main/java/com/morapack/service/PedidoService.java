@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
@@ -32,7 +33,15 @@ public class PedidoService {
     @Autowired private T01AeropuertoRepository aeropuertoRepository;
 
     private static final String ICAO_HUB_ORIGEN = "SKBO"; // Mantenemos el HUB de origen fijo
-    private static final LocalDateTime FECHA_BASE = LocalDateTime.of(2025, 1, 1, 0, 0);
+
+    /**
+     * Obtiene la fecha base para crear pedidos.
+     * Usa el inicio del mes actual en UTC para que los pedidos con día 1-7
+     * caigan dentro de la ventana de planificación semanal actual.
+     */
+    private LocalDateTime getFechaBase() {
+        return LocalDate.now(ZoneOffset.UTC).atStartOfDay();
+    }
 
     // ========================================================================
     // LÓGICA DE PROCESAMIENTO
@@ -208,7 +217,8 @@ public class PedidoService {
     }
 
     private Instant crearInstantPedido(Integer dia, Integer hora, Integer minuto) {
-        return LocalDateTime.of(FECHA_BASE.getYear(), FECHA_BASE.getMonth(), dia, hora, minuto)
+        LocalDateTime fechaBase = getFechaBase();
+        return LocalDateTime.of(fechaBase.getYear(), fechaBase.getMonth(), dia, hora, minuto)
                 .toInstant(ZoneOffset.UTC);
     }
 

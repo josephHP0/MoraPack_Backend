@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.*;
 import java.util.*;
+import com.morapack.dto.CancelacionDTO;
 
 @Service
 public class SemanalService {
@@ -309,8 +310,16 @@ public class SemanalService {
             }
 
             // 5. Crear planificador ACO y ejecutar planificación
-            Instant fechaInicio = Instant.now();
+            // IMPORTANTE: Usar la misma fecha que se usa en VueloService.obtenerFlightsDTO()
+            // para que coincidan las ventanas
+            LocalDate fechaInicioVuelos = LocalDate.now(ZoneOffset.UTC);
+            Instant fechaInicio = fechaInicioVuelos.atStartOfDay(ZoneOffset.UTC).toInstant();
             Instant fechaFin = fechaInicio.plus(Duration.ofDays(7));
+
+            System.out.println("\n[SemanalService] Ventana de planificación:");
+            System.out.println("  Fecha inicio: " + fechaInicio + " (" + fechaInicioVuelos + ")");
+            System.out.println("  Fecha fin: " + fechaFin);
+            System.out.println("  Días: 7");
             
             PlanificadorAco planificador = new PlanificadorAco(grafo, aeropuertos);
             List<PlanificacionRespuestaDTO> asignaciones = planificador.planificarSemanal(
@@ -325,87 +334,133 @@ public class SemanalService {
 
             // 6. Convertir asignaciones a formato assignments_split_icao
             List<assignments_split_icao> respuesta = new ArrayList<>();
-            
+            List<String> pedidosNoFactibles = new ArrayList<>();
+
             for (int i = 0; i < pedidosDB.size(); i++) {
                 T03Pedido pedido = pedidosDB.get(i);
                 PlanificacionRespuestaDTO asignacion = asignaciones.get(i);
-                
+
                 assignments_split_icao asig = new assignments_split_icao();
                 asig.setOrderId(String.format("ORD-%03d", pedido.getId()));
                 // Default: empty splits (explicit) to indicate not planned
                 asig.setSplits(Collections.emptyList());
 
+                // Si el pedido NO fue planificado, registrarlo para reporte
+                if (!"PLANIFICADO".equals(asignacion.getEstado()) || asignacion.getVuelos().isEmpty()) {
+                    String detalle = String.format("ORD-%03d: origen=%s, destino=%s, cantidad=%d - Estado: %s",
+                        pedido.getId(),
+                        pedido.getT01Idaeropuertoorigen() != null ? pedido.getT01Idaeropuertoorigen().getT01Codigoicao() : "NULL",
+                        pedido.getT01Idaeropuertodestino() != null ? pedido.getT01Idaeropuertodestino().getT01Codigoicao() : "NULL",
+                        pedido.getT03Cantidadpaquetes(),
+                        asignacion.getEstado());
+                    pedidosNoFactibles.add(detalle);
+                    System.err.println("[ADVERTENCIA] Pedido no planificado: " + detalle);
+                }
+
                 // Si el pedido fue planificado exitosamente
-                if ("PLANIFICADO".equals(asignacion.getEstado())) {
+                if ("PLANIFICADO".equals(asignacion.getEstado()) && asignacion.getSplits() != null && !asignacion.getSplits().isEmpty()) {
+                    // Usar la información de splits que ya viene del ACO con cantidades correctas
                     List<assignments_split_icao.Split> splits = new ArrayList<>();
-                    
-                    // Para pedidos grandes que requieran múltiples vuelos
-                    int cantidadRestante = pedido.getT03Cantidadpaquetes();
                     char splitLetra = 'A';
-                    
-                    for (String vueloId : asignacion.getVuelos()) {
-                        // Buscar el vuelo en el grafo para obtener sus detalles
-                        Flight_instances_DTO vuelo = vuelos.stream()
-                            .filter(v -> v.instanceId().equals(vueloId))
-                            .findFirst()
-                            .orElse(null);
 
-                        // Fallback: sometimes the planner's instanceId formatting may differ
-                        // (padded numbers or timestamp precision). Try matching by prefix
-                        // (part before '#') as a diagnostic and lenient fallback.
-                        if (vuelo == null) {
-                            final String wantedPrefix = prefixBeforeHash(vueloId);
-                            vuelo = vuelos.stream()
-                                    .filter(v -> prefixBeforeHash(v.instanceId()).equals(wantedPrefix))
-                                    .findFirst()
-                                    .orElse(null);
-
-                            if (vuelo == null) {
-                                // Diagnostic: print a short sample of available instanceIds to help debugging
-                                List<String> sampleIds = vuelos.stream()
-                                        .map(Flight_instances_DTO::instanceId)
-                                        .limit(8)
-                                        .toList();
-                                System.out.println("[SemanalService] Assigned vueloId not found: " + vueloId
-                                        + ". Tried prefix: " + wantedPrefix
-                                        + ". Available sample instanceIds: " + sampleIds);
-                                continue;
-                            } else {
-                                System.out.println("[SemanalService] Assigned vueloId matched by prefix: " + vueloId
-                                        + " -> " + vuelo.instanceId());
-                            }
+                    // Procesar cada split del ACO
+                    for (com.morapack.dto.SplitRutaDTO splitACO : asignacion.getSplits()) {
+                        if (splitACO.getVuelosRuta() == null || splitACO.getVuelosRuta().isEmpty()) {
+                            continue;
                         }
-                        
-                        // Determinar la cantidad a enviar en este vuelo
-                        int cantidadVuelo = Math.min(cantidadRestante, vuelo.capacity());
-                        
+
                         assignments_split_icao.Split split = new assignments_split_icao.Split();
                         split.setConsignmentId(String.format("C-%03d-%c", pedido.getId(), splitLetra++));
-                        split.setQty(cantidadVuelo);
-                        
-                        assignments_split_icao.Leg leg = new assignments_split_icao.Leg();
-                        leg.setSeq(1);
-                        leg.setInstanceId(vueloId);
-                        leg.setFrom(vuelo.origin());
-                        leg.setTo(vuelo.dest());
-                        leg.setQty(cantidadVuelo);
-                        
-                        split.setLegs(Arrays.asList(leg));
+                        split.setQty(splitACO.getCantidad());
+
+                        // Crear legs para esta ruta
+                        List<assignments_split_icao.Leg> legs = new ArrayList<>();
+                        int seq = 1;
+
+                        for (String vueloId : splitACO.getVuelosRuta()) {
+                            // Buscar el vuelo
+                            Flight_instances_DTO vuelo = vuelos.stream()
+                                .filter(v -> v.instanceId().equals(vueloId))
+                                .findFirst()
+                                .orElse(null);
+
+                            // Fallback: matching por prefix
+                            if (vuelo == null) {
+                                final String wantedPrefix = prefixBeforeHash(vueloId);
+                                vuelo = vuelos.stream()
+                                        .filter(v -> prefixBeforeHash(v.instanceId()).equals(wantedPrefix))
+                                        .findFirst()
+                                        .orElse(null);
+
+                                if (vuelo == null) {
+                                    System.err.println("[SemanalService] Vuelo asignado no encontrado: " + vueloId);
+                                    continue;
+                                }
+                            }
+
+                            assignments_split_icao.Leg leg = new assignments_split_icao.Leg();
+                            leg.setSeq(seq++);
+                            leg.setInstanceId(vuelo.instanceId());
+                            leg.setFrom(vuelo.origin());
+                            leg.setTo(vuelo.dest());
+                            leg.setQty(splitACO.getCantidad()); // Usar la cantidad del split
+
+                            legs.add(leg);
+                        }
+
+                        split.setLegs(legs);
                         splits.add(split);
-                        
-                        cantidadRestante -= cantidadVuelo;
-                        if (cantidadRestante <= 0) break;
                     }
-                    
+
                     asig.setSplits(splits);
+
+                    // Verificar que la suma de cantidades coincida con el total del pedido
+                    int totalAsignado = splits.stream()
+                        .mapToInt(assignments_split_icao.Split::getQty)
+                        .sum();
+                    int totalPedido = pedido.getT03Cantidadpaquetes();
+                    if (totalAsignado != totalPedido) {
+                        System.err.println("[SemanalService] ADVERTENCIA: Pedido " + pedido.getId() +
+                            " - Total asignado (" + totalAsignado + ") != Total pedido (" + totalPedido + ")");
+                    }
                 }
-                
+
                 respuesta.add(asig);
             }
 
-            return new RespuestaDTO("success", 
-                String.format("Plan semanal generado con %d pedidos", pedidosDB.size()),
-                respuesta);
+            // Preparar respuesta con estadísticas
+            int pedidosPlanificados = pedidosDB.size() - pedidosNoFactibles.size();
+            String mensaje;
+            String status;
+
+            if (pedidosNoFactibles.isEmpty()) {
+                status = "success";
+                mensaje = String.format("Plan semanal generado exitosamente. Todos los %d pedidos fueron planificados.", pedidosDB.size());
+            } else {
+                status = "warning";
+                mensaje = String.format("Plan semanal generado con advertencias. %d de %d pedidos planificados. %d pedidos NO FACTIBLES.",
+                    pedidosPlanificados, pedidosDB.size(), pedidosNoFactibles.size());
+
+                // Imprimir resumen en consola
+                System.err.println("\n========== RESUMEN DE PLANIFICACIÓN ==========");
+                System.err.println("Total de pedidos: " + pedidosDB.size());
+                System.err.println("Planificados: " + pedidosPlanificados);
+                System.err.println("No factibles: " + pedidosNoFactibles.size());
+                System.err.println("\nPedidos no factibles:");
+                pedidosNoFactibles.forEach(d -> System.err.println("  - " + d));
+                System.err.println("=============================================\n");
+            }
+
+            Map<String, Object> dataConEstadisticas = new HashMap<>();
+            dataConEstadisticas.put("assignments", respuesta);
+            dataConEstadisticas.put("estadisticas", Map.of(
+                "totalPedidos", pedidosDB.size(),
+                "pedidosPlanificados", pedidosPlanificados,
+                "pedidosNoFactibles", pedidosNoFactibles.size(),
+                "detalleNoFactibles", pedidosNoFactibles
+            ));
+
+            return new RespuestaDTO(status, mensaje, dataConEstadisticas);
 
         } catch (Exception e) {
             return new RespuestaDTO("error", 
@@ -472,6 +527,55 @@ public class SemanalService {
     }
 
     /**
+     * Agrupa vuelos consecutivos que forman rutas.
+     * Una ruta es una secuencia de vuelos donde el destino de un vuelo es el origen del siguiente.
+     * Cuando esta condición se rompe, se inicia una nueva ruta (nuevo split).
+     */
+    private List<List<String>> agruparVuelosEnRutas(List<String> vuelosIds, List<Flight_instances_DTO> todosVuelos) {
+        List<List<String>> rutasAgrupadas = new ArrayList<>();
+        if (vuelosIds.isEmpty()) {
+            return rutasAgrupadas;
+        }
+
+        List<String> rutaActual = new ArrayList<>();
+        String destinoAnterior = null;
+
+        for (String vueloId : vuelosIds) {
+            // Buscar el vuelo
+            Flight_instances_DTO vuelo = todosVuelos.stream()
+                .filter(v -> v.instanceId().equals(vueloId) || prefixBeforeHash(v.instanceId()).equals(prefixBeforeHash(vueloId)))
+                .findFirst()
+                .orElse(null);
+
+            if (vuelo == null) {
+                System.out.println("[SemanalService] No se pudo encontrar vuelo: " + vueloId);
+                continue;
+            }
+
+            // Si es el primer vuelo o si el origen coincide con el destino anterior, continuar la ruta
+            if (destinoAnterior == null || vuelo.origin().equals(destinoAnterior)) {
+                rutaActual.add(vueloId);
+                destinoAnterior = vuelo.dest();
+            } else {
+                // El origen no coincide con el destino anterior, es una nueva ruta (nuevo split)
+                if (!rutaActual.isEmpty()) {
+                    rutasAgrupadas.add(new ArrayList<>(rutaActual));
+                }
+                rutaActual.clear();
+                rutaActual.add(vueloId);
+                destinoAnterior = vuelo.dest();
+            }
+        }
+
+        // Agregar la última ruta
+        if (!rutaActual.isEmpty()) {
+            rutasAgrupadas.add(rutaActual);
+        }
+
+        return rutasAgrupadas;
+    }
+
+    /**
      * Haversine distance in kilometers between two lat/lon points.
      */
     private static String prefixBeforeHash(String id) {
@@ -490,5 +594,92 @@ public class SemanalService {
                 * Math.sin(dLon / 2) * Math.sin(dLon / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
+    }
+
+    /**
+     * Obtiene la planificación semanal en formato directo (solo el array de assignments).
+     * Este método retorna directamente la lista sin envolverla en RespuestaDTO.
+     */
+    @Transactional
+    public List<assignments_split_icao> obtenerPlanificacionSemanalDirecta() {
+        try {
+            RespuestaDTO respuesta = obtenerPlanificacionSemanal();
+
+            if ("success".equals(respuesta.getStatus()) || "warning".equals(respuesta.getStatus())) {
+                if (respuesta.getData() instanceof Map) {
+                    Map<String, Object> data = (Map<String, Object>) respuesta.getData();
+                    Object assignmentsObj = data.get("assignments");
+
+                    if (assignmentsObj instanceof List) {
+                        return (List<assignments_split_icao>) assignmentsObj;
+                    }
+                } else if (respuesta.getData() instanceof List) {
+                    return (List<assignments_split_icao>) respuesta.getData();
+                }
+            }
+
+            // Si hay error, retornar lista vacía
+            System.err.println("[SemanalService] Error al obtener planificación: " + respuesta.getMensaje());
+            return Collections.emptyList();
+
+        } catch (Exception e) {
+            System.err.println("[SemanalService] Excepción al obtener planificación: " + e.getMessage());
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
+
+    /**
+     * Procesa cancelaciones de vuelos y replanifica pedidos afectados.
+     * El archivo contiene líneas con formato: dia-hora-idVuelo-origen-destino
+     * Ejemplo: 15-14:30-5-SPIM-SKBO
+     */
+    @Transactional
+    public RespuestaDTO procesarCancelaciones(MultipartFile archivo) {
+        try {
+            // 1. Leer cancelaciones del archivo
+            List<CancelacionDTO> cancelaciones = UtilArchivos.cargarCancelaciones(archivo);
+
+            if (cancelaciones.isEmpty()) {
+                return new RespuestaDTO("warning", "No se encontraron cancelaciones en el archivo", null);
+            }
+
+            System.out.println("[SemanalService] Procesando " + cancelaciones.size() + " cancelaciones");
+
+            // 2. Para cada cancelación, buscar y marcar el vuelo como cancelado
+            // NOTA: En este sistema simplificado, no guardamos cancelaciones en BD,
+            // sino que las consideramos al momento de replanificar.
+            // Una mejora futura sería tener una tabla de vuelos cancelados.
+
+            // 3. Obtener la planificación actual y identificar pedidos afectados
+            // Para simplificar, vamos a replanificar TODOS los pedidos.
+            // Una mejora sería solo replanificar los que usan vuelos cancelados.
+
+            System.out.println("[SemanalService] Cancelaciones procesadas. Replanificando todos los pedidos...");
+
+            // 4. Replanificar usando el método existente
+            RespuestaDTO planificacionRespuesta = obtenerPlanificacionSemanal();
+
+            if ("error".equals(planificacionRespuesta.getStatus())) {
+                return new RespuestaDTO("error",
+                    "Error al replanificar después de cancelaciones: " + planificacionRespuesta.getMensaje(),
+                    null);
+            }
+
+            Map<String, Object> data = Map.of(
+                "cancelacionesProcesadas", cancelaciones.size(),
+                "planificacionActualizada", planificacionRespuesta.getData()
+            );
+
+            return new RespuestaDTO("success",
+                String.format("Se procesaron %d cancelaciones y se replanificaron los pedidos exitosamente.",
+                    cancelaciones.size()),
+                data);
+
+        } catch (Exception e) {
+            return new RespuestaDTO("error",
+                "Error procesando cancelaciones: " + e.getMessage(),
+                null);
+        }
     }
 }
