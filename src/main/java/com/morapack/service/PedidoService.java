@@ -201,6 +201,14 @@ public class PedidoService {
     // MÉTODOS AUXILIARES
     // ========================================================================
 
+    //Servicio para eliminar todos los pedidos
+    @Transactional
+    public RespuestaDTO eliminarTodosLosPedidos() {
+        long totalAntes = pedidoRepository.count();
+        pedidoRepository.deleteAll();
+        return new RespuestaDTO("success", "Se han eliminado todos los pedidos exitosamente", Map.of("totalEliminados", totalAntes));
+    }
+
     private T05Cliente crearOObtenerCliente(String nombreCliente) {
         Optional<T05Cliente> clienteOpt = clienteRepository.findByT05Nombre(nombreCliente);
 
