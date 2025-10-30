@@ -52,5 +52,17 @@ public class T03Pedido {
     @org.hibernate.annotations.ColumnDefault("'PENDIENTE'")
     private String t03Estadoglobal;
 
+    // @NotNull
+    // @Column(name = "T03_dia")
+    // private Integer t03Dia;
+
+    // @NotNull
+    // @Column(name = "T03_hora")
+    // private Integer t03Hora; 
+
+    // @NotNull
+    // @Column(name = "T03_minuto")
+    // private Integer t03Minuto;
+
 
 }

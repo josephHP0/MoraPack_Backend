@@ -21,7 +21,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.morapack.dto.AeropuertoOutputDto;
-import jakarta.transaction.Transactional;
 import java.util.NoSuchElementException;
 
 @Service

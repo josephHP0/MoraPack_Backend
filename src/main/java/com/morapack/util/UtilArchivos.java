@@ -44,6 +44,18 @@ public class UtilArchivos {
             this.mensaje = mensaje;
             this.lineaOriginal = lineaOriginal;
         }
+
+        public int getLineaNum() {
+            return lineaNum;
+        }
+
+        public String getMensaje() {
+            return mensaje;
+        }
+
+        public String getLineaOriginal() {
+            return lineaOriginal;
+        }
     }
 
     public static BigDecimal parseDmsToDecimal(String dmsStr, boolean isLat) {
@@ -108,7 +120,8 @@ public class UtilArchivos {
 
                 String[] parts = lineaLimpia.split(",", -1);
                 if (parts.length != 5) {
-                    // errores.add(new ErrorParseo(lineaNum, "Se esperan 5 campos", line));
+                    errores.add(new ErrorParseo(lineaNum, "Se esperan 5 campos, se encontraron " + parts.length, line));
+                    System.err.println("⚠️  Línea " + lineaNum + ": Se esperan 5 campos, se encontraron " + parts.length + " -> " + line);
                     continue;
                 }
 
@@ -128,11 +141,20 @@ public class UtilArchivos {
 
                 } catch (IllegalArgumentException e) {
                     errores.add(new ErrorParseo(lineaNum, "Error en datos: " + e.getMessage(), line));
+                    System.err.println("⚠️  Línea " + lineaNum + ": Error en datos - " + e.getMessage() + " -> " + line);
                 }
             }
         } catch (IOException e) {
             throw new RuntimeException("Error en reader de vuelos: " + e.getMessage(), e);
         }
+
+        // Logging final
+        System.out.println("✅ Parseados " + dtos.size() + " vuelos desde " + fuente);
+        if (!errores.isEmpty()) {
+            System.err.println("❌ Se encontraron " + errores.size() + " errores al parsear vuelos:");
+            errores.forEach(err -> System.err.println("   Línea " + err.getLineaNum() + ": " + err.getMensaje()));
+        }
+
         return dtos;
     }
 
@@ -296,6 +318,58 @@ public class UtilArchivos {
         }
 
         return pedidos;
+    }
+
+    /**
+     * Carga cancelaciones desde un archivo MultipartFile.
+     * Formato esperado por línea: dia-hora-idVuelo-icaoOrigen-icaoDestino
+     * Ejemplo: 15-14:30-5-SPIM-SKBO
+     */
+    public static List<com.morapack.dto.CancelacionDTO> cargarCancelaciones(MultipartFile archivo) throws IOException {
+        List<com.morapack.dto.CancelacionDTO> cancelaciones = new ArrayList<>();
+
+        if (archivo.isEmpty()) {
+            return cancelaciones;
+        }
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(archivo.getInputStream()))) {
+            String linea;
+            int contadorLinea = 0;
+
+            while ((linea = br.readLine()) != null) {
+                contadorLinea++;
+
+                // Ignorar líneas vacías o comentarios
+                if (linea.trim().isEmpty() || linea.trim().startsWith("#")) {
+                    continue;
+                }
+
+                String[] partes = linea.split("-");
+
+                if (partes.length != 5) {
+                    throw new IllegalArgumentException("Línea " + contadorLinea +
+                        ": Formato incorrecto. Se esperaban 5 campos (dia-hora-idVuelo-origen-destino), se encontraron " + partes.length + ".");
+                }
+
+                try {
+                    com.morapack.dto.CancelacionDTO dto = new com.morapack.dto.CancelacionDTO();
+
+                    dto.setDia(Integer.valueOf(partes[0].trim()));
+                    dto.setHora(partes[1].trim()); // HH:mm
+                    dto.setIdVuelo(Integer.valueOf(partes[2].trim()));
+                    dto.setIcaoOrigen(partes[3].trim().toUpperCase());
+                    dto.setIcaoDestino(partes[4].trim().toUpperCase());
+
+                    cancelaciones.add(dto);
+
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("Línea " + contadorLinea +
+                        ": Error al parsear un campo numérico. Verifique día o ID de vuelo.");
+                }
+            }
+        }
+
+        return cancelaciones;
     }
 
     // ========================================================================

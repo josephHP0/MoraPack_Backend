@@ -57,6 +57,13 @@ public class PedidoController {
         return ResponseEntity.ok(respuesta);
     }
 
+    //Endpoint to delete all pedidos
+    @DeleteMapping("/eliminar_todos")
+    public ResponseEntity<RespuestaDTO> eliminarTodosLosPedidos() {
+        RespuestaDTO respuesta = pedidoService.eliminarTodosLosPedidos();
+        return ResponseEntity.ok(respuesta);
+    }
+
     // --------------------------------------------------------------------
     // ENDPOINTS DE CONSULTA (GET)
     // --------------------------------------------------------------------
