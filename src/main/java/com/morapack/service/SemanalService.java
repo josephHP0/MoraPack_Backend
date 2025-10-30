@@ -259,7 +259,7 @@ public class SemanalService {
             
             // 3.2 Obtener y agregar vuelos al grafo
             List<Flight_instances_DTO> vuelos = new ArrayList<>();
-            RespuestaDTO respVuelos = vueloService.obtenerFlightsDTO2(0, 1000);
+            RespuestaDTO respVuelos = vueloService.obtenerFlightsDTO2(0, 20062);
             
             if ("success".equals(respVuelos.getStatus()) && respVuelos.getData() != null) {
                 Map<String, Object> dataVuelos = (Map<String, Object>) respVuelos.getData();
