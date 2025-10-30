@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.*;
 import java.util.*;
+import java.util.stream.Collectors;
+
 import com.morapack.dto.CancelacionDTO;
 
 @Service
@@ -209,8 +211,17 @@ public class SemanalService {
 
                         java.time.LocalDate targetDate = today.plusDays(dayOfMonth - 1);
                         java.time.LocalDateTime targetLdt = java.time.LocalDateTime.of(targetDate.getYear(), targetDate.getMonthValue(), targetDate.getDayOfMonth(), hour, minute);
+                        // Crear una copia del pedido con la fecha normalizada
                         Instant mapped = targetLdt.atZone(java.time.ZoneId.systemDefault()).toInstant();
-                        pedido.setT03Fechacreacion(mapped);
+                        T03Pedido pedidoNormalizado = new T03Pedido();
+                        // Copiar todos los campos necesarios
+                        pedidoNormalizado.setId(pedido.getId());
+                        pedidoNormalizado.setT03Cantidadpaquetes(pedido.getT03Cantidadpaquetes());
+                        pedidoNormalizado.setT01Idaeropuertoorigen(pedido.getT01Idaeropuertoorigen());
+                        pedidoNormalizado.setT01Idaeropuertodestino(pedido.getT01Idaeropuertodestino());
+                        pedidoNormalizado.setT03Fechacreacion(mapped);
+                        // Reemplazar el pedido original con la copia normalizada
+                        pedido = pedidoNormalizado;
                     }
                 } catch (Exception ex) {
                     // leave as-is on error
@@ -309,9 +320,7 @@ public class SemanalService {
                 return new RespuestaDTO("error", "No hay aeropuertos registrados", null);
             }
 
-            // 5. Crear planificador ACO y ejecutar planificación
-            // IMPORTANTE: Usar la misma fecha que se usa en VueloService.obtenerFlightsDTO()
-            // para que coincidan las ventanas
+            // 4. Crear planificador ACO y ejecutar planificación
             LocalDate fechaInicioVuelos = LocalDate.now(ZoneOffset.UTC);
             Instant fechaInicio = fechaInicioVuelos.atStartOfDay(ZoneOffset.UTC).toInstant();
             Instant fechaFin = fechaInicio.plus(Duration.ofDays(7));
@@ -320,10 +329,103 @@ public class SemanalService {
             System.out.println("  Fecha inicio: " + fechaInicio + " (" + fechaInicioVuelos + ")");
             System.out.println("  Fecha fin: " + fechaFin);
             System.out.println("  Días: 7");
+
+            // Agrupar pedidos por día para optimizar búsqueda
+            Map<Integer, List<T03Pedido>> pedidosPorDia = new HashMap<>();
+            int vuelosPorDia = vuelos.size() / 7; // número de vuelos base por día
             
-            PlanificadorAco planificador = new PlanificadorAco(grafo, aeropuertos);
-            List<PlanificacionRespuestaDTO> asignaciones = planificador.planificarSemanal(
-                pedidosDB, fechaInicio, fechaFin);
+            for (T03Pedido pedido : pedidosDB) {
+                // Obtener el día del pedido en el huso horario del destino
+                T01Aeropuerto destino = pedido.getT01Idaeropuertodestino();
+                String zonaHorariaDestino = getZonaHoraria(destino);
+                ZoneId zonaDestino = ZoneId.of(zonaHorariaDestino);
+                
+                Instant fechaPedidoUTC = pedido.getT03Fechacreacion();
+                ZonedDateTime fechaPedidoDestino = fechaPedidoUTC.atZone(zonaDestino);
+                int dia = fechaPedidoDestino.getDayOfMonth();
+                
+                // Calcular plazo máximo según continentes
+                T01Aeropuerto origen = pedido.getT01Idaeropuertoorigen();
+                int plazoEntrega = getMismoContinente(origen, destino) ? 2 : 3;
+                
+                // Agregar plazo de 2 horas en destino
+                Instant fechaLimite = fechaPedidoDestino
+                    .plusDays(plazoEntrega)
+                    .minusHours(2) // Restar 2 horas para asegurar llegada antes del plazo
+                    .toInstant();
+                
+                // Crear DTO con la información de planificación sin modificar la BD
+                PedidoPlanificacionDTO pedidoPlan = PedidoPlanificacionDTO.fromPedido(pedido, fechaLimite);
+                pedidosPorDia.computeIfAbsent(dia, k -> new ArrayList<>()).add(pedido);
+            }
+            
+            // Ordenar pedidos por día según la fecha límite calculada
+            Map<Integer, List<PedidoPlanificacionDTO>> planificacionPorDia = new HashMap<>();
+            for (Map.Entry<Integer, List<T03Pedido>> entry : pedidosPorDia.entrySet()) {
+                List<PedidoPlanificacionDTO> pedidosOrdenados = entry.getValue().stream()
+                    .map(p -> {
+                        // Recalcular fecha límite para cada pedido
+                        String zonaHoraria = getZonaHoraria(p.getT01Idaeropuertodestino());
+                        ZoneId zona = ZoneId.of(zonaHoraria);
+                        ZonedDateTime fechaPedido = p.getT03Fechacreacion().atZone(zona);
+                        int plazo = getMismoContinente(p.getT01Idaeropuertoorigen(), 
+                                                     p.getT01Idaeropuertodestino()) ? 2 : 3;
+                        Instant limite = fechaPedido.plusDays(plazo).minusHours(2).toInstant();
+                        return PedidoPlanificacionDTO.fromPedido(p, limite);
+                    })
+                    .sorted(Comparator.comparing(PedidoPlanificacionDTO::getFechaLimite))
+                    .collect(Collectors.toList());
+                planificacionPorDia.put(entry.getKey(), pedidosOrdenados);
+            }
+            
+
+            // Planificar día por día
+            List<PlanificacionRespuestaDTO> todasLasAsignaciones = new ArrayList<>();
+            
+            for (Map.Entry<Integer, List<T03Pedido>> entry : pedidosPorDia.entrySet()) {
+                int dia = entry.getKey();
+                List<T03Pedido> pedidosDelDia = entry.getValue();
+                
+                // Calcular el rango de índices de vuelos disponibles desde este día hasta el final de la ventana
+                int startIndex = (dia - 1) * vuelosPorDia;
+                int endIndex = vuelos.size(); // Usar todos los vuelos desde el día actual hasta el final
+                
+                // Crear un subgrafo con los vuelos desde este día hasta el final de la ventana
+                GrafoVuelos grafoDelDia = new GrafoVuelos();
+                for (T01Aeropuerto aeropuerto : aeropuertos.values()) {
+                    grafoDelDia.agregarAeropuerto(aeropuerto);
+                }
+                
+                // Agregar vuelos disponibles desde este día hasta el final
+                for (int i = startIndex; i < endIndex; i++) {
+                    Flight_instances_DTO v = vuelos.get(i);
+                    T01Aeropuerto origen = aeropuertos.get(v.origin());
+                    T01Aeropuerto destino = aeropuertos.get(v.dest());
+                    
+                    if (origen != null && destino != null) {
+                        T06VueloProgramado vueloTemp = new T06VueloProgramado();
+                        vueloTemp.setId(Integer.parseInt(v.flightId().replace("MP-", "")));
+                        vueloTemp.setT01Idaeropuertoorigen(origen);
+                        vueloTemp.setT01Idaeropuertodestino(destino);
+                        vueloTemp.setT06Fechasalida(Instant.parse(v.depUtc()));
+                        vueloTemp.setT06Fechallegada(Instant.parse(v.arrUtc()));
+                        vueloTemp.setT06Capacidadtotal(v.capacity());
+                        vueloTemp.setT06Ocupacionactual(0);
+                        grafoDelDia.agregarVuelo(vueloTemp);
+                    }
+                }
+                
+                // Planificar los pedidos de este día
+                PlanificadorAco planificador = new PlanificadorAco(grafoDelDia, aeropuertos);
+                List<PlanificacionRespuestaDTO> asignacionesDelDia = planificador.planificarSemanal(
+                    pedidosDelDia, fechaInicio, fechaFin);
+                    
+                if (asignacionesDelDia != null) {
+                    todasLasAsignaciones.addAll(asignacionesDelDia);
+                }
+            }
+            
+            List<PlanificacionRespuestaDTO> asignaciones = todasLasAsignaciones;
                 
             if (asignaciones == null || asignaciones.size() != pedidosDB.size()) {
                 return new RespuestaDTO("error", 
@@ -379,24 +481,40 @@ public class SemanalService {
 
                         for (String vueloId : splitACO.getVuelosRuta()) {
                             // Buscar el vuelo
-                            Flight_instances_DTO vuelo = vuelos.stream()
-                                .filter(v -> v.instanceId().equals(vueloId))
+                            // Obtener el vuelo base y ajustar sus fechas según el día asignado
+                            String[] partsId = vueloId.split("#");
+                            if (partsId.length != 2) {
+                                System.err.println("[SemanalService] ID de vuelo inválido: " + vueloId);
+                                continue;
+                            }
+                            
+                            String baseFlightId = partsId[0];
+                            String dateTimeStr = partsId[1];
+
+                            // Extraer el ID numérico del vuelo base
+                            String numericId = baseFlightId.replace("MP-", "");
+                            
+                            // Buscar el vuelo base comparando IDs numéricos
+                            Flight_instances_DTO vueloBase = vuelos.stream()
+                                .filter(v -> v.flightId().replace("MP-", "").equals(numericId))
                                 .findFirst()
                                 .orElse(null);
 
-                            // Fallback: matching por prefix
-                            if (vuelo == null) {
-                                final String wantedPrefix = prefixBeforeHash(vueloId);
-                                vuelo = vuelos.stream()
-                                        .filter(v -> prefixBeforeHash(v.instanceId()).equals(wantedPrefix))
-                                        .findFirst()
-                                        .orElse(null);
-
-                                if (vuelo == null) {
-                                    System.err.println("[SemanalService] Vuelo asignado no encontrado: " + vueloId);
-                                    continue;
-                                }
+                            if (vueloBase == null) {
+                                System.err.println("[SemanalService] Vuelo base no encontrado: " + baseFlightId + " (ID numérico: " + numericId + ")");
+                                continue;
                             }
+
+                            // Crear una copia del vuelo base con la fecha ajustada
+                            Flight_instances_DTO vuelo = new Flight_instances_DTO(
+                                vueloId,
+                                vueloBase.flightId(),
+                                vueloBase.origin(),
+                                vueloBase.dest(),
+                                dateTimeStr, // Usar la fecha asignada por el planificador
+                                vueloBase.arrUtc(), // Ajustar según la nueva fecha de salida
+                                vueloBase.capacity()
+                            );
 
                             assignments_split_icao.Leg leg = new assignments_split_icao.Leg();
                             leg.setSeq(seq++);
@@ -464,9 +582,9 @@ public class SemanalService {
 
         } catch (Exception e) {
             return new RespuestaDTO("error", 
-                "Error generando plan semanal: " + e.getMessage(), null);
+                "Error generando plan semanal: " + e.getMessage(), null);}
         }
-    }
+    
 
     @Transactional
     private RespuestaDTO generarVuelosBase(T01Aeropuerto hub, String destinoIcao) {
@@ -594,6 +712,25 @@ public class SemanalService {
                 * Math.sin(dLon / 2) * Math.sin(dLon / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
+    }
+
+    private String getZonaHoraria(T01Aeropuerto aeropuerto) {
+        if (aeropuerto != null && aeropuerto.getT08Idciudad() != null 
+            && aeropuerto.getT08Idciudad().getT08Zonahoraria() != null) {
+            return aeropuerto.getT08Idciudad().getT08Zonahoraria();
+        }
+        return "UTC";
+    }
+
+    private boolean getMismoContinente(T01Aeropuerto origen, T01Aeropuerto destino) {
+        if (origen == null || destino == null 
+            || origen.getT08Idciudad() == null || destino.getT08Idciudad() == null
+            || origen.getT08Idciudad().getT08Continente() == null 
+            || destino.getT08Idciudad().getT08Continente() == null) {
+            return false;
+        }
+        return origen.getT08Idciudad().getT08Continente()
+            .equals(destino.getT08Idciudad().getT08Continente());
     }
 
     /**
