@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface T06VueloProgramadoRepository extends JpaRepository<T06VueloProgramado, Integer> {
@@ -24,4 +23,6 @@ public interface T06VueloProgramadoRepository extends JpaRepository<T06VueloProg
 
     @Query("SELECT v FROM T06VueloProgramado v WHERE v.t01Idaeropuertoorigen = :aeropuerto OR v.t01Idaeropuertodestino = :aeropuerto")
     List<T06VueloProgramado> buscarPorOrigenODestino(@Param("aeropuerto") T01Aeropuerto aeropuerto);
+    
+    List<T06VueloProgramado> findByT06FechasalidaBetween(Instant fechaInicio, Instant fechaFin);
 }
