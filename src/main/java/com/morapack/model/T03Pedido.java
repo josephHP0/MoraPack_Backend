@@ -10,7 +10,7 @@ import java.time.Instant;
 
 @Getter
 @Setter
-@Entity
+@Entity(name = "T03PedidoOld") 
 @Table(name = "t03_pedido", schema = "morapack2", indexes = {
         @Index(name = "idx_pedido_cliente", columnList = "T03_idCliente"),
         @Index(name = "idx_pedido_origen", columnList = "T01_idAeropuertoOrigen"),
