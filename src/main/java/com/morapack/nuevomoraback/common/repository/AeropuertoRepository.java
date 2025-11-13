@@ -12,9 +12,9 @@ import java.util.Optional;
 public interface AeropuertoRepository extends JpaRepository<T01Aeropuerto, Integer> {
     Optional<T01Aeropuerto> findByT01CodigoIcao(String codigoIcao);
 
-    @Query("SELECT a FROM T01Aeropuerto a JOIN T05Ciudad c ON a.t01IdCiudad = c.id WHERE c.t05EsHub = true")
+    @Query(value = "SELECT a.* FROM t01_aeropuerto a JOIN t05_ciudad c ON a.T01_ID_CIUDAD = c.T05_ID_CIUDAD WHERE c.T05_ES_HUB = 1", nativeQuery = true)
     List<T01Aeropuerto> findAeropuertosHub();
 
-    @Query("SELECT a FROM T01Aeropuerto a JOIN T05Ciudad c ON a.t01IdCiudad = c.id WHERE c.t05EsHub = false")
+    @Query(value = "SELECT a.* FROM t01_aeropuerto a JOIN t05_ciudad c ON a.T01_ID_CIUDAD = c.T05_ID_CIUDAD WHERE c.T05_ES_HUB = 0", nativeQuery = true)
     List<T01Aeropuerto> findAeropuertosNoHub();
 }

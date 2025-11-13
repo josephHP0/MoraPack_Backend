@@ -19,9 +19,11 @@ public interface PedidoRepository extends JpaRepository<T02Pedido, Integer> {
     @Query("SELECT p FROM T02Pedido p WHERE p.t02FechaPedido >= :fechaInicio")
     List<T02Pedido> findByFechaPedidoAfter(@Param("fechaInicio") Instant fechaInicio);
 
-    @Query("SELECT p FROM T02Pedido p JOIN T01Aeropuerto a ON p.t02IdAeropDestino.id = a.id " +
-           "JOIN T05Ciudad c ON a.t01IdCiudad = c.id WHERE c.t05EsHub = false " +
-           "AND p.t02FechaPedido BETWEEN :fechaInicio AND :fechaFin")
+    @Query(value = "SELECT p.* FROM t02_pedido p " +
+           "JOIN t01_aeropuerto a ON p.T02_ID_AEROP_DESTINO = a.T01_ID_AEROPUERTO " +
+           "JOIN t05_ciudad c ON a.T01_ID_CIUDAD = c.T05_ID_CIUDAD " +
+           "WHERE c.T05_ES_HUB = 0 AND p.T02_FECHA_PEDIDO BETWEEN :fechaInicio AND :fechaFin",
+           nativeQuery = true)
     List<T02Pedido> findPedidosNoHubBetween(@Param("fechaInicio") Instant fechaInicio,
                                              @Param("fechaFin") Instant fechaFin);
 }
