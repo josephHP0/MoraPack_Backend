@@ -1,5 +1,6 @@
 package com.morapack.nuevomoraback.planificacion.controller;
 
+import com.morapack.nuevomoraback.planificacion.dto.AssignmentByOrderDTO;
 import com.morapack.nuevomoraback.planificacion.dto.SimulacionSemanalRequest;
 import com.morapack.nuevomoraback.planificacion.dto.SimulacionSemanalResponse;
 import com.morapack.nuevomoraback.planificacion.service.PlanificadorSemanalService;
@@ -9,6 +10,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/simulacion-semanal")
@@ -35,5 +38,14 @@ public class PlanificacionSemanalController {
 
         SimulacionSemanalResponse response = planificadorSemanalService.consultarResultado(id);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/planificacion")
+    @Operation(summary = "Obtiene planificación de rutas",
+               description = "Obtiene todas las asignaciones de rutas planeadas para visualización en el mapa")
+    public ResponseEntity<List<AssignmentByOrderDTO>> obtenerPlanificacion() {
+
+        List<AssignmentByOrderDTO> assignments = planificadorSemanalService.obtenerPlanificacion();
+        return ResponseEntity.ok(assignments);
     }
 }

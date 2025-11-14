@@ -4,9 +4,7 @@ import com.morapack.nuevomoraback.common.domain.T02Pedido;
 import com.morapack.nuevomoraback.common.repository.PedidoRepository;
 import com.morapack.nuevomoraback.planificacion.aco.AcoPlanner;
 import com.morapack.nuevomoraback.planificacion.domain.*;
-import com.morapack.nuevomoraback.planificacion.dto.MetricasDTO;
-import com.morapack.nuevomoraback.planificacion.dto.SimulacionSemanalRequest;
-import com.morapack.nuevomoraback.planificacion.dto.SimulacionSemanalResponse;
+import com.morapack.nuevomoraback.planificacion.dto.*;
 import com.morapack.nuevomoraback.planificacion.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -172,6 +172,47 @@ public class PlanificadorSemanalServiceImpl implements PlanificadorSemanalServic
             resultado.getEstado().name(),
             resultado.getMensaje(),
             metricasDTO
+        );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<AssignmentByOrderDTO> obtenerPlanificacion() {
+        log.info("Obteniendo planificación de rutas para visualización");
+
+        // Obtener todas las rutas planeadas (tipo SEMANAL)
+        List<T08RutaPlaneada> rutas = rutaPlaneadaRepository.findByTipoSimulacion(
+            T08RutaPlaneada.TipoSimulacion.SEMANAL);
+
+        log.info("Rutas planeadas encontradas: {}", rutas.size());
+
+        // Convertir a formato compatible con frontend
+        return rutas.stream()
+            .map(this::convertirARutaDTO)
+            .collect(Collectors.toList());
+    }
+
+    private AssignmentByOrderDTO convertirARutaDTO(T08RutaPlaneada ruta) {
+        // Crear un único split por ruta (simplificado)
+        List<AssignmentLegDTO> legs = ruta.getTramosAsignados().stream()
+            .map(tramo -> new AssignmentLegDTO(
+                tramo.getOrdenEnRuta().intValue(),
+                tramo.getVueloProgramado().getId().toString(),
+                tramo.getVueloProgramado().getT01IdAeropuertoOrigen().getT01CodigoIcao(),
+                tramo.getVueloProgramado().getT01IdAeropuertoDestino().getT01CodigoIcao(),
+                tramo.getCantidadProductos()
+            ))
+            .collect(Collectors.toList());
+
+        AssignmentSplitDTO split = new AssignmentSplitDTO(
+            "SPLIT-" + ruta.getId(),  // ID único del split
+            ruta.getPedido().getT02Cantidad(),  // Cantidad total
+            legs
+        );
+
+        return new AssignmentByOrderDTO(
+            ruta.getPedido().getT02IdCadena(),  // ID del pedido
+            List.of(split)  // Lista con un solo split
         );
     }
 }

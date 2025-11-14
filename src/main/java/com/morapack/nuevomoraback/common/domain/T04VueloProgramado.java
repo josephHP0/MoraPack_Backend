@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
 
@@ -41,16 +40,13 @@ public class T04VueloProgramado {
     @Column(name = "T04_CAPACIDAD_TOTAL")
     private Integer t04CapacidadTotal;
 
-    @ColumnDefault("0")
     @Column(name = "T04_OCUPACION_TOTAL")
     private Integer t04OcupacionTotal;
 
-    @ColumnDefault("'PROGRAMADO'")
     @Lob
     @Column(name = "T04_ESTADO")
     private String t04Estado;
 
-    @ColumnDefault("'NORMAL'")
     @Lob
     @Column(name = "T04_ESTADO_CAPACIDAD")
     private String t04EstadoCapacidad;

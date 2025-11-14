@@ -1,0 +1,82 @@
+﻿TABLE_NAME	COLUMN_NAME	DATA_TYPE	IS_NULLABLE	COLUMN_KEY	COLUMN_DEFAULT
+t01_aeropuerto	T01_ID_AEROPUERTO	int	NO	PRI	NULL
+t01_aeropuerto	T01_ID_CIUDAD	int	NO	MUL	NULL
+t01_aeropuerto	T01_CODIGO_ICAO	varchar	NO	UNI	NULL
+t01_aeropuerto	T01_LAT	decimal	YES		NULL
+t01_aeropuerto	T01_LON	decimal	YES		NULL
+t01_aeropuerto	T01_GMT_OFFSET	smallint	YES		NULL
+t01_aeropuerto	T01_CAPACIDAD	int	YES		NULL
+t01_aeropuerto	T01_ALIAS	varchar	YES		NULL
+t02_pedido	T02_ID	int	NO	PRI	NULL
+t02_pedido	T02_ID_CADENA	varchar	YES		NULL
+t02_pedido	T02_FECHA_PEDIDO	datetime	YES		NULL
+t02_pedido	T02_ID_AEROP_DESTINO	int	YES	MUL	NULL
+t02_pedido	T02_CANTIDAD	int	YES		NULL
+t02_pedido	T02_ID_CLIENTE	int	YES		NULL
+t03_cliente	T03_ID_CLIENTE	int	NO	PRI	NULL
+t03_cliente	T03_NOMBRE	varchar	YES		NULL
+t03_cliente	T03_CONTACTO	varchar	YES		NULL
+t04_vuelo_programado	T04_ID_TRAMO_VUELO	int	NO	PRI	NULL
+t04_vuelo_programado	T01_ID_AEROPUERTO_ORIGEN	int	NO	MUL	NULL
+t04_vuelo_programado	T01_ID_AEROPUERTO_DESTINO	int	NO	MUL	NULL
+t04_vuelo_programado	T11_ID_AVION	int	YES	MUL	NULL
+t04_vuelo_programado	T04_FECHA_SALIDA	datetime	YES		NULL
+t04_vuelo_programado	T04_FECHA_LLEGADA	datetime	YES		NULL
+t04_vuelo_programado	T04_CAPACIDAD_TOTAL	int	YES		NULL
+t04_vuelo_programado	T04_OCUPACION_TOTAL	int	YES		0
+t04_vuelo_programado	T04_ESTADO	enum	YES		PROGRAMADO
+t04_vuelo_programado	T04_ESTADO_CAPACIDAD	enum	YES		NORMAL
+t05_ciudad	T05_ID_CIUDAD	int	NO	PRI	NULL
+t05_ciudad	T05_NOMBRE	varchar	NO	UNI	NULL
+t05_ciudad	T05_CONTINENTE	varchar	YES		NULL
+t05_ciudad	T05_ZONA_HORARIA	varchar	YES		NULL
+t05_ciudad	T05_ES_HUB	tinyint	YES		0
+t06_avion	T06_ID_AVION	int	NO	PRI	NULL
+t06_avion	T06_MATRICULA	varchar	NO	UNI	NULL
+t06_avion	T06_MODELO	varchar	YES		NULL
+t06_avion	T06_CAPACIDAD_MAXIMA	int	NO		NULL
+t06_avion	T06_OPERADOR	varchar	YES		NULL
+t06_avion	T06_ACTIVO	enum	YES		DISPONIBLE
+t07_rutas	T07_ID_RUTA	int	NO	PRI	NULL
+t07_rutas	T01_ID_AERO_ORIGEN	int	YES	MUL	NULL
+t07_rutas	T01_ID_AERO_DESTINO	int	YES	MUL	NULL
+t07_rutas	T07_SLA	decimal	YES		NULL
+t07_rutas	T07_FECHA_SALIDA	datetime	YES		NULL
+t07_rutas	T07_FECHA_LLEGADA	datetime	YES		NULL
+t07_rutas	T07_RUTA_PLANEADA	varchar	YES		NULL
+t08_ruta_planeada	T08_ID_RUTA_PLANEADA	int	NO	PRI	NULL
+t08_ruta_planeada	T02_ID_PEDIDO	int	NO	MUL	NULL
+t08_ruta_planeada	T08_FECHA_PLANIFICACION	datetime	NO		NULL
+t08_ruta_planeada	T08_TIPO_SIMULACION	enum	NO	MUL	NULL
+t08_ruta_planeada	T08_FECHA_ENTREGA_ESTIMADA	datetime	YES		NULL
+t08_ruta_planeada	T08_CUMPLE_SLA	tinyint	YES		0
+t08_ruta_planeada	T08_ESTADO	enum	YES		PENDIENTE
+t09_tramo_asignado	T09_ID_TRAMO_ASIGNADO	int	NO	PRI	NULL
+t09_tramo_asignado	T08_ID_RUTA_PLANEADA	int	NO	MUL	NULL
+t09_tramo_asignado	T04_ID_TRAMO_VUELO	int	NO	MUL	NULL
+t09_tramo_asignado	T09_CANTIDAD_PRODUCTOS	int	NO		NULL
+t09_tramo_asignado	T09_ORDEN_EN_RUTA	smallint	NO		NULL
+t09_tramo_asignado	T09_ES_VUELO_FINAL	tinyint	YES		0
+t10_resultado_simulacion	T10_ID_RESULTADO	int	NO	PRI	NULL
+t10_resultado_simulacion	T10_TIPO_SIMULACION	enum	NO	MUL	NULL
+t10_resultado_simulacion	T10_FECHA_INICIO	datetime	NO		NULL
+t10_resultado_simulacion	T10_FECHA_FIN	datetime	NO		NULL
+t10_resultado_simulacion	T10_FECHA_EJECUCION	datetime	NO		NULL
+t10_resultado_simulacion	T10_DURACION_MS	bigint	YES		NULL
+t10_resultado_simulacion	T10_ESTADO	enum	YES		EN_PROGRESO
+t10_resultado_simulacion	t10_mensaje	tinytext	YES		NULL
+t11_metricas_simulacion	T11_ID_METRICA	int	NO	PRI	NULL
+t11_metricas_simulacion	T10_ID_RESULTADO	int	NO	MUL	NULL
+t11_metricas_simulacion	T11_TOTAL_PEDIDOS	int	YES		0
+t11_metricas_simulacion	T11_PEDIDOS_ENTREGADOS	int	YES		0
+t11_metricas_simulacion	T11_PEDIDOS_EN_TRANSITO	int	YES		0
+t11_metricas_simulacion	T11_PEDIDOS_RECHAZADOS	int	YES		0
+t11_metricas_simulacion	T11_CUMPLIMIENTO_SLA	decimal	YES		NULL
+t11_metricas_simulacion	T11_OCUPACION_PROMEDIO	decimal	YES		NULL
+t11_metricas_simulacion	T11_VUELOS_UTILIZADOS	int	YES		0
+t11_metricas_simulacion	T11_VUELOS_CANCELADOS	int	YES		0
+t12_cancelacion_vuelo	T12_ID_CANCELACION	int	NO	PRI	NULL
+t12_cancelacion_vuelo	T04_ID_TRAMO_VUELO	int	NO	MUL	NULL
+t12_cancelacion_vuelo	T12_FECHA_CANCELACION	datetime	NO		NULL
+t12_cancelacion_vuelo	T12_MOTIVO	varchar	YES		NULL
+t12_cancelacion_vuelo	T12_TIPO_SIMULACION	enum	YES		NULL
