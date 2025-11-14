@@ -45,9 +45,12 @@ public class PlanificadorDiaADiaServiceImpl implements PlanificadorDiaADiaServic
 
         log.info("Pedidos en backlog: {}", pedidosBacklog.size());
 
-        // 3. Planificar con ACO
+        // 3. Planificar con ACO con expansión de vuelos
         List<T08RutaPlaneada> rutasPlaneadas = acoPlanner.planificar(
-            pedidosBacklog, T08RutaPlaneada.TipoSimulacion.DIA_A_DIA);
+            pedidosBacklog,
+            T08RutaPlaneada.TipoSimulacion.DIA_A_DIA,
+            request.getFechaHoraInicio(),
+            fechaFin);
 
         // 4. Validar y guardar
         for (T08RutaPlaneada ruta : rutasPlaneadas) {

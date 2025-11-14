@@ -1,0 +1,2213 @@
+================================================================================
+  CONOCIMIENTO COMPLETO DEL PROYECTO MORAPACK BACKEND
+  Sistema de Planificación Logística con Algoritmo ACO
+  Generado: 2025-11-13
+================================================================================
+
+================================================================================
+1. RESUMEN EJECUTIVO
+================================================================================
+
+PROPOSITO DEL SISTEMA:
+MoraPack Backend es un sistema de planificación logística que optimiza la
+asignación de pedidos (envíos de productos) a vuelos de carga aérea utilizando
+el algoritmo metaheurístico Ant Colony Optimization (ACO).
+
+PROBLEMA QUE RESUELVE:
+- Planificar rutas óptimas para enviar pedidos desde 3 almacenes hub (Lima,
+  Bruselas, Bakú) hacia ciudades destino
+- Considerar capacidades limitadas de aviones
+- Respetar restricciones de tiempo (SLA)
+- Manejar rutas multi-tramo (con escalas)
+- Optimizar ocupación de vuelos
+
+TECNOLOGIAS CORE:
+- Spring Boot 3.5.7
+- Java 21
+- MySQL 8+
+- Spring Data JPA + Hibernate
+- Lombok
+- SpringDoc OpenAPI 2.6.0 (Swagger)
+
+ESTADO ACTUAL:
+✓ Funcional y operativo
+✓ Arquitectura completa implementada
+✓ Algoritmo ACO funcionando
+✓ Dos modos de simulación implementados
+- Areas de mejora identificadas (testing, optimización avanzada)
+
+
+================================================================================
+2. ARQUITECTURA DEL SISTEMA
+================================================================================
+
+PATRON ARQUITECTONICO:
+- Arquitectura en Capas (Layered Architecture)
+- Patrón MVC (Model-View-Controller)
+- Patrón Repository para acceso a datos
+- Service Layer para lógica de negocio
+
+ESTRUCTURA DE PAQUETES:
+
+com.morapack.nuevomoraback/
+│
+├── NuevoMoraBackApplication.java          # Clase principal Spring Boot
+│
+├── common/                                 # MODULO COMUN (Entidades base)
+│   ├── domain/                            # Entidades JPA T01-T07
+│   │   ├── T01Aeropuerto.java            # Aeropuertos
+│   │   ├── T02Pedido.java                # Pedidos a enviar
+│   │   ├── T03Cliente.java               # Clientes
+│   │   ├── T04VueloProgramado.java       # Vuelos programados
+│   │   ├── T05Ciudad.java                # Ciudades
+│   │   ├── T06Avion.java                 # Flota de aviones
+│   │   └── T07Ruta.java                  # Rutas definidas
+│   │
+│   └── repository/                        # Repositorios JPA
+│       ├── AeropuertoRepository.java
+│       ├── PedidoRepository.java
+│       ├── ClienteRepository.java
+│       ├── VueloProgramadoRepository.java
+│       ├── CiudadRepository.java
+│       ├── AvionRepository.java
+│       └── RutaRepository.java
+│
+├── planificacion/                         # MODULO DE PLANIFICACION (Core)
+│   │
+│   ├── aco/                               # ALGORITMO ACO
+│   │   ├── AcoPlanner.java               # Interface del planificador
+│   │   ├── AcoPlannerImpl.java           # Implementación del algoritmo
+│   │   ├── AcoParameters.java            # Parámetros configurables
+│   │   ├── Ant.java                      # Clase hormiga (solución)
+│   │   ├── PheromoneMatrix.java          # Matriz de feromonas
+│   │   └── HeuristicCalculator.java      # Función heurística
+│   │
+│   ├── domain/                            # Entidades de planificación T08-T12
+│   │   ├── T08RutaPlaneada.java          # Ruta asignada a un pedido
+│   │   ├── T09TramoAsignado.java         # Tramo individual de ruta
+│   │   ├── T10ResultadoSimulacion.java   # Resultado de simulación
+│   │   ├── T11MetricasSimulacion.java    # KPIs y métricas
+│   │   └── T12CancelacionVuelo.java      # Registro de cancelaciones
+│   │
+│   ├── repository/                        # Repositorios de planificación
+│   │   ├── T08RutaPlaneadaRepository.java
+│   │   ├── T09TramoAsignadoRepository.java
+│   │   ├── T10ResultadoSimulacionRepository.java
+│   │   ├── T11MetricasSimulacionRepository.java
+│   │   └── T12CancelacionVueloRepository.java
+│   │
+│   ├── dto/                               # Data Transfer Objects
+│   │   ├── SimulacionSemanalRequest.java
+│   │   ├── SimulacionSemanalResponse.java
+│   │   ├── PlanificacionDiaADiaRequest.java
+│   │   ├── PlanificacionDiaADiaResponse.java
+│   │   ├── MetricasDTO.java
+│   │   └── EstadoPedidoDTO.java
+│   │
+│   ├── service/                           # LOGICA DE NEGOCIO
+│   │   ├── PlanificadorSemanalService.java         # Interface semanal
+│   │   ├── PlanificadorSemanalServiceImpl.java     # Implementación semanal
+│   │   ├── PlanificadorDiaADiaService.java         # Interface día a día
+│   │   ├── PlanificadorDiaADiaServiceImpl.java     # Implementación día a día
+│   │   ├── ValidadorReglas.java                    # Validaciones
+│   │   ├── CalculadorSLA.java                      # Cálculos de SLA
+│   │   └── GestorCancelaciones.java                # Manejo cancelaciones
+│   │
+│   └── controller/                        # REST CONTROLLERS
+│       ├── PlanificacionSemanalController.java
+│       └── PlanificacionDiaADiaController.java
+│
+└── config/                                # Configuraciones
+    └── OpenApiConfig.java                 # Config Swagger
+
+
+FLUJO DE CAPAS:
+
+[REST Controller]
+    ↓ Request DTO
+[Service Layer]
+    ↓ Llama a ACO Planner
+[ACO Algorithm]
+    ↓ Consulta vuelos y pedidos
+[Repository Layer]
+    ↓ JPA/Hibernate
+[MySQL Database]
+
+
+================================================================================
+3. MODELO DE DATOS DETALLADO
+================================================================================
+
+DATABASE: moraprueba
+SCHEMA: morapack2
+TOTAL TABLAS: 12 (T01-T12)
+
+--------------------------------------------------------------------------------
+3.1. TABLAS BASE (T01-T07) - Módulo Common
+--------------------------------------------------------------------------------
+
+T01_AEROPUERTO
+Descripción: Aeropuertos de la red logística
+Columnas:
+  - T01_ID: Integer (PK, AUTO_INCREMENT)
+  - T01_ID_CIUDAD: Integer (FK → T05_CIUDAD)
+  - T01_CODIGO_ICAO: String(4) - Código internacional (ej: SPJC, EBBR)
+  - T01_LAT: BigDecimal - Latitud
+  - T01_LON: BigDecimal - Longitud
+  - T01_GMT_OFFSET: Short - Zona horaria offset
+  - T01_CAPACIDAD: Integer - Capacidad de almacenamiento
+  - T01_ALIAS: String(40) - Nombre del aeropuerto
+
+Relaciones:
+  - ManyToOne con T05_CIUDAD
+  - OneToMany con T04_VUELO_PROGRAMADO (origen y destino)
+
+Queries especiales:
+  - findByT01CodigoIcao() - Buscar por código ICAO
+
+
+T02_PEDIDO
+Descripción: Pedidos/envíos a transportar
+Columnas:
+  - T02_ID: Integer (PK, AUTO_INCREMENT)
+  - T02_ID_CADENA: String(45) - ID formato: id_pedido-aaaammdd-hh-mm-dest-###-IdClien
+  - T02_FECHA_PEDIDO: Instant - Timestamp del pedido
+  - T02_ID_AEROP_DESTINO: Integer (FK → T01_AEROPUERTO)
+  - T02_CANTIDAD: Integer - Cantidad de productos (1-999)
+  - T02_ID_CLIENTE: Integer (FK → T03_CLIENTE)
+
+Relaciones:
+  - ManyToOne con T01_AEROPUERTO (destino)
+  - ManyToOne con T03_CLIENTE
+  - OneToMany con T08_RUTA_PLANEADA
+
+Queries especiales:
+  - findPedidosNoHubBetween(inicio, fin) - Pedidos que NO van a hubs en rango
+    WHERE t01.t05.t05EsHub = false
+
+
+T03_CLIENTE
+Descripción: Clientes del sistema
+Columnas:
+  - T03_ID: Integer (PK, AUTO_INCREMENT)
+  - T03_NOMBRE: String(120)
+  - T03_CONTACTO: String(160)
+
+Relaciones:
+  - OneToMany con T02_PEDIDO
+
+
+T04_VUELO_PROGRAMADO
+Descripción: Vuelos disponibles en la red
+Columnas:
+  - T04_ID: Integer (PK, AUTO_INCREMENT)
+  - T01_ID_AEROPUERTO_ORIGEN: Integer (FK → T01_AEROPUERTO)
+  - T01_ID_AEROPUERTO_DESTINO: Integer (FK → T01_AEROPUERTO)
+  - T11_ID_AVION: Integer (FK → T06_AVION)
+  - T04_FECHA_SALIDA: Instant
+  - T04_FECHA_LLEGADA: Instant
+  - T04_CAPACIDAD_TOTAL: Integer - Capacidad máxima del vuelo
+  - T04_OCUPACION_TOTAL: Integer - Productos ya asignados
+  - T04_ESTADO: String - PROGRAMADO, CANCELADO
+  - T04_ESTADO_CAPACIDAD: String - NORMAL, SOBRECARGA
+
+Relaciones:
+  - ManyToOne con T01_AEROPUERTO (origen y destino)
+  - ManyToOne con T06_AVION
+  - OneToMany con T09_TRAMO_ASIGNADO
+
+Queries especiales:
+  - findByFechaSalidaBetween(inicio, fin) - Vuelos en rango de fechas
+  - findByEstadoAndFechaSalidaBetween() - Vuelos activos en rango
+
+Métodos importantes:
+  - getCapacidadDisponible() = capacidadTotal - ocupacionTotal
+
+
+T05_CIUDAD
+Descripción: Ciudades de la red
+Columnas:
+  - T05_ID: Integer (PK, AUTO_INCREMENT)
+  - T05_NOMBRE: String(80)
+  - T05_CONTINENTE: String(40) - Para cálculo de SLA
+  - T05_ZONA_HORARIA: String(64)
+  - T05_ES_HUB: Boolean - true para Lima, Bruselas, Bakú
+
+Relaciones:
+  - OneToMany con T01_AEROPUERTO
+
+Queries especiales:
+  - findByT05EsHub(boolean) - Encuentra hubs o ciudades normales
+
+
+T06_AVION
+Descripción: Flota de aviones
+Columnas:
+  - T06_ID: Integer (PK, AUTO_INCREMENT)
+  - T06_MATRICULA: String(16)
+  - T06_MODELO: String(40)
+  - T06_CAPACIDAD_MAXIMA: Integer
+  - T06_OPERADOR: String(40)
+  - T06_ACTIVO: String - DISPONIBLE, MANTENIMIENTO
+
+Relaciones:
+  - OneToMany con T04_VUELO_PROGRAMADO
+
+
+T07_RUTA
+Descripción: Rutas definidas (no usado activamente en planificación)
+Columnas:
+  - T07_ID: Integer (PK, AUTO_INCREMENT)
+  - T01_ID_AERO_ORIGEN: Integer (FK → T01_AEROPUERTO)
+  - T01_ID_AERO_DESTINO: Integer (FK → T01_AEROPUERTO)
+  - T07_SLA: BigDecimal
+  - T07_FECHA_SALIDA: Instant
+  - T07_FECHA_LLEGADA: Instant
+  - T07_RUTA_PLANEADA: String(1000)
+
+Nota: Esta tabla parece legacy o para propósitos diferentes a T08_RUTA_PLANEADA
+
+
+--------------------------------------------------------------------------------
+3.2. TABLAS DE PLANIFICACION (T08-T12) - Módulo Planificación
+--------------------------------------------------------------------------------
+
+T08_RUTA_PLANEADA
+Descripción: Ruta completa asignada a un pedido (puede tener múltiples tramos)
+Columnas:
+  - T08_ID: Long (PK, AUTO_INCREMENT)
+  - T08_ID_PEDIDO: Integer (FK → T02_PEDIDO)
+  - T08_FECHA_PLANIFICACION: Instant
+  - T08_TIPO_SIMULACION: String - SEMANAL, DIA_A_DIA, COLAPSO
+  - T08_FECHA_ENTREGA_ESTIMADA: Instant
+  - T08_CUMPLE_SLA: Boolean
+  - T08_ESTADO: String - PENDIENTE, EN_TRANSITO, ENTREGADO, RECHAZADO
+
+Relaciones:
+  - ManyToOne con T02_PEDIDO
+  - OneToMany con T09_TRAMO_ASIGNADO (cascade ALL, orphanRemoval)
+
+Queries especiales:
+  - findByPedidoAndTipoSimulacion() - Encuentra ruta específica
+  - findByTipoSimulacion() - Todas las rutas de un tipo
+
+Lógica importante:
+  - Una ruta RECHAZADA significa que no se pudo planificar el pedido
+  - ENTREGADO marca completitud
+  - EN_TRANSITO indica ejecución en progreso
+
+
+T09_TRAMO_ASIGNADO
+Descripción: Segmento individual de una ruta (un vuelo específico)
+Columnas:
+  - T09_ID: Long (PK, AUTO_INCREMENT)
+  - T08_ID_RUTA_PLANEADA: Long (FK → T08_RUTA_PLANEADA)
+  - T04_ID_VUELO_PROGRAMADO: Integer (FK → T04_VUELO_PROGRAMADO)
+  - T09_CANTIDAD_PRODUCTOS: Integer - Productos en este tramo
+  - T09_ORDEN_EN_RUTA: Short - 1, 2, 3... (orden secuencial)
+  - T09_ES_VUELO_FINAL: Boolean - true si es el último tramo
+
+Relaciones:
+  - ManyToOne con T08_RUTA_PLANEADA (parent)
+  - ManyToOne con T04_VUELO_PROGRAMADO
+
+Lógica importante:
+  - ordenEnRuta determina la secuencia
+  - esVueloFinal = true marca el destino final
+  - cantidadProductos normalmente = cantidad total del pedido (no se divide)
+
+
+T10_RESULTADO_SIMULACION
+Descripción: Metadata de una ejecución de simulación
+Columnas:
+  - T10_ID: Long (PK, AUTO_INCREMENT)
+  - T10_TIPO_SIMULACION: String - SEMANAL, DIA_A_DIA, COLAPSO
+  - T10_FECHA_INICIO: Instant - Inicio del periodo simulado
+  - T10_FECHA_FIN: Instant - Fin del periodo simulado
+  - T10_FECHA_EJECUCION: Instant - Cuando se ejecutó la simulación
+  - T10_DURACION_MS: Long - Tiempo de ejecución en milisegundos
+  - T10_ESTADO: String - EN_PROGRESO, COMPLETADO, ERROR
+  - T10_MENSAJE: String(500) - Mensaje descriptivo
+
+Relaciones:
+  - OneToOne con T11_METRICAS_SIMULACION (cascade ALL)
+
+Queries especiales:
+  - findByTipoSimulacionOrderByFechaEjecucionDesc()
+
+
+T11_METRICAS_SIMULACION
+Descripción: KPIs y estadísticas de una simulación
+Columnas:
+  - T11_ID: Long (PK, AUTO_INCREMENT)
+  - T10_ID_RESULTADO: Long (FK → T10_RESULTADO_SIMULACION, UNIQUE)
+  - T11_TOTAL_PEDIDOS: Integer - Total de pedidos procesados
+  - T11_PEDIDOS_ENTREGADOS: Integer
+  - T11_PEDIDOS_EN_TRANSITO: Integer
+  - T11_PEDIDOS_RECHAZADOS: Integer - No se pudo planificar
+  - T11_CUMPLIMIENTO_SLA: BigDecimal - Porcentaje (0-100)
+  - T11_OCUPACION_PROMEDIO: BigDecimal - Ocupación de vuelos
+  - T11_VUELOS_UTILIZADOS: Integer
+  - T11_VUELOS_CANCELADOS: Integer
+
+Relaciones:
+  - OneToOne con T10_RESULTADO_SIMULACION
+
+Cálculos:
+  - cumplimientoSLA = (pedidosEnTransito / totalPedidos) * 100
+  - Nota: "En tránsito" significa que SLA se cumple, según lógica del código
+
+
+T12_CANCELACION_VUELO
+Descripción: Registro de vuelos cancelados
+Columnas:
+  - T12_ID: Long (PK, AUTO_INCREMENT)
+  - T04_ID_VUELO_PROGRAMADO: Integer (FK → T04_VUELO_PROGRAMADO)
+  - T12_FECHA_CANCELACION: Instant
+  - T12_MOTIVO: String(255)
+  - T12_TIPO_SIMULACION: String
+
+Relaciones:
+  - ManyToOne con T04_VUELO_PROGRAMADO
+
+Regla importante:
+  - Solo se puede cancelar si fechaCancelacion < vuelo.t04FechaSalida
+  - (No se puede cancelar vuelos en el aire)
+
+
+--------------------------------------------------------------------------------
+3.3. RELACIONES CLAVE ENTRE TABLAS
+--------------------------------------------------------------------------------
+
+FLUJO PRINCIPAL DE DATOS:
+
+T02_PEDIDO (pedido a enviar)
+    ↓ 1:N
+T08_RUTA_PLANEADA (ruta completa asignada)
+    ↓ 1:N
+T09_TRAMO_ASIGNADO (cada vuelo de la ruta)
+    ↓ N:1
+T04_VUELO_PROGRAMADO (vuelos disponibles)
+
+
+FLUJO DE METRICAS:
+
+T10_RESULTADO_SIMULACION (metadata de ejecución)
+    ↓ 1:1
+T11_METRICAS_SIMULACION (KPIs calculados)
+
+
+RELACIONES GEOGRAFICAS:
+
+T05_CIUDAD (ciudad)
+    ↓ 1:N
+T01_AEROPUERTO (aeropuertos de la ciudad)
+    ↓ N:1
+T04_VUELO_PROGRAMADO (origen y destino)
+
+
+================================================================================
+4. ALGORITMO ANT COLONY OPTIMIZATION (ACO) - CORE DEL SISTEMA
+================================================================================
+
+UBICACION: com.morapack.nuevomoraback.planificacion.aco.*
+
+PROPOSITO:
+Encontrar la asignación óptima de pedidos a vuelos usando un algoritmo
+metaheurístico inspirado en el comportamiento de hormigas buscando comida.
+
+--------------------------------------------------------------------------------
+4.1. COMPONENTES DEL ALGORITMO
+--------------------------------------------------------------------------------
+
+AcoParameters.java - PARAMETROS CONFIGURABLES
+----------------------------------------------
+@Component
+@ConfigurationProperties(prefix = "aco")
+
+Parámetros:
+  - alpha: double = 1.0
+    Importancia de la feromona en la probabilidad de selección
+    Valores típicos: 0.5 - 2.0
+    Mayor = más explotación de rutas conocidas
+
+  - beta: double = 2.0
+    Importancia de la heurística en la probabilidad de selección
+    Valores típicos: 1.0 - 5.0
+    Mayor = más influencia de información local (capacidad, SLA, tiempo)
+
+  - rho: double = 0.5
+    Tasa de evaporación de feromonas (0 a 1)
+    Valores típicos: 0.1 - 0.9
+    Mayor = olvida más rápido rutas antiguas
+
+  - q0: double = 0.9
+    Probabilidad de explotar vs explorar (0 a 1)
+    0.9 = 90% del tiempo usa la mejor opción, 10% explora
+    Mayor = más explotación, menos exploración
+
+  - numeroHormigas: int = 50
+    Hormigas por iteración (población)
+    Valores típicos: 10 - 100
+    Mayor = más diversidad pero más costo computacional
+
+  - numeroIteraciones: int = 100
+    Iteraciones del algoritmo
+    Valores típicos: 50 - 500
+    Mayor = mejor solución pero más tiempo
+
+  - feromonaInicial: double = 0.1
+    Valor inicial de feromona en todas las aristas
+    Valores típicos: 0.01 - 1.0
+
+  - pesoSla: double = 0.4
+    Peso del factor SLA en heurística (suma con otros debe ser 1.0)
+
+  - pesoCapacidad: double = 0.3
+    Peso del factor capacidad en heurística
+
+  - pesoTiempo: double = 0.3
+    Peso del factor tiempo en heurística
+
+Fórmula de balance:
+  pesoSla + pesoCapacidad + pesoTiempo = 1.0
+
+
+PheromoneMatrix.java - MATRIZ DE FEROMONAS
+-------------------------------------------
+Estructura interna:
+  - HashMap<String, Double> pheromones
+  - Clave: "pedidoId_vueloId"
+  - Valor: nivel de feromona (0.0 - infinito)
+
+Métodos clave:
+
+  initialize(pedidos, vuelos, feromonaInicial):
+    - Crea todas las combinaciones posibles (pedido, vuelo)
+    - Inicializa con valor feromonaInicial
+
+  get(pedidoId, vueloId):
+    - Retorna nivel de feromona para esa combinación
+    - Si no existe, retorna feromonaInicial
+
+  update(pedidoId, vueloId, deltaFeromona):
+    - Incrementa feromona en delta
+    - Usada cuando una hormiga usa esa asignación
+
+  evaporate(rho):
+    - Aplica evaporación a TODAS las feromonas
+    - nuevo_valor = valor_actual * (1 - rho)
+    - Se ejecuta en cada iteración
+
+Lógica:
+  - Feromona alta = ruta usada exitosamente en el pasado
+  - Evaporación previene convergencia prematura
+  - Refuerzo permite aprender rutas buenas
+
+
+HeuristicCalculator.java - FUNCION HEURISTICA
+----------------------------------------------
+Propósito: Calcular qué tan "atractivo" es asignar un pedido a un vuelo
+
+Método principal:
+  calcular(pedido, vuelo, fechaHoraActual, parametros)
+
+Factores considerados:
+
+1. FACTOR SLA (pesoSla = 0.4):
+   tiempoRestante = fechaLimite - fechaHoraActual
+   tiempoMaximo = SLA completo (48h o 72h)
+   factorSla = tiempoRestante / tiempoMaximo
+
+   Significado:
+   - 1.0 = mucho tiempo restante (bueno)
+   - 0.0 = SLA a punto de vencer (malo)
+   - < 0 = SLA ya vencido (muy malo, penalizado)
+
+2. FACTOR CAPACIDAD (pesoCapacidad = 0.3):
+   capacidadDisponible = capacidadTotal - ocupacionTotal
+   factorCapacidad = capacidadDisponible / capacidadTotal
+
+   Normalización:
+   - Si pedido.cantidad > capacidadDisponible: factor = 0 (no cabe)
+   - Sino: factor = proporción de espacio disponible (0-1)
+
+   Significado:
+   - 1.0 = vuelo vacío (bueno)
+   - 0.5 = vuelo medio lleno
+   - 0.0 = vuelo lleno (malo)
+
+3. FACTOR TIEMPO (pesoTiempo = 0.3):
+   diferenciaTiempo = abs(fechaSalidaVuelo - fechaHoraActual)
+   tiempoOptimo = 4 horas
+   factorTiempo = 1.0 - min(1.0, diferenciaTiempo / tiempoMaximo)
+
+   Significado:
+   - Prefiere vuelos que salen en ~4 horas
+   - No vuelos inmediatos (no hay tiempo de procesar)
+   - No vuelos muy lejanos (desperdicia tiempo)
+
+Fórmula final:
+  heuristica = (pesoSla * factorSla) +
+               (pesoCapacidad * factorCapacidad) +
+               (pesoTiempo * factorTiempo)
+
+Retorna: valor 0.0 - 1.0 (mayor = más atractivo)
+
+
+Ant.java - CLASE HORMIGA (UNA SOLUCION)
+----------------------------------------
+Representa: Una solución completa al problema de asignación
+
+Estructura:
+  - Map<T02Pedido, List<T04VueloProgramado>> solucion
+    Mapea cada pedido a la lista de vuelos que lo transportan
+
+  - double costoTotal
+    Calidad de la solución (menor = mejor)
+
+Métodos:
+
+  agregarAsignacion(pedido, vuelo):
+    - Agrega un vuelo a la ruta de un pedido
+    - Permite rutas multi-tramo
+
+  getSolucion():
+    - Retorna el mapa completo
+
+  calcularCosto():
+    - Evalúa qué tan buena es la solución
+    - Actualmente: cuenta número total de tramos (simplificado)
+    - TODO: debería considerar múltiples objetivos:
+      * Minimizar tramos
+      * Maximizar cumplimiento SLA
+      * Maximizar ocupación de vuelos
+      * Minimizar costos
+
+
+AcoPlannerImpl.java - IMPLEMENTACION DEL ALGORITMO
+---------------------------------------------------
+@Service
+Implementa: AcoPlanner interface
+
+Constructor:
+  @Autowired
+  - AcoParameters parameters
+  - PheromoneMatrix pheromoneMatrix
+  - HeuristicCalculator heuristicCalculator
+  - PedidoRepository pedidoRepository
+  - VueloProgramadoRepository vueloProgramadoRepository
+
+Método principal:
+  planificar(fechaInicio, fechaFin)
+
+ALGORITMO COMPLETO:
+
+1. INICIALIZACION:
+   ```
+   pedidos = pedidoRepository.findPedidosNoHubBetween(fechaInicio, fechaFin)
+   vuelos = vueloProgramadoRepository.findByFechaSalidaBetween(fechaInicio, fechaFin)
+   pheromoneMatrix.initialize(pedidos, vuelos, feromonaInicial)
+   mejorSolucionGlobal = null
+   ```
+
+2. ITERACIONES PRINCIPALES (100 veces):
+   ```
+   for iteracion = 1 to numeroIteraciones:
+
+       A. CONSTRUCCION DE SOLUCIONES (50 hormigas):
+          for hormiga = 1 to numeroHormigas:
+
+              solucion = new Ant()
+
+              for each pedido in pedidos:
+
+                  // Filtrar vuelos viables
+                  vuelosViables = vuelos que:
+                      - Salen de un hub (Lima, Bruselas, Bakú)
+                      - Tienen capacidad disponible >= pedido.cantidad
+                      - fechaSalida <= fechaLimite del pedido
+
+                  if vuelosViables.isEmpty():
+                      // No se puede planificar este pedido
+                      continue
+
+                  // Calcular probabilidades de selección
+                  for each vuelo in vuelosViables:
+                      feromona = pheromoneMatrix.get(pedido.id, vuelo.id)
+                      heuristica = heuristicCalculator.calcular(pedido, vuelo, ...)
+
+                      probabilidad[vuelo] = (feromona^alpha) * (heuristica^beta)
+
+                  // Normalizar probabilidades
+                  suma = sum(probabilidad[v] for v in vuelosViables)
+                  for each vuelo in vuelosViables:
+                      probabilidad[vuelo] /= suma
+
+                  // Seleccionar vuelo (explotar vs explorar)
+                  random = rand(0, 1)
+                  if random < q0:
+                      // EXPLOTACION: elegir el mejor
+                      vueloSeleccionado = vuelo con max(probabilidad)
+                  else:
+                      // EXPLORACION: elegir según distribución probabilística
+                      vueloSeleccionado = seleccionarRuleta(vuelosViables, probabilidades)
+
+                  // Agregar a la solución
+                  solucion.agregarAsignacion(pedido, vueloSeleccionado)
+
+              // Calcular costo de esta solución
+              solucion.calcularCosto()
+
+              // Actualizar mejor solución global
+              if solucion.costo < mejorSolucionGlobal.costo:
+                  mejorSolucionGlobal = solucion
+
+       B. ACTUALIZACION DE FEROMONAS:
+
+          // Evaporación
+          pheromoneMatrix.evaporate(rho)
+
+          // Refuerzo (depositar feromona en rutas usadas)
+          for each hormiga in hormigas:
+              deltaFeromona = 1.0 / hormiga.costoTotal
+
+              for each (pedido, vuelos) in hormiga.solucion:
+                  for each vuelo in vuelos:
+                      pheromoneMatrix.update(pedido.id, vuelo.id, deltaFeromona)
+
+          // Refuerzo adicional a la mejor solución
+          deltaExtra = 1.0 / mejorSolucionGlobal.costoTotal
+          for each (pedido, vuelos) in mejorSolucionGlobal.solucion:
+              for each vuelo in vuelos:
+                  pheromoneMatrix.update(pedido.id, vuelo.id, deltaExtra)
+   ```
+
+3. CONVERSION A ENTIDADES JPA:
+   ```
+   rutasPlaneadas = []
+
+   for each (pedido, vuelos) in mejorSolucionGlobal.solucion:
+
+       ruta = new T08RutaPlaneada()
+       ruta.setPedido(pedido)
+       ruta.setTipoSimulacion(tipoActual)
+       ruta.setFechaPlanificacion(now())
+
+       tramos = []
+       for i = 0 to vuelos.size()-1:
+           tramo = new T09TramoAsignado()
+           tramo.setVueloProgramado(vuelos[i])
+           tramo.setCantidadProductos(pedido.cantidad)
+           tramo.setOrdenEnRuta(i + 1)
+           tramo.setEsVueloFinal(i == vuelos.size()-1)
+           tramos.add(tramo)
+
+       ruta.setTramosAsignados(tramos)
+
+       // Calcular fecha de entrega estimada
+       ultimoVuelo = vuelos[vuelos.size()-1]
+       fechaEntrega = ultimoVuelo.fechaLlegada + 2 horas
+       ruta.setFechaEntregaEstimada(fechaEntrega)
+
+       // Verificar SLA
+       fechaLimite = CalculadorSLA.calcularFechaLimite(pedido)
+       ruta.setCumpleSla(fechaEntrega <= fechaLimite)
+
+       ruta.setEstado(PENDIENTE)
+
+       rutasPlaneadas.add(ruta)
+
+   return rutasPlaneadas
+   ```
+
+4. RETORNO:
+   - Retorna List<T08RutaPlaneada> con todas las rutas planificadas
+   - Estas se persisten en BD por el servicio que llama al planificador
+
+
+--------------------------------------------------------------------------------
+4.2. LIMITACIONES ACTUALES DEL ACO (según TODOs en código)
+--------------------------------------------------------------------------------
+
+1. BUSQUEDA DE RUTAS SIMPLIFICADA:
+   - Actualmente: solo busca vuelos directos desde un hub
+   - Debería: implementar búsqueda multi-hop con grafos (ej: Lima→Bruselas→Destino)
+   - Código actual en AcoPlannerImpl línea ~150:
+     ```java
+     // TODO: Implementar búsqueda real de rutas con grafos
+     List<T04VueloProgramado> vuelosViables = vuelos.stream()
+         .filter(v -> esHub(v.getOrigen()))
+         .collect(Collectors.toList());
+     ```
+
+2. CALCULO DE SLA ESTATICO:
+   - CalculadorSLA.java siempre retorna 3 días (72 horas)
+   - Debería: verificar si origen y destino están en mismo continente
+     * Mismo continente: 2 días
+     * Diferente continente: 3 días
+   - Código actual línea ~45:
+     ```java
+     // TODO: Obtener continentes reales desde BD
+     return 72.0; // Asume siempre 3 días
+     ```
+
+3. FUNCION DE COSTO BASICA:
+   - Ant.java solo cuenta número de tramos
+   - Debería considerar:
+     * Cumplimiento SLA (maximizar)
+     * Ocupación de vuelos (maximizar)
+     * Costos operativos (minimizar)
+     * Satisfacción del cliente (maximizar)
+
+4. VALIDACIONES INCOMPLETAS:
+   - No valida tiempo mínimo de estancia (1 hora) entre vuelos
+   - No valida que productos no se reasignen en destino final
+   - No libera capacidad cuando pedidos son entregados
+
+
+================================================================================
+5. SERVICIOS DE NEGOCIO
+================================================================================
+
+--------------------------------------------------------------------------------
+5.1. PlanificadorSemanalServiceImpl.java
+--------------------------------------------------------------------------------
+Propósito: Ejecutar simulación batch de una semana completa
+
+Método principal:
+  ejecutarSimulacion(request: SimulacionSemanalRequest): SimulacionSemanalResponse
+
+Flujo:
+
+1. CREAR REGISTRO DE SIMULACION:
+   ```java
+   resultado = new T10ResultadoSimulacion()
+   resultado.setTipoSimulacion(SEMANAL)
+   resultado.setFechaInicio(request.fechaHoraInicio)
+   resultado.setFechaFin(request.fechaHoraFin)
+   resultado.setFechaEjecucion(Instant.now())
+   resultado.setEstado(EN_PROGRESO)
+   resultadoRepository.save(resultado)
+   ```
+
+2. APLICAR CANCELACIONES (si hay):
+   ```java
+   gestorCancelaciones.aplicarCancelaciones(
+       fechaInicio,
+       fechaFin,
+       SEMANAL
+   )
+   ```
+
+3. EJECUTAR ALGORITMO ACO:
+   ```java
+   long inicioMs = System.currentTimeMillis()
+
+   List<T08RutaPlaneada> rutas = acoPlanner.planificar(
+       fechaInicio,
+       fechaFin,
+       SEMANAL
+   )
+
+   rutaPlaneadaRepository.saveAll(rutas)
+
+   long duracion = System.currentTimeMillis() - inicioMs
+   ```
+
+4. CALCULAR METRICAS:
+   ```java
+   totalPedidos = rutas.size()
+
+   entregados = count(rutas where estado == ENTREGADO)
+   enTransito = count(rutas where estado == PENDIENTE && cumpleSla == true)
+   rechazados = count(rutas where estado == RECHAZADO)
+
+   cumplimientoSla = (enTransito / totalPedidos) * 100
+
+   // Nota: en simulación batch, "en tránsito" = cumple SLA
+   ```
+
+5. GUARDAR METRICAS:
+   ```java
+   metricas = new T11MetricasSimulacion()
+   metricas.setResultadoSimulacion(resultado)
+   metricas.setTotalPedidos(totalPedidos)
+   metricas.setPedidosEntregados(entregados)
+   metricas.setPedidosEnTransito(enTransito)
+   metricas.setPedidosRechazados(rechazados)
+   metricas.setCumplimientoSla(cumplimientoSla)
+   // ... otros campos
+
+   metricasRepository.save(metricas)
+   ```
+
+6. ACTUALIZAR RESULTADO:
+   ```java
+   resultado.setEstado(COMPLETADO)
+   resultado.setDuracionMs(duracion)
+   resultado.setMensaje("Simulación completada exitosamente")
+   resultado.setMetricas(metricas)
+   resultadoRepository.save(resultado)
+   ```
+
+7. RETORNAR RESPONSE:
+   ```java
+   return SimulacionSemanalResponse.builder()
+       .idResultado(resultado.getId())
+       .metricas(metricasDTO)
+       .fechaEjecucion(resultado.getFechaEjecucion())
+       ...
+       .build()
+   ```
+
+
+--------------------------------------------------------------------------------
+5.2. PlanificadorDiaADiaServiceImpl.java
+--------------------------------------------------------------------------------
+Propósito: Operación continua en ventanas cortas (1-2 horas)
+
+Método principal:
+  planificar(request: PlanificacionDiaADiaRequest): PlanificacionDiaADiaResponse
+
+Diferencias con semanal:
+
+1. VENTANA DE TIEMPO:
+   - No usa fechaFin del request
+   - Calcula: fechaFin = fechaInicio + ventanaHoras
+   - Típicamente: ventanaHoras = 1 o 2
+
+2. PEDIDOS A PROCESAR:
+   - Solo pedidos nuevos en esa ventana
+   - Pedidos pendientes de ventanas anteriores
+
+3. BACKLOG:
+   - Mantiene estado de pedidos no planificados
+   - Query: findPedidosPendientes(fechaInicio, fechaFin)
+
+4. SIN PERSISTENCIA DE RESULTADO:
+   - No crea T10_RESULTADO_SIMULACION
+   - Solo persiste T08_RUTA_PLANEADA
+
+5. RESPONSE DIFERENTE:
+   - Incluye estadoPedidos: List<EstadoPedidoDTO>
+   - Muestra pedido por pedido con su ruta
+
+Flujo abreviado:
+```
+1. Calcular fechaFin = fechaInicio + ventanaHoras
+2. Obtener pedidos en ventana
+3. Ejecutar ACO para esos pedidos
+4. Guardar rutas planificadas
+5. Retornar estado de cada pedido
+```
+
+
+--------------------------------------------------------------------------------
+5.3. ValidadorReglas.java
+--------------------------------------------------------------------------------
+@Component
+
+Métodos de validación:
+
+esDestinoValido(pedido):
+  - Verifica que destino NO sea un hub
+  - Query: pedido.getAeropuertoDestino().getCiudad().getT05EsHub() == false
+
+tieneSuficienteCapacidad(vuelo, cantidad):
+  - Verifica: vuelo.getCapacidadDisponible() >= cantidad
+
+respetaTiempoEstancia(vueloLlegada, vueloSalida):
+  - Calcula: diferencia = vueloSalida.fechaSalida - vueloLlegada.fechaLlegada
+  - Verifica: diferencia >= 1 hora
+  - TODO: implementar completamente
+
+cantidadEnRango(cantidad):
+  - Verifica: 1 <= cantidad <= 999
+
+
+--------------------------------------------------------------------------------
+5.4. CalculadorSLA.java
+--------------------------------------------------------------------------------
+@Component
+
+Métodos:
+
+calcularSlaHoras(aeropuertoOrigen, aeropuertoDestino):
+  ```java
+  String continenteOrigen = obtenerContinente(aeropuertoOrigen)
+  String continenteDestino = obtenerContinente(aeropuertoDestino)
+
+  // TODO: actualmente siempre retorna 72.0
+  if (continenteOrigen.equals(continenteDestino)):
+      return 48.0  // 2 días
+  else:
+      return 72.0  // 3 días
+  ```
+
+calcularFechaLimite(pedido):
+  ```java
+  slaHoras = calcularSlaHoras(origen, destino)
+  tiempoProcesamiento = 2 horas
+
+  fechaLimite = pedido.fechaPedido + slaHoras + tiempoProcesamiento
+
+  return fechaLimite
+  ```
+
+cumpleSLA(pedido, fechaEntregaEstimada):
+  ```java
+  fechaLimite = calcularFechaLimite(pedido)
+  return fechaEntregaEstimada <= fechaLimite
+  ```
+
+calcularTiempoRestanteHoras(pedido, fechaActual):
+  ```java
+  fechaLimite = calcularFechaLimite(pedido)
+  diferencia = fechaLimite - fechaActual
+  return diferencia en horas
+  ```
+
+
+--------------------------------------------------------------------------------
+5.5. GestorCancelaciones.java
+--------------------------------------------------------------------------------
+@Component
+
+Métodos:
+
+aplicarCancelaciones(fechaInicio, fechaFin, tipoSimulacion):
+  - Obtiene cancelaciones: cancelacionRepository.findByRango(...)
+  - Para cada cancelación:
+    ```java
+    vuelo = cancelacion.getVueloProgramado()
+
+    // Solo cancelar si no ha despegado
+    if (cancelacion.fechaCancelacion < vuelo.fechaSalida):
+        vuelo.setEstado("CANCELADO")
+        vueloProgramadoRepository.save(vuelo)
+    ```
+
+estaCancelado(vuelo):
+  - Verifica: vuelo.getEstado().equals("CANCELADO")
+
+registrarCancelacion(vuelo, motivo, tipoSimulacion):
+  ```java
+  cancelacion = new T12CancelacionVuelo()
+  cancelacion.setVueloProgramado(vuelo)
+  cancelacion.setFechaCancelacion(Instant.now())
+  cancelacion.setMotivo(motivo)
+  cancelacion.setTipoSimulacion(tipoSimulacion)
+  cancelacionRepository.save(cancelacion)
+
+  vuelo.setEstado("CANCELADO")
+  vueloProgramadoRepository.save(vuelo)
+  ```
+
+
+================================================================================
+6. CONTROLADORES REST (API)
+================================================================================
+
+BASE URL: http://localhost:8080
+SWAGGER: http://localhost:8080/swagger
+
+--------------------------------------------------------------------------------
+6.1. PlanificacionSemanalController.java
+--------------------------------------------------------------------------------
+@RestController
+@RequestMapping("/api/simulacion-semanal")
+
+POST /api/simulacion-semanal/ejecutar
+Request Body:
+```json
+{
+  "fechaHoraInicio": "2024-01-01T00:00:00Z",
+  "fechaHoraFin": "2024-01-07T23:59:59Z",
+  "duracionBloqueHoras": null
+}
+```
+
+Response 200:
+```json
+{
+  "idResultado": 1,
+  "tipoSimulacion": "SEMANAL",
+  "fechaInicio": "2024-01-01T00:00:00Z",
+  "fechaFin": "2024-01-07T23:59:59Z",
+  "fechaEjecucion": "2025-01-12T10:30:00Z",
+  "duracionMs": 45230,
+  "estado": "COMPLETADO",
+  "mensaje": "Simulación completada exitosamente",
+  "metricas": {
+    "totalPedidos": 1500,
+    "pedidosEntregados": 0,
+    "pedidosEnTransito": 1450,
+    "pedidosRechazados": 50,
+    "cumplimientoSla": 96.67,
+    "ocupacionPromedio": null,
+    "vuelosUtilizados": 320,
+    "vuelosCancelados": 5
+  }
+}
+```
+
+GET /api/simulacion-semanal/resultado/{id}
+Response: SimulacionSemanalResponse
+
+
+--------------------------------------------------------------------------------
+6.2. PlanificacionDiaADiaController.java
+--------------------------------------------------------------------------------
+@RestController
+@RequestMapping("/api/dia-a-dia")
+
+POST /api/dia-a-dia/planificar
+Request Body:
+```json
+{
+  "fechaHoraInicio": "2024-01-01T10:00:00Z",
+  "ventanaHoras": 2
+}
+```
+
+Response 200:
+```json
+{
+  "pedidosPlanificados": 45,
+  "pedidosRechazados": 3,
+  "estadoPedidos": [
+    {
+      "idPedido": 1234,
+      "idCadena": "000000001-20240101-10-38-EBCI-006-0007729",
+      "estado": "PENDIENTE",
+      "cumpleSla": true,
+      "fechaEntregaEstimada": "2024-01-03T14:30:00Z",
+      "cantidadTramos": 2,
+      "tramos": [
+        {
+          "vueloId": 5678,
+          "origen": "SPJC",
+          "destino": "EBBR",
+          "fechaSalida": "2024-01-01T12:00:00Z",
+          "fechaLlegada": "2024-01-02T08:00:00Z"
+        },
+        {
+          "vueloId": 5679,
+          "origen": "EBBR",
+          "destino": "EBCI",
+          "fechaSalida": "2024-01-02T10:00:00Z",
+          "fechaLlegada": "2024-01-03T12:00:00Z"
+        }
+      ]
+    }
+  ],
+  "mensaje": "Planificación completada: 45 pedidos planificados, 3 rechazados"
+}
+```
+
+GET /api/dia-a-dia/estado
+Response: Estado actual del backlog
+
+
+================================================================================
+7. REGLAS DE NEGOCIO COMPLETAS
+================================================================================
+
+1. TERMINOLOGIA OBLIGATORIA:
+   ✓ Usar: "pedido" / "envío"
+   ✗ No usar: "paquete"
+   ✓ Usar: "entregado" / "recibido"
+   ✗ No usar: "llegado", "depositado"
+
+2. ESTRUCTURA DE PEDIDOS:
+   - Cantidad: 1 a 999 productos por pedido
+   - Destino único (no se divide el pedido)
+   - ID formato: id_pedido-aaaammdd-hh-mm-dest-###-IdClien
+     Ejemplo: 000000001-20240101-10-38-EBCI-006-0007729
+
+3. DESTINOS VALIDOS:
+   - NO se pueden enviar pedidos a almacenes hub
+   - Hubs: Lima (SPJC), Bruselas (EBBR), Bakú (UBBB)
+   - Query especial en PedidoRepository filtra esto:
+     findPedidosNoHubBetween() WHERE t05_es_hub = 0
+
+4. SLA (SERVICE LEVEL AGREEMENT):
+   - Mismo continente: 2 días (48 horas)
+   - Diferente continente: 3 días (72 horas)
+   - Tiempo adicional de procesamiento en destino: +2 horas
+   - Fórmula: SLA_total = SLA_base + 2 horas
+
+   Cálculo:
+   ```
+   fechaLimite = fechaPedido + SLA_horas + 2_horas_procesamiento
+   cumpleSLA = fechaEntregaEstimada <= fechaLimite
+   ```
+
+5. PUNTOS DE REASIGNACION:
+   - Permitido: Reasignar productos en almacenes hub intermedios
+   - NO permitido: Reasignar en destino final
+   - Ejemplo válido: Lima → Bruselas (reasignar) → Destino
+   - Ejemplo inválido: Lima → Destino (reasignar en destino)
+
+6. CANCELACIONES DE VUELOS:
+   - Solo en tierra (antes del despegue)
+   - Regla: fechaCancelacion < vuelo.fechaSalida
+   - Validación en GestorCancelaciones.aplicarCancelaciones()
+   - Estado del vuelo cambia a "CANCELADO"
+
+7. TIEMPOS DE ESTANCIA:
+   - Mínimo 1 hora entre llegada de un vuelo y salida del siguiente
+   - Validación: ValidadorReglas.respetaTiempoEstancia()
+   - Fórmula: vueloSalida.fechaSalida - vueloLlegada.fechaLlegada >= 1h
+
+8. CAPACIDAD DE VUELOS:
+   - Capacidad disponible = capacidadTotal - ocupacionTotal
+   - No se puede asignar si: pedido.cantidad > capacidadDisponible
+   - Estado del vuelo: NORMAL, SOBRECARGA
+   - SOBRECARGA si ocupacionTotal > capacidadTotal
+
+9. LIBERACION DE CAPACIDAD:
+   - Cuando pedido es entregado, debería liberar espacio
+   - TODO: actualmente no implementado
+   - Importante para simulaciones dinámicas
+
+10. ORIGENES DE ENVIO:
+    - Todos los envíos deben salir de un almacén hub
+    - Lima (SPJC), Bruselas (EBBR), Bakú (UBBB)
+    - Primer vuelo de una ruta siempre desde hub
+
+
+================================================================================
+8. CONFIGURACION DEL SISTEMA
+================================================================================
+
+application.properties
+-----------------------
+```properties
+# Información de la aplicación
+spring.application.name=nuevo-mora-back
+
+# Configuración de base de datos
+spring.datasource.url=jdbc:mysql://localhost:3306/moraprueba
+spring.datasource.username=root
+spring.datasource.password=J0s3ph234!
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# Configuración JPA/Hibernate
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.open-in-view=false
+
+# CORS - Permitir frontend en puerto 5173
+spring.web.cors.allowed-origins=http://localhost:5173
+spring.web.cors.allowed-methods=GET,POST,PUT,DELETE,OPTIONS
+spring.web.cors.allowed-headers=*
+
+# Configuración Swagger/OpenAPI
+springdoc.api-docs.path=/api-docs
+springdoc.swagger-ui.path=/swagger
+springdoc.swagger-ui.operationsSorter=method
+
+# Puerto del servidor
+server.port=8080
+
+# Parámetros ACO (opcionales, por defecto en AcoParameters.java)
+# aco.alpha=1.0
+# aco.beta=2.0
+# aco.rho=0.5
+# aco.q0=0.9
+# aco.numero-hormigas=50
+# aco.numero-iteraciones=100
+```
+
+OpenApiConfig.java
+------------------
+```java
+@Configuration
+public class OpenApiConfig {
+
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+            .info(new Info()
+                .title("MoraPack API")
+                .version("1.0")
+                .description("API para planificación logística con ACO")
+            );
+    }
+}
+```
+
+compose.yaml (Docker Compose)
+------------------------------
+```yaml
+services:
+  mysql:
+    image: 'mysql:latest'
+    environment:
+      - 'MYSQL_DATABASE=moraprueba'
+      - 'MYSQL_PASSWORD=secret'
+      - 'MYSQL_ROOT_PASSWORD=verysecret'
+      - 'MYSQL_USER=myuser'
+    ports:
+      - '3306:3306'
+```
+
+Nota: Actualmente deshabilitado, se usa MySQL local
+
+
+pom.xml - Dependencias
+----------------------
+```xml
+<dependencies>
+    <!-- Spring Boot Starters -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+
+    <!-- MySQL Driver -->
+    <dependency>
+        <groupId>com.mysql</groupId>
+        <artifactId>mysql-connector-j</artifactId>
+        <scope>runtime</scope>
+    </dependency>
+
+    <!-- Lombok -->
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <optional>true</optional>
+    </dependency>
+
+    <!-- SpringDoc OpenAPI (Swagger) -->
+    <dependency>
+        <groupId>org.springdoc</groupId>
+        <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        <version>2.6.0</version>
+    </dependency>
+
+    <!-- DevTools -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-devtools</artifactId>
+        <scope>runtime</scope>
+        <optional>true</optional>
+    </dependency>
+
+    <!-- Docker Compose Support -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-docker-compose</artifactId>
+        <scope>runtime</scope>
+        <optional>true</optional>
+    </dependency>
+
+    <!-- Testing -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
+
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+    </plugins>
+</build>
+```
+
+
+================================================================================
+9. FLUJOS DE TRABAJO COMPLETOS
+================================================================================
+
+--------------------------------------------------------------------------------
+9.1. FLUJO: SIMULACION SEMANAL
+--------------------------------------------------------------------------------
+
+INICIO: Usuario llama POST /api/simulacion-semanal/ejecutar
+
+1. PlanificacionSemanalController recibe request:
+   - fechaHoraInicio: 2024-01-01T00:00:00Z
+   - fechaHoraFin: 2024-01-07T23:59:59Z
+
+2. Controller llama planificadorSemanalService.ejecutarSimulacion(request)
+
+3. PlanificadorSemanalServiceImpl:
+
+   A. Crea T10_RESULTADO_SIMULACION:
+      - tipoSimulacion = SEMANAL
+      - estado = EN_PROGRESO
+      - Persiste en BD
+
+   B. Aplica cancelaciones:
+      - GestorCancelaciones marca vuelos como CANCELADO
+
+   C. Ejecuta algoritmo ACO:
+      - Llama acoPlanner.planificar(fechaInicio, fechaFin, SEMANAL)
+
+   D. AcoPlannerImpl (algoritmo):
+
+      i. Carga datos:
+         - pedidos = findPedidosNoHubBetween(fechaInicio, fechaFin)
+         - vuelos = findByFechaSalidaBetween(fechaInicio, fechaFin)
+
+      ii. Inicializa matriz de feromonas
+
+      iii. Ejecuta 100 iteraciones:
+           - Cada iteración: 50 hormigas construyen soluciones
+           - Cada hormiga:
+             * Para cada pedido, selecciona vuelos probabilísticamente
+             * Considera feromona y heurística
+             * Construye ruta completa
+           - Actualiza feromonas (evaporación + refuerzo)
+           - Guarda mejor solución
+
+      iv. Convierte mejor solución a entidades JPA:
+          - List<T08RutaPlaneada> con sus T09TramoAsignado
+          - Calcula cumplimiento SLA
+          - Retorna lista
+
+   E. Persiste rutas:
+      - rutaPlaneadaRepository.saveAll(rutas)
+      - Gracias a cascade, también guarda T09TramoAsignado
+
+   F. Calcula métricas:
+      - Cuenta pedidos por estado
+      - Calcula porcentaje de cumplimiento SLA
+      - Cuenta vuelos utilizados
+
+   G. Crea T11_METRICAS_SIMULACION:
+      - Asociada al resultado
+      - Persiste en BD
+
+   H. Actualiza T10_RESULTADO_SIMULACION:
+      - estado = COMPLETADO
+      - duracionMs = tiempo de ejecución
+      - metricas = objeto T11
+      - Persiste
+
+   I. Construye SimulacionSemanalResponse
+
+   J. Retorna al controller
+
+4. Controller retorna Response 200 al cliente
+
+FIN
+
+
+--------------------------------------------------------------------------------
+9.2. FLUJO: PLANIFICACION DIA A DIA
+--------------------------------------------------------------------------------
+
+INICIO: Usuario llama POST /api/dia-a-dia/planificar
+
+1. PlanificacionDiaADiaController recibe request:
+   - fechaHoraInicio: 2024-01-01T10:00:00Z
+   - ventanaHoras: 2
+
+2. Controller llama planificadorDiaADiaService.planificar(request)
+
+3. PlanificadorDiaADiaServiceImpl:
+
+   A. Calcula ventana:
+      - fechaFin = fechaInicio + 2 horas = 2024-01-01T12:00:00Z
+
+   B. Carga pedidos:
+      - Pedidos nuevos en la ventana
+      - Pedidos pendientes de ventanas anteriores
+
+   C. Ejecuta ACO (similar a semanal):
+      - acoPlanner.planificar(fechaInicio, fechaFin, DIA_A_DIA)
+
+   D. Persiste rutas:
+      - rutaPlaneadaRepository.saveAll(rutas)
+
+   E. Construye response detallado:
+      - Para cada pedido, extrae:
+        * Estado (PENDIENTE, RECHAZADO)
+        * Cumplimiento SLA
+        * Fecha entrega estimada
+        * Lista de tramos con detalles de cada vuelo
+
+   F. Retorna PlanificacionDiaADiaResponse
+
+4. Controller retorna Response 200
+
+FIN
+
+
+--------------------------------------------------------------------------------
+9.3. FLUJO: CONSULTA DE ESTADO (GET /api/dia-a-dia/estado)
+--------------------------------------------------------------------------------
+
+INICIO: Usuario consulta estado del backlog
+
+1. Controller llama planificadorDiaADiaService.obtenerEstado()
+
+2. Service:
+   - Query: findPedidosPendientes()
+   - Filtra: estado = PENDIENTE
+   - Construye EstadoBacklogDTO:
+     * totalPendientes
+     * pendientesPorDestino (agrupados)
+     * pedidosConRiesgoSla (fechaLimite próxima)
+
+3. Retorna al cliente
+
+FIN
+
+
+--------------------------------------------------------------------------------
+9.4. FLUJO INTERNO: ALGORITMO ACO (DETALLE)
+--------------------------------------------------------------------------------
+
+ENTRADA:
+- fechaInicio, fechaFin, tipoSimulacion
+
+SALIDA:
+- List<T08RutaPlaneada>
+
+PASOS:
+
+1. PREPARACION:
+   ```
+   pedidos = SELECT * FROM T02_PEDIDO
+             WHERE fecha BETWEEN inicio AND fin
+             AND destino NOT IN (hubs)
+
+   vuelos = SELECT * FROM T04_VUELO_PROGRAMADO
+            WHERE fechaSalida BETWEEN inicio AND fin
+            AND estado = 'PROGRAMADO'
+
+   pheromoneMatrix.initialize(pedidos, vuelos, 0.1)
+
+   mejorSolucion = null
+   mejorCosto = infinity
+   ```
+
+2. ITERACION PRINCIPAL (i = 1 to 100):
+
+   soluciones = []
+
+   2.1. CONSTRUCCION (h = 1 to 50 hormigas):
+
+       hormiga = new Ant()
+
+       FOR EACH pedido IN pedidos:
+
+           // Filtrar vuelos candidatos
+           candidatos = []
+           FOR EACH vuelo IN vuelos:
+               if vuelo.origen ES hub
+                  AND vuelo.capacidadDisponible >= pedido.cantidad
+                  AND vuelo.fechaSalida <= pedido.fechaLimite:
+                   candidatos.add(vuelo)
+
+           if candidatos.isEmpty():
+               // Rechazar pedido
+               continue
+
+           // Calcular probabilidades
+           probabilidades = []
+           FOR EACH vuelo IN candidatos:
+               tau = pheromoneMatrix.get(pedido, vuelo)
+               eta = heuristicCalculator.calcular(pedido, vuelo, fechaActual)
+
+               prob = (tau ^ alpha) * (eta ^ beta)
+               probabilidades[vuelo] = prob
+
+           // Normalizar
+           suma = sum(probabilidades)
+           FOR EACH vuelo:
+               probabilidades[vuelo] /= suma
+
+           // Seleccionar (explotar vs explorar)
+           rand = random(0, 1)
+           if rand < q0:
+               // Explotación
+               vueloElegido = argmax(probabilidades)
+           else:
+               // Exploración (ruleta)
+               vueloElegido = seleccionRuleta(candidatos, probabilidades)
+
+           // Agregar a solución
+           hormiga.agregarAsignacion(pedido, vueloElegido)
+
+       // Evaluar solución
+       costo = hormiga.calcularCosto()
+       soluciones.add(hormiga)
+
+       // Actualizar mejor global
+       if costo < mejorCosto:
+           mejorSolucion = hormiga
+           mejorCosto = costo
+
+   2.2. ACTUALIZACION DE FEROMONAS:
+
+       // Evaporación
+       FOR EACH (pedido, vuelo) IN matrix:
+           tau_actual = matrix.get(pedido, vuelo)
+           tau_nuevo = tau_actual * (1 - rho)
+           matrix.set(pedido, vuelo, tau_nuevo)
+
+       // Depositar feromona (todas las hormigas)
+       FOR EACH hormiga IN soluciones:
+           delta = 1.0 / hormiga.costo
+
+           FOR EACH (pedido, vuelos) IN hormiga.solucion:
+               FOR EACH vuelo:
+                   tau_actual = matrix.get(pedido, vuelo)
+                   matrix.set(pedido, vuelo, tau_actual + delta)
+
+       // Refuerzo adicional a la mejor
+       deltaExtra = 1.0 / mejorCosto
+       FOR EACH (pedido, vuelos) IN mejorSolucion:
+           FOR EACH vuelo:
+               tau_actual = matrix.get(pedido, vuelo)
+               matrix.set(pedido, vuelo, tau_actual + deltaExtra)
+
+3. CONVERSION A ENTIDADES:
+
+   rutasPlaneadas = []
+
+   FOR EACH (pedido, vuelos) IN mejorSolucion:
+
+       ruta = new T08RutaPlaneada()
+       ruta.pedido = pedido
+       ruta.tipoSimulacion = tipoSimulacion
+       ruta.fechaPlanificacion = now()
+
+       tramos = []
+       FOR i = 0 TO vuelos.size()-1:
+           tramo = new T09TramoAsignado()
+           tramo.vueloProgramado = vuelos[i]
+           tramo.cantidadProductos = pedido.cantidad
+           tramo.ordenEnRuta = i + 1
+           tramo.esVueloFinal = (i == vuelos.size()-1)
+           tramos.add(tramo)
+
+       ruta.tramosAsignados = tramos
+
+       // Calcular SLA
+       ultimoVuelo = vuelos[vuelos.size()-1]
+       fechaEntrega = ultimoVuelo.fechaLlegada + 2 horas
+       fechaLimite = calculadorSLA.calcularFechaLimite(pedido)
+
+       ruta.fechaEntregaEstimada = fechaEntrega
+       ruta.cumpleSla = (fechaEntrega <= fechaLimite)
+       ruta.estado = PENDIENTE
+
+       rutasPlaneadas.add(ruta)
+
+   RETURN rutasPlaneadas
+
+FIN
+
+
+================================================================================
+10. QUERIES IMPORTANTES EN REPOSITORIOS
+================================================================================
+
+PedidoRepository
+----------------
+@Query("SELECT p FROM T02Pedido p WHERE " +
+       "p.t02FechaPedido BETWEEN :inicio AND :fin " +
+       "AND p.t02IdAeropDestino.t01IdCiudad.t05EsHub = false")
+List<T02Pedido> findPedidosNoHubBetween(
+    @Param("inicio") Instant inicio,
+    @Param("fin") Instant fin
+);
+
+Propósito: Obtener pedidos que NO van a hubs en un rango de fechas
+
+VueloProgramadoRepository
+--------------------------
+@Query("SELECT v FROM T04VueloProgramado v WHERE " +
+       "v.t04FechaSalida BETWEEN :inicio AND :fin " +
+       "AND v.t04Estado = 'PROGRAMADO'")
+List<T04VueloProgramado> findVuelosProgramadosBetween(
+    @Param("inicio") Instant inicio,
+    @Param("fin") Instant fin
+);
+
+Propósito: Vuelos disponibles (no cancelados) en un rango
+
+RutaPlaneadaRepository
+----------------------
+Optional<T08RutaPlaneada> findByPedidoAndTipoSimulacion(
+    T02Pedido pedido,
+    TipoSimulacion tipo
+);
+
+List<T08RutaPlaneada> findByTipoSimulacion(TipoSimulacion tipo);
+
+List<T08RutaPlaneada> findByEstado(EstadoRuta estado);
+
+CancelacionVueloRepository
+---------------------------
+@Query("SELECT c FROM T12CancelacionVuelo c WHERE " +
+       "c.t12FechaCancelacion BETWEEN :inicio AND :fin " +
+       "AND c.t12TipoSimulacion = :tipo")
+List<T12CancelacionVuelo> findByRangoYTipo(
+    @Param("inicio") Instant inicio,
+    @Param("fin") Instant fin,
+    @Param("tipo") TipoSimulacion tipo
+);
+
+
+================================================================================
+11. ENUMERACIONES Y CONSTANTES
+================================================================================
+
+TipoSimulacion (ENUM)
+---------------------
+- SEMANAL
+- DIA_A_DIA
+- COLAPSO
+
+Ubicación: com.morapack.nuevomoraback.planificacion.domain.TipoSimulacion
+
+
+EstadoRuta (ENUM)
+-----------------
+- PENDIENTE    : Planificado pero no ejecutado
+- EN_TRANSITO  : En proceso de envío
+- ENTREGADO    : Completado exitosamente
+- RECHAZADO    : No se pudo planificar
+
+Ubicación: com.morapack.nuevomoraback.planificacion.domain.EstadoRuta
+
+
+EstadoSimulacion (ENUM)
+------------------------
+- EN_PROGRESO  : Simulación ejecutándose
+- COMPLETADO   : Simulación finalizada con éxito
+- ERROR        : Simulación terminó con error
+
+Ubicación: com.morapack.nuevomoraback.planificacion.domain.EstadoSimulacion
+
+
+CONSTANTES DE NEGOCIO
+---------------------
+HUBS:
+  - Lima: SPJC
+  - Bruselas: EBBR
+  - Bakú: UBBB
+
+SLA:
+  - MISMO_CONTINENTE_HORAS = 48
+  - DIFERENTE_CONTINENTE_HORAS = 72
+  - TIEMPO_PROCESAMIENTO_HORAS = 2
+
+CAPACIDAD:
+  - MIN_CANTIDAD_PEDIDO = 1
+  - MAX_CANTIDAD_PEDIDO = 999
+
+ESTANCIA:
+  - MIN_TIEMPO_ESTANCIA_HORAS = 1
+
+ACO (valores por defecto):
+  - ALPHA = 1.0
+  - BETA = 2.0
+  - RHO = 0.5
+  - Q0 = 0.9
+  - NUM_HORMIGAS = 50
+  - NUM_ITERACIONES = 100
+
+
+================================================================================
+12. PUNTOS CRITICOS DEL CODIGO
+================================================================================
+
+ARCHIVO: AcoPlannerImpl.java
+LINEA: ~150
+PROBLEMA: Búsqueda de rutas simplificada
+CODIGO:
+```java
+// TODO: Implementar búsqueda real de rutas multi-hop con algoritmo de grafos
+List<T04VueloProgramado> vuelosViables = vuelos.stream()
+    .filter(v -> esHub(v.getOrigen()))
+    .filter(v -> v.getCapacidadDisponible() >= pedido.getCantidad())
+    .collect(Collectors.toList());
+```
+MEJORA NECESARIA:
+- Implementar Dijkstra o A* para encontrar rutas multi-tramo óptimas
+- Considerar conexiones: Hub → Hub → Destino
+- Validar tiempos de estancia entre vuelos
+
+---
+
+ARCHIVO: CalculadorSLA.java
+LINEA: ~45
+PROBLEMA: SLA estático
+CODIGO:
+```java
+public double calcularSlaHoras(T01Aeropuerto origen, T01Aeropuerto destino) {
+    // TODO: Obtener continentes reales desde BD
+    // String continenteOrigen = origen.getCiudad().getContinente();
+    // String continenteDestino = destino.getCiudad().getContinente();
+
+    return 72.0; // Siempre asume 3 días
+}
+```
+MEJORA NECESARIA:
+- Obtener continentes de T05_CIUDAD
+- Comparar: if (continenteOrigen.equals(continenteDestino)) return 48.0
+- Caso contrario: return 72.0
+
+---
+
+ARCHIVO: Ant.java
+LINEA: ~80
+PROBLEMA: Función de costo simplificada
+CODIGO:
+```java
+public double calcularCosto() {
+    // Simplemente cuenta el número total de tramos
+    return solucion.values().stream()
+        .mapToInt(List::size)
+        .sum();
+}
+```
+MEJORA NECESARIA:
+```java
+public double calcularCosto() {
+    double costo = 0.0;
+
+    // Factor 1: Minimizar tramos
+    int totalTramos = solucion.values().stream()
+        .mapToInt(List::size).sum();
+    costo += totalTramos * PESO_TRAMOS;
+
+    // Factor 2: Penalizar incumplimiento SLA
+    long incumplimientos = solucion.keySet().stream()
+        .filter(p -> !cumpleSLA(p)).count();
+    costo += incumplimientos * PENALIZACION_SLA;
+
+    // Factor 3: Recompensar alta ocupación
+    double ocupacionPromedio = calcularOcupacionPromedio();
+    costo -= ocupacionPromedio * RECOMPENSA_OCUPACION;
+
+    return costo;
+}
+```
+
+---
+
+ARCHIVO: ValidadorReglas.java
+LINEA: ~65
+PROBLEMA: Validación incompleta
+CODIGO:
+```java
+public boolean respetaTiempoEstancia(T04VueloProgramado llegada,
+                                     T04VueloProgramado salida) {
+    // TODO: Implementar validación completa
+    return true; // Placeholder
+}
+```
+MEJORA NECESARIA:
+```java
+public boolean respetaTiempoEstancia(T04VueloProgramado llegada,
+                                     T04VueloProgramado salida) {
+    Instant horaLlegada = llegada.getT04FechaLlegada();
+    Instant horaSalida = salida.getT04FechaSalida();
+
+    long diferenciaHoras = ChronoUnit.HOURS.between(horaLlegada, horaSalida);
+
+    return diferenciaHoras >= MIN_TIEMPO_ESTANCIA_HORAS;
+}
+```
+
+
+================================================================================
+13. COMANDOS UTILES
+================================================================================
+
+COMPILAR EL PROYECTO:
+---------------------
+Windows:
+  mvnw.cmd clean compile
+
+Linux/Mac:
+  ./mvnw clean compile
+
+
+EJECUTAR EL PROYECTO:
+---------------------
+Windows:
+  mvnw.cmd spring-boot:run
+
+Linux/Mac:
+  ./mvnw spring-boot:run
+
+
+EJECUTAR TESTS:
+---------------
+Windows:
+  mvnw.cmd test
+
+Linux/Mac:
+  ./mvnw test
+
+
+CREAR JAR:
+----------
+Windows:
+  mvnw.cmd clean package
+
+Linux/Mac:
+  ./mvnw clean package
+
+Output: target/nuevo-mora-back-0.0.1-SNAPSHOT.jar
+
+
+EJECUTAR JAR:
+-------------
+java -jar target/nuevo-mora-back-0.0.1-SNAPSHOT.jar
+
+
+LIMPIAR BUILD:
+--------------
+Windows:
+  mvnw.cmd clean
+
+Linux/Mac:
+  ./mvnw clean
+
+
+ACCEDER A SWAGGER:
+------------------
+1. Iniciar aplicación
+2. Navegar a: http://localhost:8080/swagger
+3. Probar endpoints interactivamente
+
+
+CONECTAR A MYSQL:
+-----------------
+mysql -u root -p
+USE moraprueba;
+SHOW TABLES;
+SELECT * FROM T02_PEDIDO LIMIT 10;
+
+
+REVISAR LOGS:
+-------------
+Los logs aparecen en consola con spring.jpa.show-sql=true
+Para ver queries SQL formateadas: spring.jpa.properties.hibernate.format_sql=true
+
+
+================================================================================
+14. PREGUNTAS FRECUENTES Y TROUBLESHOOTING
+================================================================================
+
+P: ¿Por qué los pedidos a hubs no se planifican?
+R: Por regla de negocio. Los hubs (Lima, Bruselas, Bakú) son almacenes de
+   origen, no destinos finales. El query findPedidosNoHubBetween() filtra
+   WHERE t05_es_hub = false.
+
+P: ¿Cómo se determina si un pedido cumple SLA?
+R: Se compara fechaEntregaEstimada con fechaLimite. La fechaLimite se calcula
+   como: fechaPedido + SLA_horas + 2_horas_procesamiento. Actualmente SLA
+   siempre es 72 horas (3 días), pero debería ser 48h o 72h según continente.
+
+P: ¿Qué significa "en tránsito" en las métricas?
+R: En el contexto de simulación semanal (batch), "en tránsito" significa que
+   el pedido fue planificado Y cumple con el SLA. Es una forma de decir
+   "entregado a tiempo" en la simulación.
+
+P: ¿Cómo funciona el modo día a día vs semanal?
+R:
+   - SEMANAL: Planifica todos los pedidos de una semana de golpe (batch)
+   - DIA_A_DIA: Planifica en ventanas cortas (1-2h), simula operación continua
+
+P: ¿Por qué el ACO es lento?
+R: Con parámetros por defecto (50 hormigas × 100 iteraciones = 5000
+   soluciones construidas), puede tomar varios segundos o minutos. Para
+   datasets grandes, considerar reducir numeroHormigas o numeroIteraciones.
+
+P: ¿Se pueden cambiar los parámetros del ACO?
+R: Sí, en application.properties:
+   aco.alpha=1.5
+   aco.beta=2.5
+   aco.numero-hormigas=30
+   aco.numero-iteraciones=50
+
+P: ¿Qué pasa si un vuelo no tiene capacidad?
+R: El ACO lo filtra automáticamente en la lista de candidatos. Si ningún
+   vuelo tiene capacidad, el pedido queda RECHAZADO.
+
+P: ¿Cómo se manejan las cancelaciones?
+R: Se registran en T12_CANCELACION_VUELO y el estado del vuelo cambia a
+   "CANCELADO". El ACO automáticamente excluye vuelos cancelados porque
+   query filtra por estado = 'PROGRAMADO'.
+
+P: ¿Se pueden tener múltiples rutas para el mismo pedido?
+R: Sí, técnicamente. Puede haber una ruta de tipo SEMANAL y otra DIA_A_DIA
+   para el mismo pedido. Pero en una simulación dada, debería ser única.
+
+P: ¿Qué es la ocupación promedio en métricas?
+R: Es el porcentaje promedio de capacidad utilizada en los vuelos. Se calcula
+   como: sum(ocupacionTotal / capacidadTotal) / numeroVuelos. Actualmente
+   puede aparecer como null si no se implementó el cálculo.
+
+
+================================================================================
+15. MEJORAS FUTURAS IDENTIFICADAS
+================================================================================
+
+PRIORIDAD ALTA:
+---------------
+1. Implementar cálculo real de continentes para SLA correcto
+2. Implementar búsqueda de rutas multi-hop con algoritmo de grafos
+3. Agregar tests unitarios (mínimo 80% cobertura)
+4. Validar tiempo de estancia entre vuelos (1 hora mínimo)
+
+PRIORIDAD MEDIA:
+----------------
+5. Mejorar función de costo del ACO (multi-objetivo)
+6. Implementar liberación de capacidad post-entrega
+7. Agregar validación de no reasignación en destino final
+8. Implementar modo COLAPSO completamente
+9. Agregar logs estructurados (SLF4J con Logback)
+10. Optimizar queries con índices en BD
+
+PRIORIDAD BAJA:
+---------------
+11. Agregar caché para rutas frecuentes
+12. Implementar API de monitoreo en tiempo real (WebSocket)
+13. Agregar métricas de Prometheus/Grafana
+14. Implementar variantes del ACO (MAX-MIN Ant System)
+15. Agregar predicción de demanda con Machine Learning
+
+
+================================================================================
+16. GLOSARIO DE TERMINOS
+================================================================================
+
+ACO (Ant Colony Optimization):
+  Algoritmo metaheurístico inspirado en hormigas que busca soluciones óptimas
+  mediante exploración probabilística y refuerzo con feromonas.
+
+Feromona:
+  Valor numérico que indica qué tan "buena" es una asignación (pedido→vuelo).
+  Se acumula en rutas exitosas y se evapora con el tiempo.
+
+Heurística:
+  Función que estima qué tan prometedora es una opción basándose en información
+  local (capacidad, SLA, tiempo). No garantiza optimalidad.
+
+Hub:
+  Almacén central (Lima, Bruselas, Bakú) desde donde salen los envíos.
+
+Tramo:
+  Segmento individual de una ruta (un vuelo específico).
+
+Ruta Multi-tramo:
+  Ruta que requiere múltiples vuelos con escalas (ej: Lima→Bruselas→Destino).
+
+SLA (Service Level Agreement):
+  Acuerdo de nivel de servicio. Tiempo máximo permitido para entregar un pedido.
+
+Simulación Batch:
+  Planificación de todos los pedidos de un periodo de golpe (modo semanal).
+
+Simulación Rolling:
+  Planificación continua en ventanas cortas (modo día a día).
+
+Evaporación:
+  Reducción gradual de feromonas para olvidar información antigua.
+
+Exploración:
+  Probar opciones nuevas no usadas antes (diversificación).
+
+Explotación:
+  Usar las mejores opciones conocidas (intensificación).
+
+Ocupación:
+  Porcentaje de capacidad utilizada en un vuelo.
+
+Backlog:
+  Lista de pedidos pendientes de planificar.
+
+
+================================================================================
+17. ESQUEMA VISUAL DE FLUJO DE DATOS
+================================================================================
+
+FLUJO COMPLETO DE PLANIFICACION:
+
+[Cliente HTTP]
+     |
+     | POST /api/simulacion-semanal/ejecutar
+     v
+[PlanificacionSemanalController]
+     |
+     v
+[PlanificadorSemanalServiceImpl]
+     |
+     +---> [T10ResultadoSimulacion] (crea registro EN_PROGRESO)
+     |
+     +---> [GestorCancelaciones] (marca vuelos cancelados)
+     |
+     +---> [AcoPlannerImpl] <<< CORE DEL ALGORITMO >>>
+     |         |
+     |         +---> [PedidoRepository] (carga pedidos no-hub)
+     |         |
+     |         +---> [VueloProgramadoRepository] (carga vuelos disponibles)
+     |         |
+     |         +---> [PheromoneMatrix] (inicializa feromonas)
+     |         |
+     |         +---> Loop 100 iteraciones:
+     |         |        |
+     |         |        +---> Loop 50 hormigas:
+     |         |        |        |
+     |         |        |        +---> Para cada pedido:
+     |         |        |               |
+     |         |        |               +---> [HeuristicCalculator]
+     |         |        |               |     (calcula atractivo de vuelos)
+     |         |        |               |
+     |         |        |               +---> Selección probabilística
+     |         |        |               |
+     |         |        |               +---> Construye solución
+     |         |        |
+     |         |        +---> Actualiza feromonas (evaporación + refuerzo)
+     |         |
+     |         +---> Convierte mejor solución a T08/T09
+     |         |
+     |         +---> [CalculadorSLA] (verifica cumplimiento)
+     |         |
+     |         +---> Retorna List<T08RutaPlaneada>
+     |
+     +---> [T08RutaPlaneadaRepository] (persiste rutas)
+     |
+     +---> Calcula métricas (cuenta estados, SLA, etc.)
+     |
+     +---> [T11MetricasSimulacion] (persiste métricas)
+     |
+     +---> [T10ResultadoSimulacion] (actualiza a COMPLETADO)
+     |
+     +---> Construye SimulacionSemanalResponse
+     |
+     v
+[PlanificacionSemanalController]
+     |
+     | Response 200 JSON
+     v
+[Cliente HTTP]
+
+
+RELACIONES EN BASE DE DATOS:
+
+T05_CIUDAD (1) ----< (N) T01_AEROPUERTO
+                              |
+                              +--(origen)---\
+                              |             |
+                              +--(destino)--+---> (N) T04_VUELO_PROGRAMADO
+                                            |              |
+T06_AVION (1) ------------------------------+              |
+                                                           |
+T03_CLIENTE (1) ----< (N) T02_PEDIDO                      |
+                              |                            |
+                              |                            |
+                              +--(pedido)---> (1) T08_RUTA_PLANEADA
+                                                    |
+                                                    +-< (N) T09_TRAMO_ASIGNADO
+                                                              |
+                                                              +--(vuelo)---^
+
+T10_RESULTADO_SIMULACION (1) ---(1) T11_METRICAS_SIMULACION
+
+T04_VUELO_PROGRAMADO (1) ----< (N) T12_CANCELACION_VUELO
+
+
+================================================================================
+18. RESUMEN EJECUTIVO FINAL
+================================================================================
+
+PROYECTO: MoraPack Backend
+VERSION: 1.0
+ESTADO: Funcional con mejoras identificadas
+
+TECNOLOGIAS:
+  - Spring Boot 3.5.7, Java 21, MySQL, JPA/Hibernate, Swagger
+
+PROPOSITO:
+  Sistema de planificación logística que optimiza asignación de pedidos a
+  vuelos de carga aérea usando Ant Colony Optimization (ACO).
+
+FUNCIONALIDADES CORE:
+  1. Simulación semanal (batch)
+  2. Operación día a día (rolling)
+  3. Manejo de cancelaciones
+  4. Cálculo de métricas (SLA, ocupación, etc.)
+
+MODELO DE DATOS:
+  12 tablas (T01-T12)
+  - Base: Aeropuertos, Ciudades, Vuelos, Pedidos, Clientes, Aviones
+  - Planificación: Rutas, Tramos, Resultados, Métricas, Cancelaciones
+
+ALGORITMO ACO:
+  - 50 hormigas × 100 iteraciones
+  - Matriz de feromonas con evaporación
+  - Función heurística multi-factor (SLA + Capacidad + Tiempo)
+  - Selección probabilística (explotar vs explorar)
+
+REGLAS DE NEGOCIO:
+  - SLA: 2 días mismo continente, 3 días diferente (+2h procesamiento)
+  - No destinos hub
+  - Cancelaciones solo en tierra
+  - Tiempo mínimo estancia: 1 hora
+  - Capacidad de pedidos: 1-999 productos
+
+ENDPOINTS:
+  - POST /api/simulacion-semanal/ejecutar
+  - GET /api/simulacion-semanal/resultado/{id}
+  - POST /api/dia-a-dia/planificar
+  - GET /api/dia-a-dia/estado
+
+MEJORAS PENDIENTES:
+  ✓ Cálculo real de continentes para SLA
+  ✓ Búsqueda multi-hop con grafos
+  ✓ Testing automatizado
+  ✓ Función de costo multi-objetivo
+  ✓ Validaciones completas de reglas
+
+METRICAS DE EXITO:
+  - Cumplimiento SLA > 95%
+  - Ocupación promedio > 70%
+  - Pedidos rechazados < 5%
+  - Tiempo de planificación < 2 minutos
+
+CONTACTO:
+  - Swagger: http://localhost:8080/swagger
+  - Base de datos: localhost:3306/moraprueba
+  - Puerto: 8080
+
+
+================================================================================
+FIN DEL DOCUMENTO DE CONOCIMIENTO COMPLETO
+================================================================================
+
+Este documento contiene toda la información necesaria para entender y trabajar
+con el proyecto MoraPack Backend sin necesidad de leer el código fuente.
+
+Última actualización: 2025-11-13
+Generado automáticamente por Claude Code
+
+================================================================================

@@ -23,12 +23,21 @@ public class GestorCancelaciones {
     /**
      * Aplica cancelaciones programadas en un rango de tiempo
      * Solo cancela vuelos que están en tierra (antes del despegue)
+     *
+     * NOTA: Si la tabla T12_CANCELACION_VUELO está vacía, este método
+     * retornará 0 y la simulación seguirá su flujo normal sin cancelaciones.
      */
     @Transactional
     public int aplicarCancelaciones(Instant fechaInicio, Instant fechaFin) {
         List<T12CancelacionVuelo> cancelaciones =
             cancelacionRepository.findCancelacionesEnRango(fechaInicio, fechaFin);
 
+        if (cancelaciones.isEmpty()) {
+            log.info("No hay cancelaciones programadas en el periodo {} a {}", fechaInicio, fechaFin);
+            return 0;
+        }
+
+        log.info("Aplicando {} cancelaciones programadas", cancelaciones.size());
         int cancelados = 0;
 
         for (T12CancelacionVuelo cancelacion : cancelaciones) {
@@ -41,9 +50,12 @@ public class GestorCancelaciones {
                 cancelados++;
 
                 log.info("Vuelo {} cancelado: {}", vuelo.getId(), cancelacion.getMotivo());
+            } else {
+                log.warn("No se puede cancelar vuelo {} - Ya despegó o está en vuelo", vuelo.getId());
             }
         }
 
+        log.info("Total de vuelos cancelados: {}", cancelados);
         return cancelados;
     }
 

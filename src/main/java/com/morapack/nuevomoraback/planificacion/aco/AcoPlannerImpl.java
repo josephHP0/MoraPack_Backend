@@ -5,14 +5,19 @@ import com.morapack.nuevomoraback.common.domain.T04VueloProgramado;
 import com.morapack.nuevomoraback.common.repository.VueloProgramadoRepository;
 import com.morapack.nuevomoraback.planificacion.domain.T08RutaPlaneada;
 import com.morapack.nuevomoraback.planificacion.domain.T09TramoAsignado;
+import com.morapack.nuevomoraback.planificacion.service.VueloExpansionService;
+import com.morapack.nuevomoraback.planificacion.service.VueloExpansionService.VueloVirtual;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -23,20 +28,49 @@ public class AcoPlannerImpl implements AcoPlanner {
     private final HeuristicCalculator heuristicCalculator;
     private final PheromoneMatrix pheromoneMatrix;
     private final VueloProgramadoRepository vueloRepository;
+    private final VueloExpansionService vueloExpansionService;
     private final Random random = new Random();
+
+    // Cache de vuelos expandidos para la simulación actual
+    private List<VueloVirtual> vuelosExpandidosCache;
 
     @Override
     public List<T08RutaPlaneada> planificar(List<T02Pedido> pedidos,
-                                             T08RutaPlaneada.TipoSimulacion tipoSimulacion) {
+                                             T08RutaPlaneada.TipoSimulacion tipoSimulacion,
+                                             Instant fechaInicio,
+                                             Instant fechaFin) {
 
-        log.info("Iniciando planificación ACO para {} pedidos - Tipo: {}", pedidos.size(), tipoSimulacion);
+        log.info("========================================");
+        log.info("Iniciando planificación ACO");
+        log.info("Pedidos a planificar: {}", pedidos.size());
+        log.info("Tipo simulación: {}", tipoSimulacion);
+        log.info("Periodo: {} a {}", fechaInicio, fechaFin);
+        log.info("========================================");
 
+        // 1. Expandir vuelos plantilla para todo el periodo de simulación
+        List<T04VueloProgramado> vuelosPlantilla = vueloRepository.findAllVuelosPlantilla();
+        log.info("✓ Cargados {} vuelos plantilla desde BD", vuelosPlantilla.size());
+
+        if (vuelosPlantilla.isEmpty()) {
+            log.error("ERROR: No hay vuelos plantilla en la BD. Verificar tabla T04_VUELO_PROGRAMADO");
+            return new ArrayList<>();
+        }
+
+        vuelosExpandidosCache = vueloExpansionService.expandirVuelos(vuelosPlantilla, fechaInicio, fechaFin);
+        log.info("✓ Vuelos expandidos: {} vuelos virtuales generados", vuelosExpandidosCache.size());
+
+        if (pedidos.isEmpty()) {
+            log.warn("ADVERTENCIA: No hay pedidos para planificar. Verificar query findPedidosNoHubBetween");
+            return new ArrayList<>();
+        }
+
+        // 2. Inicializar matriz de feromonas
         pheromoneMatrix.inicializar();
 
         Ant mejorHormiga = null;
         double mejorCosto = Double.MAX_VALUE;
 
-        // Iteraciones del algoritmo ACO
+        // 3. Iteraciones del algoritmo ACO
         for (int iter = 0; iter < params.getNumeroIteraciones(); iter++) {
             List<Ant> hormigas = new ArrayList<>();
 
@@ -61,47 +95,83 @@ public class AcoPlannerImpl implements AcoPlanner {
             }
         }
 
-        // Convertir mejor solución a entidades T08RutaPlaneada
+        // 4. Convertir mejor solución a entidades T08RutaPlaneada
+        if (mejorHormiga == null || mejorHormiga.getSolucion().isEmpty()) {
+            log.warn("ADVERTENCIA: No se encontró ninguna solución válida. Ningún pedido pudo ser asignado a vuelos.");
+            return new ArrayList<>();
+        }
+
+        log.info("========================================");
+        log.info("✓ ACO completado");
+        log.info("Mejor solución: {} pedidos planificados", mejorHormiga.getSolucion().size());
+        log.info("Costo total: {}", mejorCosto);
+        log.info("========================================");
+
         return convertirSolucion(mejorHormiga, tipoSimulacion);
     }
 
     private Ant construirSolucion(List<T02Pedido> pedidos) {
         Ant hormiga = new Ant();
+        int asignados = 0;
+        int sinCandidatos = 0;
 
         for (T02Pedido pedido : pedidos) {
-            // Obtener vuelos candidatos (simplificado: todos los vuelos disponibles)
-            List<T04VueloProgramado> vuelosCandidatos = obtenerVuelosCandidatos(pedido);
+            // Obtener vuelos candidatos desde la caché de vuelos expandidos
+            List<VueloVirtual> vuelosCandidatos = obtenerVuelosCandidatos(pedido);
 
             if (vuelosCandidatos.isEmpty()) {
+                sinCandidatos++;
                 continue; // Pedido no puede ser asignado
             }
 
             // Seleccionar vuelo usando probabilidad basada en feromona y heurística
-            T04VueloProgramado vueloSeleccionado = seleccionarVuelo(pedido, vuelosCandidatos);
-            hormiga.asignarVuelo(pedido, vueloSeleccionado);
+            VueloVirtual vueloSeleccionado = seleccionarVuelo(pedido, vuelosCandidatos);
+            hormiga.asignarVuelo(pedido, vueloSeleccionado.toEntity());
+            asignados++;
         }
+
+        log.trace("Hormiga construida: {} pedidos asignados, {} sin candidatos", asignados, sinCandidatos);
 
         return hormiga;
     }
 
-    private List<T04VueloProgramado> obtenerVuelosCandidatos(T02Pedido pedido) {
-        // Simplificado: en implementación real, filtrar por ruta hacia destino, capacidad, etc.
-        Instant fechaMinima = pedido.getT02FechaPedido();
-        Instant fechaMaxima = fechaMinima.plusSeconds(7 * 24 * 3600); // 7 días
+    private List<VueloVirtual> obtenerVuelosCandidatos(T02Pedido pedido) {
+        // Filtrar vuelos virtuales que sean viables para este pedido
 
-        return vueloRepository.findVuelosDisponibles(fechaMinima, fechaMaxima);
+        // IMPORTANTE: Usamos el DÍA del pedido, no la hora exacta
+        // Esto permite que todos los vuelos del mismo día o posteriores sean candidatos
+        LocalDate diaPedido = pedido.getT02FechaPedido().atZone(ZoneId.of("UTC")).toLocalDate();
+        Instant fechaMinima = diaPedido.atStartOfDay(ZoneId.of("UTC")).toInstant();
+        Instant fechaMaxima = diaPedido.plusDays(7).atStartOfDay(ZoneId.of("UTC")).toInstant();
+
+        List<VueloVirtual> candidatos = vuelosExpandidosCache.stream()
+            .filter(v -> !v.getFechaSalida().isBefore(fechaMinima)) // >= fecha mínima (mismo día o después)
+            .filter(v -> v.getFechaSalida().isBefore(fechaMaxima))  // < fecha máxima (dentro de 7 días)
+            .filter(v -> v.getCapacidadDisponible() >= pedido.getT02Cantidad())
+            .filter(v -> !"CANCELADO".equals(v.getEstado()))
+            .collect(Collectors.toList());
+
+        if (candidatos.isEmpty()) {
+            log.debug("Pedido {}: No se encontraron vuelos candidatos (dia={}, cantidad={})",
+                     pedido.getId(), diaPedido, pedido.getT02Cantidad());
+        } else {
+            log.trace("Pedido {}: {} vuelos candidatos encontrados", pedido.getId(), candidatos.size());
+        }
+
+        return candidatos;
     }
 
-    private T04VueloProgramado seleccionarVuelo(T02Pedido pedido, List<T04VueloProgramado> candidatos) {
+    private VueloVirtual seleccionarVuelo(T02Pedido pedido, List<VueloVirtual> candidatos) {
 
         double[] probabilidades = new double[candidatos.size()];
         double suma = 0.0;
 
         for (int i = 0; i < candidatos.size(); i++) {
-            T04VueloProgramado vuelo = candidatos.get(i);
+            VueloVirtual vuelo = candidatos.get(i);
 
-            double feromona = pheromoneMatrix.obtenerFeromona(pedido.getId(), vuelo.getId());
-            double heuristica = heuristicCalculator.calcularHeuristica(pedido, vuelo, Instant.now());
+            // Usar plantillaId para la feromona (múltiples vuelos virtuales del mismo vuelo base)
+            double feromona = pheromoneMatrix.obtenerFeromona(pedido.getId(), vuelo.getPlantillaId());
+            double heuristica = heuristicCalculator.calcularHeuristica(pedido, vuelo.toEntity(), vuelo.getFechaSalida());
 
             probabilidades[i] = Math.pow(feromona, params.getAlpha()) *
                                Math.pow(heuristica, params.getBeta());

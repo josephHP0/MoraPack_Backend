@@ -23,4 +23,12 @@ public interface VueloProgramadoRepository extends JpaRepository<T04VueloProgram
     List<T04VueloProgramado> findVuelosEntreAeropuertos(@Param("origenId") Integer origenId,
                                                           @Param("destinoId") Integer destinoId,
                                                           @Param("fechaMinima") Instant fechaMinima);
+
+    /**
+     * Obtiene todos los vuelos plantilla (del día base) sin filtro de fechas.
+     * Los vuelos en la BD representan 1 día de operaciones que se repite.
+     * Este método los obtiene todos para posteriormente expandirlos a múltiples días.
+     */
+    @Query("SELECT v FROM T04VueloProgramado v WHERE v.t04Estado != 'CANCELADO' ORDER BY v.t04FechaSalida")
+    List<T04VueloProgramado> findAllVuelosPlantilla();
 }
