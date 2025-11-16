@@ -14,9 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -34,6 +32,9 @@ public class AcoPlannerImpl implements AcoPlanner {
     // Cache de vuelos expandidos para la simulación actual
     private List<VueloVirtual> vuelosExpandidosCache;
 
+    // Índice de vuelos por aeropuerto de destino para búsqueda rápida O(1)
+    private Map<Integer, List<VueloVirtual>> vuelosPorDestino;
+
     @Override
     public List<T08RutaPlaneada> planificar(List<T02Pedido> pedidos,
                                              T08RutaPlaneada.TipoSimulacion tipoSimulacion,
@@ -41,15 +42,24 @@ public class AcoPlannerImpl implements AcoPlanner {
                                              Instant fechaFin) {
 
         log.info("========================================");
-        log.info("Iniciando planificación ACO");
+        log.info("INICIANDO PLANIFICACIÓN ACO");
+        log.info("========================================");
         log.info("Pedidos a planificar: {}", pedidos.size());
         log.info("Tipo simulación: {}", tipoSimulacion);
         log.info("Periodo: {} a {}", fechaInicio, fechaFin);
+        log.info("Parámetros ACO:");
+        log.info("  - Iteraciones: {}", params.getNumeroIteraciones());
+        log.info("  - Hormigas por iteración: {}", params.getNumeroHormigas());
+        log.info("  - Total de construcciones: {}", params.getNumeroIteraciones() * params.getNumeroHormigas());
         log.info("========================================");
 
         // 1. Expandir vuelos plantilla para todo el periodo de simulación
+        log.info("Cargando vuelos plantilla con JOIN FETCH (aeropuertos y aviones)...");
+        long tiempoCargaInicio = System.currentTimeMillis();
         List<T04VueloProgramado> vuelosPlantilla = vueloRepository.findAllVuelosPlantilla();
-        log.info("✓ Cargados {} vuelos plantilla desde BD", vuelosPlantilla.size());
+        long tiempoCarga = System.currentTimeMillis() - tiempoCargaInicio;
+        log.info("✓ Cargados {} vuelos plantilla desde BD en {}ms (con relaciones EAGER)",
+                 vuelosPlantilla.size(), tiempoCarga);
 
         if (vuelosPlantilla.isEmpty()) {
             log.error("ERROR: No hay vuelos plantilla en la BD. Verificar tabla T04_VUELO_PROGRAMADO");
@@ -58,6 +68,17 @@ public class AcoPlannerImpl implements AcoPlanner {
 
         vuelosExpandidosCache = vueloExpansionService.expandirVuelos(vuelosPlantilla, fechaInicio, fechaFin);
         log.info("✓ Vuelos expandidos: {} vuelos virtuales generados", vuelosExpandidosCache.size());
+
+        // 1.5. Crear índice de vuelos por aeropuerto de destino para búsqueda O(1)
+        log.info("Creando índice de vuelos por aeropuerto de destino...");
+        long tiempoIndexInicio = System.currentTimeMillis();
+        vuelosPorDestino = new HashMap<>();
+        for (VueloVirtual vuelo : vuelosExpandidosCache) {
+            Integer destinoId = vuelo.getDestino().getId();
+            vuelosPorDestino.computeIfAbsent(destinoId, k -> new ArrayList<>()).add(vuelo);
+        }
+        long tiempoIndex = System.currentTimeMillis() - tiempoIndexInicio;
+        log.info("✓ Índice creado: {} aeropuertos destino indexados en {}ms", vuelosPorDestino.size(), tiempoIndex);
 
         if (pedidos.isEmpty()) {
             log.warn("ADVERTENCIA: No hay pedidos para planificar. Verificar query findPedidosNoHubBetween");
@@ -71,11 +92,21 @@ public class AcoPlannerImpl implements AcoPlanner {
         double mejorCosto = Double.MAX_VALUE;
 
         // 3. Iteraciones del algoritmo ACO
+        log.info("Iniciando {} iteraciones con {} hormigas cada una",
+                 params.getNumeroIteraciones(), params.getNumeroHormigas());
+
+        long tiempoInicioTotal = System.currentTimeMillis();
+
         for (int iter = 0; iter < params.getNumeroIteraciones(); iter++) {
+            long tiempoInicioIter = System.currentTimeMillis();
             List<Ant> hormigas = new ArrayList<>();
+
+            log.info("=== Iteración {}/{} ===", iter + 1, params.getNumeroIteraciones());
 
             // Construir soluciones con cada hormiga
             for (int h = 0; h < params.getNumeroHormigas(); h++) {
+                long tiempoInicioHormiga = System.currentTimeMillis();
+
                 Ant hormiga = construirSolucion(pedidos);
                 hormiga.calcularCosto();
                 hormigas.add(hormiga);
@@ -83,17 +114,32 @@ public class AcoPlannerImpl implements AcoPlanner {
                 if (hormiga.getCostoTotal() < mejorCosto) {
                     mejorCosto = hormiga.getCostoTotal();
                     mejorHormiga = hormiga;
+                    log.info("  ✓ Nueva mejor solución encontrada en hormiga {}: costo={}, pedidos asignados={}",
+                             h + 1, mejorCosto, mejorHormiga.getSolucion().size());
+                }
+
+                long tiempoHormiga = System.currentTimeMillis() - tiempoInicioHormiga;
+
+                // Log cada 10 hormigas para no saturar
+                if ((h + 1) % 10 == 0) {
+                    log.info("  Hormigas construidas: {}/{} (última: {}ms, pedidos asignados: {})",
+                             h + 1, params.getNumeroHormigas(), tiempoHormiga, hormiga.getSolucion().size());
                 }
             }
 
             // Actualizar feromonas
+            log.debug("  Actualizando feromonas...");
             actualizarFeromonas(hormigas);
             pheromoneMatrix.evaporar();
 
-            if (iter % 10 == 0) {
-                log.debug("Iteración {}: Mejor costo = {}", iter, mejorCosto);
-            }
+            long tiempoIter = System.currentTimeMillis() - tiempoInicioIter;
+            log.info("  Iteración {} completada en {}ms - Mejor costo actual: {}",
+                     iter + 1, tiempoIter, mejorCosto);
         }
+
+        long tiempoTotal = System.currentTimeMillis() - tiempoInicioTotal;
+        log.info("Todas las iteraciones completadas en {}ms ({} segundos)",
+                 tiempoTotal, tiempoTotal / 1000.0);
 
         // 4. Convertir mejor solución a entidades T08RutaPlaneada
         if (mejorHormiga == null || mejorHormiga.getSolucion().isEmpty()) {
@@ -115,7 +161,18 @@ public class AcoPlannerImpl implements AcoPlanner {
         int asignados = 0;
         int sinCandidatos = 0;
 
-        for (T02Pedido pedido : pedidos) {
+        log.trace("Construyendo solución para {} pedidos", pedidos.size());
+        long tiempoInicio = System.currentTimeMillis();
+
+        for (int i = 0; i < pedidos.size(); i++) {
+            T02Pedido pedido = pedidos.get(i);
+
+            // Log cada 50 pedidos para monitorear progreso
+            if (i > 0 && i % 50 == 0) {
+                long tiempoTranscurrido = System.currentTimeMillis() - tiempoInicio;
+                log.trace("  Procesando pedido {}/{} ({}ms transcurridos)", i, pedidos.size(), tiempoTranscurrido);
+            }
+
             // Obtener vuelos candidatos desde la caché de vuelos expandidos
             List<VueloVirtual> vuelosCandidatos = obtenerVuelosCandidatos(pedido);
 
@@ -130,13 +187,16 @@ public class AcoPlannerImpl implements AcoPlanner {
             asignados++;
         }
 
-        log.trace("Hormiga construida: {} pedidos asignados, {} sin candidatos", asignados, sinCandidatos);
+        long tiempoTotal = System.currentTimeMillis() - tiempoInicio;
+        log.trace("Hormiga construida en {}ms: {} pedidos asignados, {} sin candidatos",
+                  tiempoTotal, asignados, sinCandidatos);
 
         return hormiga;
     }
 
     private List<VueloVirtual> obtenerVuelosCandidatos(T02Pedido pedido) {
-        // Filtrar vuelos virtuales que sean viables para este pedido
+        // OPTIMIZACIÓN: Usar índice por aeropuerto de destino para reducir búsqueda de O(n) a O(1)
+        // Solo buscamos entre vuelos que llegan al destino del pedido
 
         // IMPORTANTE: Usamos el DÍA del pedido, no la hora exacta
         // Esto permite que todos los vuelos del mismo día o posteriores sean candidatos
@@ -144,7 +204,26 @@ public class AcoPlannerImpl implements AcoPlanner {
         Instant fechaMinima = diaPedido.atStartOfDay(ZoneId.of("UTC")).toInstant();
         Instant fechaMaxima = diaPedido.plusDays(7).atStartOfDay(ZoneId.of("UTC")).toInstant();
 
-        List<VueloVirtual> candidatos = vuelosExpandidosCache.stream()
+        // Verificación: si el índice es nulo o vacío
+        if (vuelosPorDestino == null || vuelosPorDestino.isEmpty()) {
+            log.error("ERROR CRÍTICO: vuelosPorDestino está vacío o nulo!");
+            return new ArrayList<>();
+        }
+
+        // Obtener el aeropuerto de destino del pedido
+        Integer destinoId = pedido.getT02IdAeropDestino().getId();
+
+        // Buscar SOLO en los vuelos que llegan al destino del pedido
+        // Esto reduce la búsqueda de ~25,794 vuelos a ~400-500 vuelos por aeropuerto
+        List<VueloVirtual> vuelosHaciaDestino = vuelosPorDestino.getOrDefault(destinoId, new ArrayList<>());
+
+        if (vuelosHaciaDestino.isEmpty()) {
+            log.debug("Pedido {}: No hay vuelos hacia el aeropuerto destino {}", pedido.getId(), destinoId);
+            return new ArrayList<>();
+        }
+
+        // Filtrar vuelos viables
+        List<VueloVirtual> candidatos = vuelosHaciaDestino.stream()
             .filter(v -> !v.getFechaSalida().isBefore(fechaMinima)) // >= fecha mínima (mismo día o después)
             .filter(v -> v.getFechaSalida().isBefore(fechaMaxima))  // < fecha máxima (dentro de 7 días)
             .filter(v -> v.getCapacidadDisponible() >= pedido.getT02Cantidad())
@@ -152,16 +231,22 @@ public class AcoPlannerImpl implements AcoPlanner {
             .collect(Collectors.toList());
 
         if (candidatos.isEmpty()) {
-            log.debug("Pedido {}: No se encontraron vuelos candidatos (dia={}, cantidad={})",
-                     pedido.getId(), diaPedido, pedido.getT02Cantidad());
+            log.debug("Pedido {}: No se encontraron vuelos candidatos (destino={}, dia={}, cantidad={})",
+                     pedido.getId(), destinoId, diaPedido, pedido.getT02Cantidad());
         } else {
-            log.trace("Pedido {}: {} vuelos candidatos encontrados", pedido.getId(), candidatos.size());
+            log.trace("Pedido {}: {} vuelos candidatos encontrados (de {} hacia destino {})",
+                     pedido.getId(), candidatos.size(), vuelosHaciaDestino.size(), destinoId);
         }
 
         return candidatos;
     }
 
     private VueloVirtual seleccionarVuelo(T02Pedido pedido, List<VueloVirtual> candidatos) {
+
+        if (candidatos == null || candidatos.isEmpty()) {
+            log.error("ERROR: seleccionarVuelo llamado con candidatos vacíos para pedido {}", pedido.getId());
+            throw new IllegalArgumentException("La lista de candidatos no puede estar vacía");
+        }
 
         double[] probabilidades = new double[candidatos.size()];
         double suma = 0.0;
@@ -173,6 +258,16 @@ public class AcoPlannerImpl implements AcoPlanner {
             double feromona = pheromoneMatrix.obtenerFeromona(pedido.getId(), vuelo.getPlantillaId());
             double heuristica = heuristicCalculator.calcularHeuristica(pedido, vuelo.toEntity(), vuelo.getFechaSalida());
 
+            // Validar valores
+            if (Double.isNaN(feromona) || Double.isInfinite(feromona)) {
+                log.warn("Feromona inválida para pedido {} y vuelo {}: {}", pedido.getId(), vuelo.getPlantillaId(), feromona);
+                feromona = params.getFeromonaInicial();
+            }
+            if (Double.isNaN(heuristica) || Double.isInfinite(heuristica)) {
+                log.warn("Heurística inválida para pedido {} y vuelo {}: {}", pedido.getId(), vuelo.getPlantillaId(), heuristica);
+                heuristica = 0.01;
+            }
+
             probabilidades[i] = Math.pow(feromona, params.getAlpha()) *
                                Math.pow(heuristica, params.getBeta());
             suma += probabilidades[i];
@@ -180,6 +275,7 @@ public class AcoPlannerImpl implements AcoPlanner {
 
         // Normalizar y seleccionar
         if (suma == 0.0) {
+            log.trace("Suma de probabilidades es 0, seleccionando vuelo aleatorio");
             return candidatos.get(random.nextInt(candidatos.size()));
         }
 

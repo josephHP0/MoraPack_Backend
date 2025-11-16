@@ -1,9 +1,7 @@
 package com.morapack.nuevomoraback.planificacion.controller;
 
 import com.morapack.nuevomoraback.common.repository.PedidoRepository;
-import com.morapack.nuevomoraback.planificacion.dto.DebugPedidosDTO;
-import com.morapack.nuevomoraback.planificacion.dto.SimulacionDetalladaDTO;
-import com.morapack.nuevomoraback.planificacion.dto.SimulacionSemanalRequest;
+import com.morapack.nuevomoraback.planificacion.dto.*;
 import com.morapack.nuevomoraback.planificacion.service.PlanificadorSemanalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -56,5 +54,42 @@ public class PlanificacionSemanalController {
 
         DebugPedidosDTO debug = planificadorSemanalService.debugPedidosDisponibles(fechaInicio, fechaFin);
         return ResponseEntity.ok(debug);
+    }
+
+    @PostMapping("/bloque")
+    @Operation(
+        summary = "Procesa UN SOLO bloque de simulación (streaming incremental)",
+        description = """
+            Este endpoint está diseñado para arquitectura de streaming incremental desde el frontend.
+
+            FLUJO RECOMENDADO:
+            1. El front tiene un reloj de simulación (ej: 1seg real = 30min simulados)
+            2. El front solicita el primer bloque (ej: 00:00-10:00 del lunes)
+            3. Mientras muestra ese bloque, el front solicita el siguiente (10:00-20:00)
+            4. Y así sucesivamente hasta completar toda la semana
+
+            IMPORTANTE:
+            - Cada llamada procesa y devuelve SOLO el rango solicitado
+            - El front controla la velocidad de visualización
+            - El front solicita nuevos bloques antes de que termine el actual
+            - El back procesa bloques independientes sin esperar a completar toda la semana
+
+            PARÁMETROS:
+            - fechaInicio/fechaFin: Rango temporal del bloque (ej: 10 horas)
+            - idResultadoSimulacion: ID para vincular bloques de la misma simulación (opcional para el primer bloque)
+            - esUltimoBloque: true para marcar el final de la simulación
+
+            RESPUESTA:
+            - Datos SOLO del rango solicitado (vuelos, pedidos, rutas)
+            - Métricas del bloque procesado
+            - Sugerencia de cuándo solicitar el siguiente bloque
+            - Flag hayMasBloques para saber si continuar
+            """
+    )
+    public ResponseEntity<BloqueSimulacionResponse> procesarBloqueIncremental(
+            @Valid @RequestBody BloqueSimulacionRequest request) {
+
+        BloqueSimulacionResponse response = planificadorSemanalService.procesarBloqueIncremental(request);
+        return ResponseEntity.ok(response);
     }
 }

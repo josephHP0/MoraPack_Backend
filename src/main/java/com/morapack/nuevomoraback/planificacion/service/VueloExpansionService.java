@@ -130,6 +130,9 @@ public class VueloExpansionService {
         private String estado;
         private String estadoCapacidad;
 
+        // Cache de la entidad para evitar crear el objeto múltiples veces
+        private T04VueloProgramado cachedEntity;
+
         // Getters y setters
         public Integer getPlantillaId() { return plantillaId; }
         public void setPlantillaId(Integer plantillaId) { this.plantillaId = plantillaId; }
@@ -168,8 +171,15 @@ public class VueloExpansionService {
         /**
          * Convierte este vuelo virtual a una entidad T04VueloProgramado para persistencia.
          * NOTA: Esto crea una entidad con el ID de la plantilla original.
+         * OPTIMIZACIÓN: Cachea el resultado para evitar crear el mismo objeto múltiples veces.
          */
         public T04VueloProgramado toEntity() {
+            // Usar cache si ya existe
+            if (cachedEntity != null) {
+                return cachedEntity;
+            }
+
+            // Crear y cachear la entidad
             T04VueloProgramado entity = new T04VueloProgramado();
             entity.setId(plantillaId);
             entity.setT01IdAeropuertoOrigen(origen);
@@ -181,6 +191,8 @@ public class VueloExpansionService {
             entity.setT04OcupacionTotal(ocupacionTotal);
             entity.setT04Estado(estado);
             entity.setT04EstadoCapacidad(estadoCapacidad);
+
+            cachedEntity = entity;
             return entity;
         }
     }

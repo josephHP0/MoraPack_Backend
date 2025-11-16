@@ -190,6 +190,14 @@ public class PlanificadorSemanalServiceImpl implements PlanificadorSemanalServic
      * Valida SLA y guarda rutas
      */
     private void validarYGuardarRutas(List<T08RutaPlaneada> rutas) {
+        validarSLA(rutas);
+        rutaPlaneadaRepository.saveAll(rutas);
+    }
+
+    /**
+     * Valida SLA sin guardar (para conversión a DTO antes de persistir)
+     */
+    private void validarSLA(List<T08RutaPlaneada> rutas) {
         for (T08RutaPlaneada ruta : rutas) {
             Instant fechaEntrega = calcularFechaEntrega(ruta);
             ruta.setFechaEntregaEstimada(fechaEntrega);
@@ -197,8 +205,6 @@ public class PlanificadorSemanalServiceImpl implements PlanificadorSemanalServic
             boolean cumple = calculadorSLA.cumpleSLA(ruta.getPedido(), fechaEntrega);
             ruta.setCumpleSla(cumple);
         }
-
-        rutaPlaneadaRepository.saveAll(rutas);
     }
 
     /**
@@ -356,6 +362,164 @@ public class PlanificadorSemanalServiceImpl implements PlanificadorSemanalServic
         log.info("========================================");
 
         return debug;
+    }
+
+    @Override
+    @Transactional
+    public BloqueSimulacionResponse procesarBloqueIncremental(BloqueSimulacionRequest request) {
+        log.info("========================================");
+        log.info("BLOQUE INCREMENTAL");
+        log.info("Rango: {} a {}", request.getFechaInicio(), request.getFechaFin());
+        log.info("ID Simulación: {}", request.getIdResultadoSimulacion());
+        log.info("Último bloque: {}", request.getEsUltimoBloque());
+        log.info("========================================");
+
+        long tiempoInicio = System.currentTimeMillis();
+
+        // 1. Crear o recuperar resultado de simulación
+        T10ResultadoSimulacion resultado = obtenerOCrearResultado(request);
+
+        // 2. Cargar pedidos del bloque
+        List<T02Pedido> pedidosBloque = pedidoRepository.findPedidosNoHubBetween(
+            request.getFechaInicio(),
+            request.getFechaFin()
+        );
+
+        log.info("Pedidos en este bloque: {}", pedidosBloque.size());
+
+        List<T08RutaPlaneada> rutasBloque = new ArrayList<>();
+        BloqueSimulacionResponse response = null;
+        long tiempoProcesamiento;
+
+        if (!pedidosBloque.isEmpty()) {
+            // 3. Ejecutar ACO para este bloque específico
+            rutasBloque = acoPlanner.planificar(
+                pedidosBloque,
+                T08RutaPlaneada.TipoSimulacion.SEMANAL,
+                request.getFechaInicio(),
+                request.getFechaFin()
+            );
+
+            // 4. Validar SLA (sin guardar todavía)
+            validarSLA(rutasBloque);
+
+            // 5. Calcular métricas del bloque (antes de guardar)
+            tiempoProcesamiento = System.currentTimeMillis() - tiempoInicio;
+            MetricasBloqueDTO metricas = calcularMetricasBloque(rutasBloque, pedidosBloque.size(), tiempoProcesamiento);
+
+            // 6. Convertir a DTO ANTES de guardar (mientras todo está en memoria)
+            log.info("Convirtiendo rutas a DTO antes de persistir...");
+            response = conversorSimulacionService.convertirABloqueResponse(
+                resultado.getId(),
+                request.getFechaInicio(),
+                request.getFechaFin(),
+                rutasBloque,
+                metricas
+            );
+            log.info("Conversión completada, procediendo a guardar en BD...");
+
+            // 7. Ahora sí guardar en BD
+            rutaPlaneadaRepository.saveAll(rutasBloque);
+            log.info("{} rutas guardadas en BD", rutasBloque.size());
+        } else {
+            // Sin pedidos, crear response vacío
+            tiempoProcesamiento = System.currentTimeMillis() - tiempoInicio;
+            MetricasBloqueDTO metricas = MetricasBloqueDTO.builder()
+                .totalPedidosProcesados(0)
+                .pedidosAsignados(0)
+                .pedidosNoAsignados(0)
+                .vuelosUtilizados(0)
+                .capacidadOcupada(0)
+                .tiempoProcesamiento(tiempoProcesamiento)
+                .build();
+
+            response = BloqueSimulacionResponse.builder()
+                .idResultadoSimulacion(resultado.getId())
+                .fechaInicio(request.getFechaInicio())
+                .fechaFin(request.getFechaFin())
+                .numeroBloque(1)
+                .vuelos(new ArrayList<>())
+                .pedidos(new ArrayList<>())
+                .rutas(new ArrayList<>())
+                .metricas(metricas)
+                .hayMasBloques(false)
+                .build();
+        }
+
+        // 8. Marcar como completado si es el último bloque
+        if (Boolean.TRUE.equals(request.getEsUltimoBloque())) {
+            resultado.setEstado(T10ResultadoSimulacion.EstadoSimulacion.COMPLETADO);
+            resultado.setMensaje("Simulación incremental completada");
+            resultadoRepository.save(resultado);
+            log.info("Último bloque procesado - Simulación COMPLETADA");
+        }
+
+        // 9. Calcular sugerencia para el siguiente bloque
+        // Sugerir solicitar el siguiente bloque cuando falte 20% del tiempo actual
+        if (response != null) {
+            long duracionBloqueSegundos = request.getFechaFin().getEpochSecond() - request.getFechaInicio().getEpochSecond();
+            long sugerenciaOffset = (long) (duracionBloqueSegundos * 0.8);
+            response.setSugerenciaSolicitudSiguienteBloque(
+                request.getFechaInicio().plusSeconds(sugerenciaOffset)
+            );
+
+            response.setHayMasBloques(!Boolean.TRUE.equals(request.getEsUltimoBloque()));
+        }
+
+        log.info("Bloque procesado: {} rutas en {}ms", rutasBloque.size(), tiempoProcesamiento);
+        log.info("Response generado correctamente, enviando al cliente...");
+        log.info("========================================");
+
+        return response;
+    }
+
+    /**
+     * Obtiene un resultado de simulación existente o crea uno nuevo
+     */
+    private T10ResultadoSimulacion obtenerOCrearResultado(BloqueSimulacionRequest request) {
+        if (request.getIdResultadoSimulacion() != null) {
+            // Recuperar resultado existente
+            return resultadoRepository.findById(request.getIdResultadoSimulacion())
+                .orElseThrow(() -> new RuntimeException("Resultado no encontrado: " + request.getIdResultadoSimulacion()));
+        } else {
+            // Crear nuevo resultado para esta simulación incremental
+            T10ResultadoSimulacion nuevoResultado = new T10ResultadoSimulacion();
+            nuevoResultado.setTipoSimulacion(T08RutaPlaneada.TipoSimulacion.SEMANAL);
+            nuevoResultado.setFechaInicio(request.getFechaInicio());
+            nuevoResultado.setFechaFin(request.getFechaFin());
+            nuevoResultado.setFechaEjecucion(Instant.now());
+            nuevoResultado.setEstado(T10ResultadoSimulacion.EstadoSimulacion.EN_PROGRESO);
+            nuevoResultado.setMensaje("Simulación incremental iniciada");
+            return resultadoRepository.save(nuevoResultado);
+        }
+    }
+
+    /**
+     * Calcula métricas específicas de un bloque
+     */
+    private MetricasBloqueDTO calcularMetricasBloque(List<T08RutaPlaneada> rutas, int totalPedidos, long tiempoProcesamiento) {
+        int pedidosAsignados = rutas.size();
+        int pedidosNoAsignados = totalPedidos - pedidosAsignados;
+
+        int vuelosUtilizados = (int) rutas.stream()
+            .flatMap(r -> r.getTramosAsignados().stream())
+            .map(t -> t.getVueloProgramado().getId())
+            .distinct()
+            .count();
+
+        int capacidadOcupada = rutas.stream()
+            .flatMap(r -> r.getTramosAsignados().stream())
+            .mapToInt(T09TramoAsignado::getCantidadProductos)
+            .sum();
+
+        return MetricasBloqueDTO.builder()
+            .totalPedidosProcesados(totalPedidos)
+            .pedidosAsignados(pedidosAsignados)
+            .pedidosNoAsignados(pedidosNoAsignados)
+            .vuelosUtilizados(vuelosUtilizados)
+            .capacidadOcupada(capacidadOcupada)
+            .tiempoProcesamiento(tiempoProcesamiento)
+            .build();
     }
 
     private SimulacionSemanalResponse convertirAResponse(T10ResultadoSimulacion resultado) {

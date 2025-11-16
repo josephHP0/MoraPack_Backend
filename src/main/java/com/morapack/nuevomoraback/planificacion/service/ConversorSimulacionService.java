@@ -279,4 +279,148 @@ public class ConversorSimulacionService {
 
         return stats;
     }
+
+    /**
+     * Convierte rutas de un bloque específico a BloqueSimulacionResponse
+     * Diseñado para streaming incremental
+     */
+    public BloqueSimulacionResponse convertirABloqueResponse(
+            Integer idResultado,
+            Instant fechaInicio,
+            Instant fechaFin,
+            List<T08RutaPlaneada> rutasBloque,
+            MetricasBloqueDTO metricas) {
+
+        log.info("Convirtiendo bloque a response: {} rutas", rutasBloque.size());
+
+        // Construir vuelos simulados para este bloque
+        List<VueloSimuladoDTO> vuelosDTO = construirVuelosSimulados(rutasBloque, fechaInicio, fechaFin);
+
+        // Construir pedidos detallados del bloque
+        List<PedidoDetalleDTO> pedidosDTO = rutasBloque.stream()
+            .map(this::convertirAPedidoDetalle)
+            .collect(Collectors.toList());
+
+        // Construir rutas completas del bloque
+        List<RutaCompletaDTO> rutasDTO = rutasBloque.stream()
+            .map(this::convertirARutaCompleta)
+            .collect(Collectors.toList());
+
+        return BloqueSimulacionResponse.builder()
+            .idResultadoSimulacion(idResultado)
+            .fechaInicio(fechaInicio)
+            .fechaFin(fechaFin)
+            .numeroBloque(1) // El front puede incrementar esto si necesita
+            .vuelos(vuelosDTO)
+            .pedidos(pedidosDTO)
+            .rutas(rutasDTO)
+            .metricas(metricas)
+            .hayMasBloques(false) // Se setea en el service
+            .build();
+    }
+
+    /**
+     * Construye DTOs de vuelos simulados para un bloque
+     */
+    private List<VueloSimuladoDTO> construirVuelosSimulados(
+            List<T08RutaPlaneada> rutasBloque,
+            Instant fechaInicio,
+            Instant fechaFin) {
+
+        // Extraer todos los vuelos usados en el bloque
+        Map<Integer, T04VueloProgramado> vuelosUsados = new HashMap<>();
+        Map<Integer, Integer> ocupacionPorVuelo = new HashMap<>();
+
+        for (T08RutaPlaneada ruta : rutasBloque) {
+            for (T09TramoAsignado tramo : ruta.getTramosAsignados()) {
+                T04VueloProgramado vuelo = tramo.getVueloProgramado();
+
+                // Solo incluir vuelos que salen dentro del rango del bloque
+                if (!vuelo.getT04FechaSalida().isBefore(fechaInicio) &&
+                    vuelo.getT04FechaSalida().isBefore(fechaFin)) {
+
+                    vuelosUsados.put(vuelo.getId(), vuelo);
+
+                    int cantidadActual = ocupacionPorVuelo.getOrDefault(vuelo.getId(), 0);
+                    ocupacionPorVuelo.put(vuelo.getId(), cantidadActual + tramo.getCantidadProductos());
+                }
+            }
+        }
+
+        // Convertir a DTOs
+        return vuelosUsados.values().stream()
+            .map(vuelo -> convertirAVueloSimulado(vuelo, ocupacionPorVuelo.get(vuelo.getId())))
+            .sorted(Comparator.comparing(VueloSimuladoDTO::getFechaSalida))
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * Convierte un vuelo a DTO simulado
+     */
+    private VueloSimuladoDTO convertirAVueloSimulado(T04VueloProgramado vuelo, Integer ocupacion) {
+        return VueloSimuladoDTO.builder()
+            .id(vuelo.getId())
+            .codigoOrigenICAO(vuelo.getT01IdAeropuertoOrigen().getT01CodigoIcao())
+            .nombreOrigenCiudad(vuelo.getT01IdAeropuertoOrigen().getT01Alias())
+            .codigoDestinoICAO(vuelo.getT01IdAeropuertoDestino().getT01CodigoIcao())
+            .nombreDestinoCiudad(vuelo.getT01IdAeropuertoDestino().getT01Alias())
+            .fechaSalida(vuelo.getT04FechaSalida())
+            .fechaLlegada(vuelo.getT04FechaLlegada())
+            .capacidadTotal(vuelo.getT04CapacidadTotal())
+            .capacidadOcupada(ocupacion != null ? ocupacion : 0)
+            .capacidadDisponible(vuelo.getT04CapacidadTotal() - (ocupacion != null ? ocupacion : 0))
+            .estado(vuelo.getT04Estado())
+            .build();
+    }
+
+    /**
+     * Convierte ruta a pedido detalle
+     */
+    private PedidoDetalleDTO convertirAPedidoDetalle(T08RutaPlaneada ruta) {
+        return PedidoDetalleDTO.builder()
+            .idPedido(ruta.getPedido().getId())
+            .idCadenaPedido(ruta.getPedido().getT02IdCadena())
+            .fechaPedido(ruta.getPedido().getT02FechaPedido())
+            .cantidad(ruta.getPedido().getT02Cantidad())
+            .destinoICAO(ruta.getPedido().getT02IdAeropDestino().getT01CodigoIcao())
+            .destinoCiudad(ruta.getPedido().getT02IdAeropDestino().getT01Alias())
+            .estado(ruta.getEstado().name())
+            .cumpleSLA(ruta.getCumpleSla())
+            .fechaEntregaEstimada(ruta.getFechaEntregaEstimada())
+            .build();
+    }
+
+    /**
+     * Convierte ruta a DTO completo
+     */
+    private RutaCompletaDTO convertirARutaCompleta(T08RutaPlaneada ruta) {
+        List<TramoDTO> tramos = ruta.getTramosAsignados().stream()
+            .map(this::convertirATramoDTO)
+            .collect(Collectors.toList());
+
+        return RutaCompletaDTO.builder()
+            .idRuta(ruta.getId())
+            .idPedido(ruta.getPedido().getId())
+            .estadoRuta(ruta.getEstado().name())
+            .cumpleSLA(ruta.getCumpleSla())
+            .fechaEntregaEstimada(ruta.getFechaEntregaEstimada())
+            .tramos(tramos)
+            .build();
+    }
+
+    /**
+     * Convierte tramo a DTO
+     */
+    private TramoDTO convertirATramoDTO(T09TramoAsignado tramo) {
+        return TramoDTO.builder()
+            .ordenEnRuta(tramo.getOrdenEnRuta())
+            .esVueloFinal(tramo.getEsVueloFinal())
+            .idVuelo(tramo.getVueloProgramado().getId())
+            .origenICAO(tramo.getVueloProgramado().getT01IdAeropuertoOrigen().getT01CodigoIcao())
+            .destinoICAO(tramo.getVueloProgramado().getT01IdAeropuertoDestino().getT01CodigoIcao())
+            .fechaSalida(tramo.getVueloProgramado().getT04FechaSalida())
+            .fechaLlegada(tramo.getVueloProgramado().getT04FechaLlegada())
+            .cantidadProductos(tramo.getCantidadProductos())
+            .build();
+    }
 }

@@ -28,7 +28,14 @@ public interface VueloProgramadoRepository extends JpaRepository<T04VueloProgram
      * Obtiene todos los vuelos plantilla (del día base) sin filtro de fechas.
      * Los vuelos en la BD representan 1 día de operaciones que se repite.
      * Este método los obtiene todos para posteriormente expandirlos a múltiples días.
+     *
+     * IMPORTANTE: Usa JOIN FETCH para evitar N+1 queries cuando se accede a aeropuertos y aviones.
+     * Esto carga EAGER las relaciones necesarias en una sola consulta SQL con JOINs.
      */
-    @Query("SELECT v FROM T04VueloProgramado v WHERE v.t04Estado != 'CANCELADO' ORDER BY v.t04FechaSalida")
+    @Query("SELECT DISTINCT v FROM T04VueloProgramado v " +
+           "LEFT JOIN FETCH v.t01IdAeropuertoOrigen " +
+           "LEFT JOIN FETCH v.t01IdAeropuertoDestino " +
+           "LEFT JOIN FETCH v.t11IdAvion " +
+           "ORDER BY v.t04FechaSalida")
     List<T04VueloProgramado> findAllVuelosPlantilla();
 }
