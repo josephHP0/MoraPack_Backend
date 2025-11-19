@@ -219,6 +219,20 @@ public class PlanificadorSemanalServiceImpl implements PlanificadorSemanalServic
     }
 
     /**
+     * Calcula el número de bloque actual basándose en la fecha de inicio de la simulación
+     * y la fecha de inicio del bloque actual
+     */
+    private Integer calcularNumeroBloqueActual(Instant inicioSimulacion, Instant inicioBloqueActual, Integer duracionBloqueHoras) {
+        long segundosTranscurridos = inicioBloqueActual.getEpochSecond() - inicioSimulacion.getEpochSecond();
+        long duracionBloqueSegundos = duracionBloqueHoras * 3600L;
+        
+        // El primer bloque es 1, no 0
+        int numeroBloque = (int) (segundosTranscurridos / duracionBloqueSegundos) + 1;
+        
+        return numeroBloque;
+    }
+
+    /**
      * Log información de pedidos
      */
     private void logInfoPedidos(List<T02Pedido> pedidos, Instant inicio, Instant fin) {
@@ -407,14 +421,24 @@ public class PlanificadorSemanalServiceImpl implements PlanificadorSemanalServic
             tiempoProcesamiento = System.currentTimeMillis() - tiempoInicio;
             MetricasBloqueDTO metricas = calcularMetricasBloque(rutasBloque, pedidosBloque.size(), tiempoProcesamiento);
 
-            // 6. Convertir a DTO ANTES de guardar (mientras todo está en memoria)
+            // 6. Calcular número de bloque actual
+            // Usamos 3 horas como duración estándar de bloque (K=3)
+            Integer numeroBloque = calcularNumeroBloqueActual(
+                resultado.getFechaInicio(),
+                request.getFechaInicio(),
+                3  // K = 3 horas (valor estándar del sistema)
+            );
+            log.info("Número de bloque calculado: {}", numeroBloque);
+
+            // 7. Convertir a DTO ANTES de guardar (mientras todo está en memoria)
             log.info("Convirtiendo rutas a DTO antes de persistir...");
             response = conversorSimulacionService.convertirABloqueResponse(
                 resultado.getId(),
                 request.getFechaInicio(),
                 request.getFechaFin(),
                 rutasBloque,
-                metricas
+                metricas,
+                numeroBloque
             );
             log.info("Conversión completada, procediendo a guardar en BD...");
 
@@ -433,11 +457,18 @@ public class PlanificadorSemanalServiceImpl implements PlanificadorSemanalServic
                 .tiempoProcesamiento(tiempoProcesamiento)
                 .build();
 
+            // Calcular número de bloque para respuesta vacía también
+            Integer numeroBloque = calcularNumeroBloqueActual(
+                resultado.getFechaInicio(),
+                request.getFechaInicio(),
+                3  // K = 3 horas (valor estándar del sistema)
+            );
+
             response = BloqueSimulacionResponse.builder()
                 .idResultadoSimulacion(resultado.getId())
                 .fechaInicio(request.getFechaInicio())
                 .fechaFin(request.getFechaFin())
-                .numeroBloque(1)
+                .numeroBloque(numeroBloque)
                 .vuelos(new ArrayList<>())
                 .pedidos(new ArrayList<>())
                 .rutas(new ArrayList<>())

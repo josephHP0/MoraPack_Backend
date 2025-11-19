@@ -289,9 +289,10 @@ public class ConversorSimulacionService {
             Instant fechaInicio,
             Instant fechaFin,
             List<T08RutaPlaneada> rutasBloque,
-            MetricasBloqueDTO metricas) {
+            MetricasBloqueDTO metricas,
+            Integer numeroBloque) {
 
-        log.info("Convirtiendo bloque a response: {} rutas", rutasBloque.size());
+        log.info("Convirtiendo bloque a response: {} rutas, numeroBloque={}", rutasBloque.size(), numeroBloque);
 
         // Construir vuelos simulados para este bloque
         List<VueloSimuladoDTO> vuelosDTO = construirVuelosSimulados(rutasBloque, fechaInicio, fechaFin);
@@ -310,7 +311,7 @@ public class ConversorSimulacionService {
             .idResultadoSimulacion(idResultado)
             .fechaInicio(fechaInicio)
             .fechaFin(fechaFin)
-            .numeroBloque(1) // El front puede incrementar esto si necesita
+            .numeroBloque(numeroBloque)
             .vuelos(vuelosDTO)
             .pedidos(pedidosDTO)
             .rutas(rutasDTO)
