@@ -1,7 +1,9 @@
 package com.morapack.nuevomoraback.planificacion.aco;
 
+import com.morapack.nuevomoraback.common.domain.T01Aeropuerto;
 import com.morapack.nuevomoraback.common.domain.T02Pedido;
 import com.morapack.nuevomoraback.common.domain.T04VueloProgramado;
+import com.morapack.nuevomoraback.common.repository.AeropuertoRepository;
 import com.morapack.nuevomoraback.common.repository.VueloProgramadoRepository;
 import com.morapack.nuevomoraback.planificacion.domain.T08RutaPlaneada;
 import com.morapack.nuevomoraback.planificacion.domain.T09TramoAsignado;
@@ -26,6 +28,7 @@ public class AcoPlannerImpl implements AcoPlanner {
     private final HeuristicCalculator heuristicCalculator;
     private final PheromoneMatrix pheromoneMatrix;
     private final VueloProgramadoRepository vueloRepository;
+    private final AeropuertoRepository aeropuertoRepository;
     private final VueloExpansionService vueloExpansionService;
     private final Random random = new Random();
 
@@ -34,6 +37,9 @@ public class AcoPlannerImpl implements AcoPlanner {
 
     // Índice de vuelos por aeropuerto de destino para búsqueda rápida O(1)
     private Map<Integer, List<VueloVirtual>> vuelosPorDestino;
+
+    // IDs de aeropuertos HUB (Lima, Bruselas, Baku)
+    private Set<Integer> aeropuertosHubIds;
 
     @Override
     public List<T08RutaPlaneada> planificar(List<T02Pedido> pedidos,
@@ -52,6 +58,18 @@ public class AcoPlannerImpl implements AcoPlanner {
         log.info("  - Hormigas por iteración: {}", params.getNumeroHormigas());
         log.info("  - Total de construcciones: {}", params.getNumeroIteraciones() * params.getNumeroHormigas());
         log.info("========================================");
+
+        // 0. Cargar aeropuertos HUB (Lima, Bruselas, Baku)
+        if (aeropuertosHubIds == null) {
+            log.info("Cargando aeropuertos HUB...");
+            List<T01Aeropuerto> hubs = aeropuertoRepository.findAeropuertosHub();
+            aeropuertosHubIds = hubs.stream()
+                .map(T01Aeropuerto::getId)
+                .collect(Collectors.toSet());
+            log.info("✓ Aeropuertos HUB cargados: {} (IDs: {})",
+                hubs.stream().map(T01Aeropuerto::getT01CodigoIcao).collect(Collectors.joining(", ")),
+                aeropuertosHubIds);
+        }
 
         // 1. Expandir vuelos plantilla para todo el periodo de simulación
         log.info("Cargando vuelos plantilla con JOIN FETCH (aeropuertos y aviones)...");
@@ -228,6 +246,8 @@ public class AcoPlannerImpl implements AcoPlanner {
             .filter(v -> v.getFechaSalida().isBefore(fechaMaxima))  // < fecha máxima (dentro de 7 días)
             .filter(v -> v.getCapacidadDisponible() >= pedido.getT02Cantidad())
             .filter(v -> !"CANCELADO".equals(v.getEstado()))
+            // RESTRICCIÓN: Solo vuelos que salen de HUBs (Lima, Bruselas, Baku)
+            .filter(v -> esVueloDesdeHub(v))
             .collect(Collectors.toList());
 
         if (candidatos.isEmpty()) {
@@ -335,5 +355,21 @@ public class AcoPlannerImpl implements AcoPlanner {
         });
 
         return rutas;
+    }
+
+    /**
+     * Verifica si un vuelo sale de un aeropuerto HUB (Lima, Bruselas, Baku)
+     */
+    private boolean esVueloDesdeHub(VueloVirtual vuelo) {
+        Integer origenId = vuelo.getOrigen().getId();
+        boolean esHub = aeropuertosHubIds != null && aeropuertosHubIds.contains(origenId);
+
+        if (!esHub) {
+            log.trace("Vuelo {} descartado: origen {} no es HUB",
+                vuelo.getPlantillaId(),
+                vuelo.getOrigen().getT01CodigoIcao());
+        }
+
+        return esHub;
     }
 }

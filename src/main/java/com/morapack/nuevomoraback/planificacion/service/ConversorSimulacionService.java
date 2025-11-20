@@ -297,15 +297,17 @@ public class ConversorSimulacionService {
         // Construir vuelos simulados para este bloque
         List<VueloSimuladoDTO> vuelosDTO = construirVuelosSimulados(rutasBloque, fechaInicio, fechaFin);
 
-        // Construir pedidos detallados del bloque
-        List<PedidoDetalleDTO> pedidosDTO = rutasBloque.stream()
-            .map(this::convertirAPedidoDetalle)
-            .collect(Collectors.toList());
+        // OPTIMIZACIÓN: NO enviar lista de pedidos separada, está duplicada en rutas
+        // El frontend puede extraer pedidos de las rutas si es necesario
+        // Esto reduce significativamente el tamaño de la respuesta JSON
 
-        // Construir rutas completas del bloque
+        // Construir rutas completas del bloque (incluye info de pedidos)
         List<RutaCompletaDTO> rutasDTO = rutasBloque.stream()
             .map(this::convertirARutaCompleta)
             .collect(Collectors.toList());
+
+        log.info("Response optimizado: {} vuelos, {} rutas (pedidos omitidos para reducir payload)",
+            vuelosDTO.size(), rutasDTO.size());
 
         return BloqueSimulacionResponse.builder()
             .idResultadoSimulacion(idResultado)
@@ -313,7 +315,7 @@ public class ConversorSimulacionService {
             .fechaFin(fechaFin)
             .numeroBloque(numeroBloque)
             .vuelos(vuelosDTO)
-            .pedidos(pedidosDTO)
+            .pedidos(null) // Optimización: no enviar lista separada
             .rutas(rutasDTO)
             .metricas(metricas)
             .hayMasBloques(false) // Se setea en el service

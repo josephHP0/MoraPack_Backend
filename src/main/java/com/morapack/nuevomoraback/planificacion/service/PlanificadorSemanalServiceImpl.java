@@ -430,8 +430,13 @@ public class PlanificadorSemanalServiceImpl implements PlanificadorSemanalServic
             );
             log.info("Número de bloque calculado: {}", numeroBloque);
 
-            // 7. Convertir a DTO ANTES de guardar (mientras todo está en memoria)
-            log.info("Convirtiendo rutas a DTO antes de persistir...");
+            // 7. PRIMERO guardar en BD para generar IDs
+            log.info("Guardando rutas en BD para generar IDs...");
+            rutaPlaneadaRepository.saveAll(rutasBloque);
+            log.info("{} rutas guardadas en BD con IDs generados", rutasBloque.size());
+
+            // 8. AHORA convertir a DTO (las rutas ya tienen ID)
+            log.info("Convirtiendo rutas a DTO después de persistir...");
             response = conversorSimulacionService.convertirABloqueResponse(
                 resultado.getId(),
                 request.getFechaInicio(),
@@ -440,11 +445,7 @@ public class PlanificadorSemanalServiceImpl implements PlanificadorSemanalServic
                 metricas,
                 numeroBloque
             );
-            log.info("Conversión completada, procediendo a guardar en BD...");
-
-            // 7. Ahora sí guardar en BD
-            rutaPlaneadaRepository.saveAll(rutasBloque);
-            log.info("{} rutas guardadas en BD", rutasBloque.size());
+            log.info("Conversión completada");
         } else {
             // Sin pedidos, crear response vacío
             tiempoProcesamiento = System.currentTimeMillis() - tiempoInicio;
