@@ -104,7 +104,18 @@ public class FuncionesLectura {
                         lonStr = (parts.length > 8) ? parts[parts.length - 1] : "";
                     }
                     int gmt = gmtStr.isEmpty() ? 0 : Integer.parseInt(gmtStr.replace("+", ""));
-                    int capacity = 850; // or use: Integer.parseInt(capacityStr)
+                    int capacidadInfinita = Integer.MAX_VALUE / 2; // suficientemente grande
+                    int capacity;
+                    if (oaciCode.equals("SPIM") || oaciCode.equals("UBBB") || oaciCode.equals("EBCI")) {
+                        capacity = capacidadInfinita;
+                    } else {
+                        // Intenta parsear capacityStr, si falla usa 850 como valor por defecto
+                        try {
+                            capacity = Integer.parseInt(capacityStr);
+                        } catch (Exception e) {
+                            capacity = 850;
+                        }
+                    }
                     double latitud = latStr.isEmpty() ? 0.0 : convertToDecimalDegrees(latStr);
                     double longitud = lonStr.isEmpty() ? 0.0 : convertToDecimalDegrees(lonStr);
 
