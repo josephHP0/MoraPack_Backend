@@ -156,12 +156,25 @@ public class SocketConnectionHandler extends TextWebSocketHandler {
         //Enviamos la data por primera vez. Tenemos que enviar los paquetes de los últimos dos días. Tal vez todos o solo los que faltan llegar
         enviosEnOperacion.put(session, envioService.getEnviosEntrev2(lastMessageTime.minusDays(1), lastMessageTime.plusSeconds(5)));//cargamos todos los envios de 1 día atrás
 
+        // Log detallado de primera carga
+        logger.info("Primera carga - Enviando # de envios en operación: " + enviosEnOperacion.get(session).size());
+        for (String key : enviosEnOperacion.get(session).keySet()) {
+            Envio envio = enviosEnOperacion.get(session).get(key);
+            logger.info("  Envío: " + envio.getCodigoEnvio() + " | " + envio.getOrigen() + " -> " + envio.getDestino());
+            logger.info("    Paquetes: " + (envio.getPaquetes() != null ? envio.getPaquetes().size() : 0));
+            if (envio.getPaquetes() != null && !envio.getPaquetes().isEmpty()) {
+                for (com.dp1.backend.models.Paquete paq : envio.getPaquetes()) {
+                    logger.info("      Paquete " + paq.getIdPaquete() + " | Ruta: " +
+                        (paq.getRuta() != null ? paq.getRuta().size() + " vuelos" : "SIN RUTA"));
+                }
+            }
+        }
+
         Map<String, Object> messageMap = new HashMap<>();
         messageMap.put("metadata", "primeraCarga");
         messageMap.put("data", enviosEnOperacion.get(session));
         String paquetesRutasJSON = objectMapper.writeValueAsString(messageMap);
         session.sendMessage(new TextMessage(paquetesRutasJSON));
-        logger.info("Enviando # de envios en operación: inicio" + enviosEnOperacion.get(session).size());
 
         diferenciaVuelos = new ArrayList<>();
         for (Vuelo vuelo : vuelosEnElAire.get(session).values()) {
@@ -179,7 +192,7 @@ public class SocketConnectionHandler extends TextWebSocketHandler {
     private void handleDifferenceReal(ZonedDateTime lastMessageTime, ZonedDateTime time, WebSocketSession session, ArrayList<Vuelo> diferenciaVuelos) throws IOException {
         long difference = Duration.between(lastMessageTime, time).toSeconds();
         try {
-            if (difference > 30) {
+            if (difference > 5) {  // Reducido de 30 a 5 segundos para ver updates más rápido
                 HashMap<Integer, Vuelo> nuevosVuelosMap = datosEnMemoriaService.getVuelosEnElAireMap(time);
                 // Vuelos nuevos que se han agregado
                 diferenciaVuelos = new ArrayList<>();
@@ -203,9 +216,22 @@ public class SocketConnectionHandler extends TextWebSocketHandler {
                 messageMap.put("metadata", "nuevosEnvios");
                 messageMap.put("data", enviosNuevos);
 
+                // Log detallado de los envíos nuevos
+                logger.info("Enviando # de envios nuevos: " + enviosNuevos.size());
+                for (String key : enviosNuevos.keySet()) {
+                    Envio envio = enviosNuevos.get(key);
+                    logger.info("  Envío: " + envio.getCodigoEnvio() + " | " + envio.getOrigen() + " -> " + envio.getDestino());
+                    logger.info("    Paquetes: " + (envio.getPaquetes() != null ? envio.getPaquetes().size() : 0));
+                    if (envio.getPaquetes() != null && !envio.getPaquetes().isEmpty()) {
+                        for (com.dp1.backend.models.Paquete paq : envio.getPaquetes()) {
+                            logger.info("      Paquete " + paq.getIdPaquete() + " | Ruta: " +
+                                (paq.getRuta() != null ? paq.getRuta().size() + " vuelos" : "SIN RUTA"));
+                        }
+                    }
+                }
+
                 messageJson = objectMapper.writeValueAsString(messageMap);
                 session.sendMessage(new TextMessage(messageJson));
-                logger.info("Enviando # de envios nuevos: " + enviosNuevos.size());
 
                 HashMap<String, Envio> enviosEnOperacion = envioService.getEnviosEntrev2(lastMessageTime.minusDays(1), lastMessageTime);
                 messageMap.put("metadata", "enviosEnOperacion");

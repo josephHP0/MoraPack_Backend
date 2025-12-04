@@ -8,7 +8,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/morapack5?useSSL=false&serverTimezone=UTC
     username: root
-    password: 2000
+    password: J0s3ph234!
     driver-class-name: com.mysql.cj.jdbc.Driver
 
     hikari:
