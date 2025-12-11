@@ -47,7 +47,7 @@ public class Paquete extends BaseModel{
     // @OrderColumn(name = "ruta_index")  // Changed from "index" to "ruta_index"
     private ArrayList<Integer> ruta;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_ruta", referencedColumnName = "id")
     private RutaPosible rutaPosible;
 

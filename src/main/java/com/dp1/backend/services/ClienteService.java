@@ -27,12 +27,16 @@ public class ClienteService {
             Cliente existingCliente = clienteRepository.findByEmail(cliente.getEmail());
             if (existingCliente != null) {
                 // If a client with the same email already exists, return that client
+                logger.info("Cliente ya existe con email: " + cliente.getEmail() + " - Devolviendo cliente existente con ID: " + existingCliente.getId());
                 return existingCliente;
             }
             logger.info("Creando cliente con datos: " + cliente.getNombre() + " " + cliente.getApellido() + " " + cliente.getEmail() + " " );
-            return clienteRepository.save(cliente);
+            Cliente savedCliente = clienteRepository.save(cliente);
+            logger.info("Cliente creado exitosamente con ID: " + savedCliente.getId());
+            return savedCliente;
         } catch (Exception e) {
-            return null;
+            logger.error("Error al crear cliente: " + e.getMessage(), e);
+            throw new RuntimeException("Error al crear cliente: " + e.getMessage(), e);
         }
     }
 

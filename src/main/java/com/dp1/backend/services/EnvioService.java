@@ -36,19 +36,21 @@ public class EnvioService {
         try {
             Aeropuerto origen = datosEnMemoriaService.getAeropuertos().get(envio.getOrigen());
             Aeropuerto destino = datosEnMemoriaService.getAeropuertos().get(envio.getDestino());
+
             // Agregar fecha de salida considerando la hora actual y la diferencia horaria
-            ZonedDateTime fechaHoraSalida = ZonedDateTime.now();
-            
-            // logger.info("Envío llegando con fecha de salida: " + envio.getFechaHoraSalida());
+            ZonedDateTime fechaHoraSalida = ZonedDateTime.now(origen.getZoneId());
+
+            logger.info("Envío llegando con fecha de salida desde frontend: " + envio.getFechaHoraSalida());
             if(envio.getFechaHoraSalida() != null) {
                 fechaHoraSalida = envio.getFechaHoraSalida();
-            }
-            //Para recuperar la hora original:
-            //1. Las fechas llegan en UTC de una zona horaria Lima (-5), pero realmente son de origen.gmt
-            //2. Se convierte a la zona horaria de origen
-            fechaHoraSalida = fechaHoraSalida.plusHours((-5)-origen.getGmt());
+                logger.info("Fecha recibida del frontend: " + fechaHoraSalida + " (Zona horaria: " + fechaHoraSalida.getZone() + ")");
 
-            // logger.info("Fecha de salida: " + fechaHoraSalida);
+                // Convertir la fecha a la zona horaria del aeropuerto de origen manteniendo el mismo instante
+                fechaHoraSalida = fechaHoraSalida.withZoneSameInstant(origen.getZoneId());
+                logger.info("Fecha convertida a zona horaria del origen (" + origen.getCiudad() + "): " + fechaHoraSalida);
+            }
+
+            logger.info("Fecha de salida final: " + fechaHoraSalida);
             
             Boolean mismoContinente = origen.getContinente().equals(destino.getContinente());
             // Agregar fecha de llegada prevista considerando la hora de salida y la
@@ -211,30 +213,39 @@ public class EnvioService {
     public HashMap<String, Envio> getEnviosEntrev2(ZonedDateTime fechaHoraInicio, ZonedDateTime fechaHoraFin) {
         HashMap<String, Envio> enviosEntre = new HashMap<>();
         try {
+            logger.info("=== BUSCANDO ENVIOS EN VIVO ===");
+            logger.info("Fecha inicio: " + fechaHoraInicio + " (Zona: " + fechaHoraInicio.getZone() + ")");
+            logger.info("Fecha fin: " + fechaHoraFin + " (Zona: " + fechaHoraFin.getZone() + ")");
+
             List<Envio> envios = getEnviosAfterDate(fechaHoraInicio);
-            logger.info("Envios despues de fecha inicio: " + envios.size());
+            logger.info("Total envios encontrados despues de fecha inicio: " + envios.size());
+
+            int enviosEnRango = 0;
             for (Envio envio : envios) {
+                logger.info("Evaluando envio " + envio.getCodigoEnvio() +
+                           " - Fecha salida: " + envio.getFechaHoraSalida() +
+                           " (Zona: " + envio.getFechaHoraSalida().getZone() + ")");
+
                 if (envio.getFechaHoraSalida().isAfter(fechaHoraInicio)
                         && envio.getFechaHoraSalida().isBefore(fechaHoraFin)) {
+                    enviosEnRango++;
+                    logger.info("✓ Envio " + envio.getCodigoEnvio() + " está en el rango");
                     try {
                         List<Paquete> paquetes = paqueteService.getPaquetesByCodigoEnvio(envio.getCodigoEnvio());
                         envio.setPaquetes(paquetes);
                         enviosEntre.put(envio.getCodigoEnvio(), envio);
                     } catch (Exception e) {
-                        // Manejo de excepciones específicas para paquetes
-                        logger.info("Error obteniendo paquetes para el envio: " + envio.getCodigoEnvio(), e);
-                        // Opcionalmente podrías lanzar una excepción personalizada o manejarlo de otra
-                        // manera
+                        logger.error("Error obteniendo paquetes para el envio: " + envio.getCodigoEnvio(), e);
                     }
-                }
-                else{
-                    logger.info("Fecha de salida: " + envio.getFechaHoraSalida());
-                    logger.info("Fecha de fin: " + fechaHoraFin);
+                } else {
+                    logger.info("✗ Envio " + envio.getCodigoEnvio() + " NO está en el rango");
                 }
             }
+
+            logger.info("Envios en rango encontrados: " + enviosEnRango);
+            logger.info("=== FIN BUSQUEDA ENVIOS EN VIVO ===");
         } catch (Exception e) {
-            logger.info("Error obteniendo envíos después de la fecha de inicio: " + fechaHoraInicio);
-            // Lanzar excepción para notificar al controlador
+            logger.error("Error obteniendo envíos después de la fecha de inicio: " + fechaHoraInicio, e);
             throw new RuntimeException("Error al obtener envíos después de la fecha de inicio", e);
         }
         return enviosEntre;

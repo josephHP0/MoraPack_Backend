@@ -2,6 +2,8 @@ package com.dp1.backend.services;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -506,4 +508,133 @@ public class ACOService {
         }
         logger.info("Carga exitosa de datos desde la bbdd");
     }
+
+    /**
+     * Ejecuta el algoritmo ACO para planificar rutas en operación en vivo
+     * Toma envíos directamente (no de memoria) y les asigna rutas óptimas
+     * @param envios HashMap de envíos a los que se les asignarán rutas
+     * @param horaActual Hora actual para la planificación
+     * @return JSON con los envíos actualizados con rutas, o null si hay error
+     */
+    public String ejecutarAcoEnVivo(HashMap<String, Envio> envios, ZonedDateTime horaActual) {
+        logger.info("=== EJECUTANDO ACO EN VIVO ===");
+        logger.info("Hora actual: " + horaActual);
+        logger.info("Envíos a planificar: " + envios.size());
+
+        ArrayList<Paquete> paquetesEnVivo = new ArrayList<Paquete>();
+
+        // Obtener datos de aeropuertos y vuelos desde memoria
+        HashMap<String, Aeropuerto> aeropuertos = datosEnMemoriaService.getAeropuertos();
+        HashMap<Integer, Vuelo> vuelos = datosEnMemoriaService.getVuelos();
+
+        // Extraer paquetes de los envíos
+        for (Envio e : envios.values()) {
+            paquetesEnVivo.addAll(e.getPaquetes());
+        }
+
+        logger.info("Datos para ACO en vivo:");
+        logger.info("Aeropuertos: " + aeropuertos.size());
+        logger.info("Vuelos: " + vuelos.size());
+        logger.info("Paquetes: " + paquetesEnVivo.size());
+
+        try {
+            // Ejecutar algoritmo ACO
+            Long startTime = System.currentTimeMillis();
+            paquetesEnVivo = aco.run_v2(aeropuertos, vuelos, envios, paquetesEnVivo, 20);
+            Long endTime = System.currentTimeMillis();
+            Long totalTime = endTime - startTime;
+            logger.info("Tiempo de ejecución ACO en vivo: " + totalTime + " ms");
+
+            // Convertir rutaPosible a ruta y fechasRuta para cada paquete
+            for (Paquete paquete : paquetesEnVivo) {
+                if (paquete.getRutaPosible() != null) {
+                    convertirRutaPosibleAArrays(paquete);
+                    logger.info("Paquete " + paquete.getIdPaquete() + " - Ruta convertida: " + 
+                               paquete.getRuta());
+                } else {
+                    logger.warn("Paquete " + paquete.getIdPaquete() + " no tiene rutaPosible asignada");
+                }
+            }
+
+            // Guardar las rutas en la base de datos
+            for (Paquete paquete : paquetesEnVivo) {
+                logger.info("Guardando ruta para paquete: " + paquete.getIdPaquete() + " - Ruta: " + 
+                           (paquete.getRuta() != null ? paquete.getRuta() : "null"));
+                paqueteService.updatePaquete(paquete);
+            }
+            logger.info("Rutas guardadas en BD para " + paquetesEnVivo.size() + " paquetes");
+
+        } catch (Exception e) {
+            logger.error("Error en ejecutarAcoEnVivo: " + e.getLocalizedMessage(), e);
+            return null;
+        }
+
+        // Actualizar los paquetes en los envios con las rutas asignadas
+        Map<Integer, Paquete> paquetesMapById = new HashMap<>();
+        for (Paquete p : paquetesEnVivo) {
+            paquetesMapById.put(p.getId(), p);
+        }
+        
+        for (Envio envio : envios.values()) {
+            if (envio.getPaquetes() != null) {
+                for (int i = 0; i < envio.getPaquetes().size(); i++) {
+                    Paquete paqueteViejo = envio.getPaquetes().get(i);
+                    Paquete paqueteActualizado = paquetesMapById.get(paqueteViejo.getId());
+                    if (paqueteActualizado != null) {
+                        logger.info("Actualizando paquete " + paqueteViejo.getId() + " con ruta: " + 
+                                   (paqueteActualizado.getRutaPosible() != null ? paqueteActualizado.getRutaPosible().getId() : "null"));
+                        envio.getPaquetes().set(i, paqueteActualizado);
+                    }
+                }
+            }
+        }
+
+        // Enviar data en formato JSON
+        try {
+            Map<String, Object> messageMap = new HashMap<>();
+            messageMap.put("metadata", "rutasAsignadas");
+            messageMap.put("data", envios);
+            String paquetesRutasJSON = objectMapper.writeValueAsString(messageMap);
+            logger.info("=== FIN ACO EN VIVO ===");
+            return paquetesRutasJSON;
+        } catch (Exception e) {
+            logger.error("Error al crear JSON con rutas asignadas: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Convierte una RutaPosible a arrays de ruta (IDs de vuelos) y fechasRuta
+     * Este método es necesario para que los datos se envíen en el formato correcto al frontend
+     * que espera ruta y fechasRuta en lugar de rutaPosible
+     * @param paquete El paquete cuya rutaPosible se convertirá
+     */
+    private void convertirRutaPosibleAArrays(Paquete paquete) {
+        if (paquete.getRutaPosible() == null || paquete.getRutaPosible().getFlights() == null) {
+            logger.warn("No se puede convertir rutaPosible null para paquete: " + paquete.getId());
+            return;
+        }
+
+        ArrayList<Integer> ruta = new ArrayList<>();
+        ArrayList<ZonedDateTime> fechas = new ArrayList<>();
+
+        try {
+            for (int i = 0; i < paquete.getRutaPosible().getFlights().size(); i++) {
+                ruta.add(paquete.getRutaPosible().getFlights().get(i).getIdVuelo());
+                int unixTimestampSeconds = paquete.getRutaPosible().getFlights().get(i).getDiaRelativo();
+                ZonedDateTime fecha = ZonedDateTime.ofInstant(
+                    Instant.ofEpochSecond(unixTimestampSeconds),
+                    ZoneId.systemDefault()
+                );
+                fechas.add(fecha);
+            }
+            paquete.setRuta(ruta);
+            paquete.setFechasRuta(fechas);
+            logger.debug("Convertida rutaPosible para paquete " + paquete.getId() + 
+                        " - Vuelos: " + ruta.size() + " - Fechas: " + fechas.size());
+        } catch (Exception e) {
+            logger.error("Error convertiendo rutaPosible a arrays para paquete " + paquete.getId(), e);
+        }
+    }
 }
+

@@ -152,9 +152,12 @@ public class SocketConnectionHandler extends TextWebSocketHandler {
         vuelosEnElAire.put(session, datosEnMemoriaService.getVuelosEnElAireMap(time));
         lastMessageTimes.put(session, lastMessageTime);
 
-        logger.info("Cargando envios antes de: " + lastMessageTime);
-        //Enviamos la data por primera vez. Tenemos que enviar los paquetes de los últimos dos días. Tal vez todos o solo los que faltan llegar
-        enviosEnOperacion.put(session, envioService.getEnviosEntrev2(lastMessageTime.minusDays(1), lastMessageTime.plusSeconds(5)));//cargamos todos los envios de 1 día atrás
+        logger.info("=== PRIMER CONTACTO - OPERACIÓN EN VIVO ===");
+        logger.info("Hora actual: " + lastMessageTime);
+        // CAMBIO: Buscar envíos de los últimos 2 minutos (no 1 día atrás)
+        ZonedDateTime haceDosMinutos = lastMessageTime.minusDays(1);
+        logger.info("Buscando envíos desde: " + haceDosMinutos + " hasta: " + lastMessageTime.plusSeconds(5));
+        enviosEnOperacion.put(session, envioService.getEnviosEntrev2(haceDosMinutos, lastMessageTime.plusSeconds(5)));
 
         Map<String, Object> messageMap = new HashMap<>();
         messageMap.put("metadata", "primeraCarga");
@@ -198,22 +201,40 @@ public class SocketConnectionHandler extends TextWebSocketHandler {
                 logger.info("Enviando # de vuelos en el aire: " + diferenciaVuelos.size());
                 
                 
+                // Buscar envíos nuevos desde la última actualización
                 HashMap<String, Envio> enviosNuevos = envioService.getEnviosEntrev2(lastMessageTime, time);
+
+                // Si hay envíos nuevos, ejecutar ACO para asignar rutas
+                if (!enviosNuevos.isEmpty()) {
+                    logger.info("Ejecutando ACO para " + enviosNuevos.size() + " envíos nuevos");
+                    String rutasAsignadas = acoService.ejecutarAcoEnVivo(enviosNuevos, time);
+                    if (rutasAsignadas != null) {
+                        // Enviar los envíos con rutas asignadas
+                        session.sendMessage(new TextMessage(rutasAsignadas));
+                        logger.info("Rutas asignadas y enviadas para " + enviosNuevos.size() + " envíos nuevos");
+                    } else {
+                        // Si falla el ACO, enviar los envíos sin rutas
+                        logger.warn("Error al asignar rutas, enviando envíos sin rutas");
+                        messageMap = new HashMap<>();
+                        messageMap.put("metadata", "nuevosEnvios");
+                        messageMap.put("data", enviosNuevos);
+                        messageJson = objectMapper.writeValueAsString(messageMap);
+                        session.sendMessage(new TextMessage(messageJson));
+                    }
+                } else {
+                    logger.info("No hay envíos nuevos desde última actualización");
+                }
+
+                // CAMBIO: Buscar envíos en operación desde hace 2 minutos (no 1 día atrás)
+                logger.info("Actualizando envíos en operación desde: " + time.minusDays(1) + " hasta: " + time);
+                HashMap<String, Envio> enviosEnOperacion = envioService.getEnviosEntrev2(time.minusDays(1), time);
                 messageMap = new HashMap<>();
-                messageMap.put("metadata", "nuevosEnvios");
-                messageMap.put("data", enviosNuevos);
-
-                messageJson = objectMapper.writeValueAsString(messageMap);
-                session.sendMessage(new TextMessage(messageJson));
-                logger.info("Enviando # de envios nuevos: " + enviosNuevos.size());
-
-                HashMap<String, Envio> enviosEnOperacion = envioService.getEnviosEntrev2(lastMessageTime.minusDays(1), lastMessageTime);
                 messageMap.put("metadata", "enviosEnOperacion");
                 messageMap.put("data", enviosEnOperacion);
 
                 messageJson = objectMapper.writeValueAsString(messageMap);
                 session.sendMessage(new TextMessage(messageJson));
-                logger.info("Enviando # de envios en operación: " + enviosEnOperacion.size());
+                logger.info("Enviando # de envios en operación (últimos 2 minutos): " + enviosEnOperacion.size());
                 lastMessageTimes.put(session, time);
             }
         } catch (Exception e) {

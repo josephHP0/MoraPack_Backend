@@ -16,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableCaching
 public class BackendApplication {
     private static final Logger logger = LogManager.getLogger(BackendApplication.class);
+
     public static void main(String[] args) {
         SpringApplication.run(BackendApplication.class, args);
     }
