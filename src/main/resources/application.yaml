@@ -6,9 +6,9 @@ spring:
       enabled: true
 
   datasource:
-    url: jdbc:mysql://localhost:3306/morapack5?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/dp1?useSSL=false&serverTimezone=UTC
     username: root
-    password: J0s3ph234!
+    password: 12345
     driver-class-name: com.mysql.cj.jdbc.Driver
 
     hikari:

@@ -299,12 +299,27 @@ public class DatosEnMemoriaService {
     }
 
     public void cargarEnviosDesdeHasta(ZonedDateTime horaActual) {
+        cargarEnviosDesdeHasta(horaActual, false);
+    }
+
+    public void cargarEnviosDesdeHasta(ZonedDateTime horaActual, boolean esSimulacionColapso) {
         envios.clear();
-        // Modifico la horaActual para que pueda tener data para el inicio de mi
-        // simulación semanal, la cual tomará
-        // como máximo de 3 dias antes de la fecha de simulación.
-        ZonedDateTime horaActualMenos3Dias = horaActual.minusDays(3);
-        ZonedDateTime horaFin = horaActual.plusDays(7);
+        // Ventana de datos condicional según tipo de simulación
+        ZonedDateTime horaActualMenos3Dias;
+        ZonedDateTime horaFin;
+        
+        if (esSimulacionColapso) {
+            // Simulación de colapso: ventana expandida (36 días total) - colapso en día 33
+            // 3 días atrás para evitar buscar datos inexistentes antes de 2025-01-02
+            horaActualMenos3Dias = horaActual.minusDays(3);
+            horaFin = horaActual.plusDays(33);
+            logger.info("Cargando envíos para simulación de COLAPSO (36 días)");
+        } else {
+            // Simulación semanal: ventana normal (10 días total)
+            horaActualMenos3Dias = horaActual.minusDays(3);
+            horaFin = horaActual.plusDays(7);
+            logger.info("Cargando envíos para simulación SEMANAL (10 días)");
+        }
         try (Stream<Path> paths = Files.walk(Paths.get(workingDirectory + "data/envios/"))) {
             paths
                     .filter(Files::isRegularFile)

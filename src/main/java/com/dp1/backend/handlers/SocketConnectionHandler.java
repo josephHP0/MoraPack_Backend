@@ -124,10 +124,12 @@ public class SocketConnectionHandler extends TextWebSocketHandler {
                     tipoConexion.put(session, 2);
                 } else if (identifier.equals("simulacionSemanal")) {
                     tipoConexion.put(session, 1);
+                } else if (identifier.equals("simulacionColapso")) {
+                    tipoConexion.put(session, 3);
                 }
             }
 
-            if(tipoConexion.get(session) == 1){
+            if(tipoConexion.get(session) == 1 || tipoConexion.get(session) == 3){
                 if (lastMessageTime == null) {
                     handlePrimerContactoSimulacion(simulatedTime, session, lastMessageTime, algorLastTime, diferenciaVuelos);
                     return;
@@ -251,7 +253,8 @@ public class SocketConnectionHandler extends TextWebSocketHandler {
         lastAlgorTimes.put(session, algorLastTime);
 
         //Enviamos la data por primera vez
-        datosEnMemoriaService.cargarEnviosDesdeHasta(lastMessageTime);//cargamos todos los envios de la semana
+        boolean esSimulacionColapso = tipoConexion.get(session) == 3;
+        datosEnMemoriaService.cargarEnviosDesdeHasta(lastMessageTime, esSimulacionColapso);//cargamos todos los envios con ventana apropiada
         String paquetesConRutas = acoService.ejecutarAcoInicial(simulatedTime.minusDays(1),simulatedTime);
         session.sendMessage(new TextMessage(paquetesConRutas));
 
@@ -275,7 +278,12 @@ public class SocketConnectionHandler extends TextWebSocketHandler {
         long difference = Duration.between(lastMessageTime, simulatedTime).toMinutes();
             // System.out.println("Difference: " + difference);
             try {
-                if (difference > 20) {
+                // Para simulación de colapso: actualizar cada 60 minutos para evitar parpadeo constante
+                // Para simulación semanal: actualizar cada 20 minutos
+                boolean esSimulacionColapso = tipoConexion.get(session) == 3;
+                long umbralActualizacion = esSimulacionColapso ? 60 : 20;
+
+                if (difference > umbralActualizacion) {
                     // session.sendMessage(new TextMessage("15 minute has passed since the last
                     // message"));
                     // logger.info("15 minute has passed since the last message");
@@ -304,6 +312,16 @@ public class SocketConnectionHandler extends TextWebSocketHandler {
             difference = Duration.between(algorLastTime, simulatedTime).toMinutes();
             try {
                 if (difference > 180) {
+                    // IMPORTANTE: Recargar envíos para la ventana actual de simulación
+                    // Esto asegura que siempre tengamos datos frescos para procesar
+                    boolean esSimulacionColapso = tipoConexion.get(session) == 3;
+                    if (esSimulacionColapso) {
+                        logger.info("Recargando envíos para COLAPSO desde: " + simulatedTime.minusDays(3) + " hasta: " + simulatedTime.plusDays(33));
+                    } else {
+                        logger.info("Recargando envíos para SEMANAL desde: " + simulatedTime.minusDays(3) + " hasta: " + simulatedTime.plusDays(7));
+                    }
+                    datosEnMemoriaService.cargarEnviosDesdeHasta(simulatedTime, esSimulacionColapso);
+
                     String paquetesConRutas = acoService.ejecutarAcoSimulacion(simulatedTime);
                     session.sendMessage(new TextMessage(paquetesConRutas));
                     logger.info("Enviando resultado del algoritmo 'para los vuelos en el aire'");
