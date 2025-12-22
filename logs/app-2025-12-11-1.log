@@ -1,0 +1,804 @@
+2025-12-11 00:00:07.556 [main] INFO  com.dp1.backend.BackendApplication - Starting BackendApplication using Java 24.0.1 with PID 24504 (C:\Users\Joseph\Documents\PUCP\25-2\Dp1\Nuevo\Back\MoraPack_Backend\target\classes started by Joseph in C:\Users\Joseph\Documents\PUCP\25-2\Dp1\Nuevo\Back\MoraPack_Backend)
+2025-12-11 00:00:07.598 [main] INFO  com.dp1.backend.BackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-12-11 00:00:14.484 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-11 00:00:14.671 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 163 ms. Found 10 JPA repository interfaces.
+2025-12-11 00:00:15.874 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2025-12-11 00:00:15.904 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2025-12-11 00:00:15.912 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2025-12-11 00:00:15.913 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-12-11 00:00:16.035 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-12-11 00:00:16.037 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 8299 ms
+2025-12-11 00:00:16.423 [main] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-11 00:00:16.600 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2025-12-11 00:00:16.704 [main] INFO  org.hibernate.cache.internal.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-12-11 00:00:17.255 [main] INFO  org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-11 00:00:17.325 [main] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2025-12-11 00:00:17.326 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-12-11 00:00:17.739 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@54687fd0
+2025-12-11 00:00:17.742 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-12-11 00:00:20.573 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-12-11 00:00:20.889 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-11 00:00:20.920 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Inicializando DatosEnMemoriaService con working directory: C:\Users\Joseph\Documents\PUCP\25-2\Dp1\Nuevo\Back\MoraPack_Backend
+2025-12-11 00:00:20.933 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Aeropuertos cargados: 30
+2025-12-11 00:00:21.009 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Vuelos cargados: 2866
+2025-12-11 00:00:21.496 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo rutas posibles
+2025-12-11 00:00:21.873 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Colecciones rutas: 0
+2025-12-11 00:00:21.876 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Rutas posibles set: 0
+2025-12-11 00:00:22.222 [main] INFO  org.springframework.data.jpa.repository.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-12-11 00:00:23.840 [main] WARN  org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-11 00:00:24.699 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2025-12-11 00:00:24.755 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/api'
+2025-12-11 00:00:24.772 [main] INFO  com.dp1.backend.BackendApplication - Started BackendApplication in 18.321 seconds (process running for 22.237)
+2025-12-11 00:00:55.783 [http-nio-8081-exec-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-11 00:00:55.784 [http-nio-8081-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-12-11 00:00:55.787 [http-nio-8081-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+2025-12-11 00:00:56.054 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - ad78d29a-687d-52c4-e899-7a89ff030fed  conectado al socket
+2025-12-11 00:00:56.359 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - === PRIMER CONTACTO - OPERACIÓN EN VIVO ===
+2025-12-11 00:00:56.359 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Hora actual: 2025-12-11T00:00:56-05:00[America/Lima]
+2025-12-11 00:00:56.361 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Buscando envíos desde: 2025-12-10T00:00:56-05:00[America/Lima] hasta: 2025-12-11T00:01:01-05:00[America/Lima]
+2025-12-11 00:00:56.362 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:00:56.363 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:00:56-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:00:56.364 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:01:01-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:00:56.600 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 1
+2025-12-11 00:00:56.601 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:00:56.602 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:00:56.630 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 1
+2025-12-11 00:00:56.630 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:00:56.680 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación: inicio1
+2025-12-11 00:00:56.758 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: inicio1154
+2025-12-11 00:01:29.155 [http-nio-8081-exec-6] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 7
+2025-12-11 00:01:29.155 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:01:29.156 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:00:56-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:01:29.157 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:01:27-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:01:29.169 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:01:29.170 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:01:29.170 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:01:29.171 [http-nio-8081-exec-6] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:01:29.172 [http-nio-8081-exec-6] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:01:27-05:00[America/Lima] hasta: 2025-12-11T00:01:27-05:00[America/Lima]
+2025-12-11 00:01:29.173 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:01:29.173 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:01:27-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:01:29.174 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:01:27-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:01:29.200 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 1
+2025-12-11 00:01:29.201 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:01:29.202 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:01:29.228 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 1
+2025-12-11 00:01:29.230 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:01:29.232 [http-nio-8081-exec-6] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 1
+2025-12-11 00:02:00.152 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 0
+2025-12-11 00:02:00.154 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:02:00.155 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:01:27-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:02:00.156 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:01:58-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:02:00.167 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:02:00.168 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:02:00.168 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:02:00.170 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:02:00.170 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:01:58-05:00[America/Lima] hasta: 2025-12-11T00:01:58-05:00[America/Lima]
+2025-12-11 00:02:00.172 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:02:00.172 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:01:58-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:02:00.173 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:01:58-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:02:00.194 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 1
+2025-12-11 00:02:00.195 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:02:00.197 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:02:00.216 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 1
+2025-12-11 00:02:00.218 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:02:00.222 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 1
+2025-12-11 00:02:31.164 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 3
+2025-12-11 00:02:31.165 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:02:31.165 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:01:58-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:02:31.166 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:02:29-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:02:31.174 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:02:31.174 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:02:31.175 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:02:31.175 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:02:31.176 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:02:29-05:00[America/Lima] hasta: 2025-12-11T00:02:29-05:00[America/Lima]
+2025-12-11 00:02:31.178 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:02:31.180 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:02:29-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:02:31.181 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:02:29-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:02:31.201 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 1
+2025-12-11 00:02:31.202 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:02:31.203 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:02:31.217 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 1
+2025-12-11 00:02:31.225 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:02:31.228 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 1
+2025-12-11 00:02:43.557 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ClienteService - Creando cliente con datos: strh 4jmdy qqqq@qqq.com 
+2025-12-11 00:02:43.687 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ClienteService - Cliente creado exitosamente con ID: 11
+2025-12-11 00:02:43.717 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.ClienteService - Creando cliente con datos: dfgbdf dfvdf dfsd@csd.com 
+2025-12-11 00:02:43.750 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.ClienteService - Cliente creado exitosamente con ID: 12
+2025-12-11 00:02:43.807 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Envío llegando con fecha de salida desde frontend: null
+2025-12-11 00:02:43.807 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Fecha de salida final: 2025-12-11T07:02:43.807861700+02:00
+2025-12-11 00:02:43.845 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Todo bien hasta primer guardado
+2025-12-11 00:02:43.911 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Todo bien hasta segundo guardado
+2025-12-11 00:02:44.115 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Todo bien hasta guardado de paquetes
+2025-12-11 00:03:02.155 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 0
+2025-12-11 00:03:02.156 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:03:02.156 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:02:29-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:03:02.156 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:03-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:03:02.168 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 1
+2025-12-11 00:03:02.170 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:03:02.171 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:03:02.182 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 1
+2025-12-11 00:03:02.182 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:03:02.183 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Ejecutando ACO para 1 envíos nuevos
+2025-12-11 00:03:02.183 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.ACOService - === EJECUTANDO ACO EN VIVO ===
+2025-12-11 00:03:02.184 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.ACOService - Hora actual: 2025-12-11T00:03-05:00[America/Lima]
+2025-12-11 00:03:02.185 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.ACOService - Envíos a planificar: 1
+2025-12-11 00:03:02.186 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.ACOService - Datos para ACO en vivo:
+2025-12-11 00:03:02.188 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.ACOService - Aeropuertos: 30
+2025-12-11 00:03:02.190 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.ACOService - Vuelos: 2866
+2025-12-11 00:03:02.192 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.ACOService - Paquetes: 10
+2025-12-11 00:03:02.331 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.ACOService - Tiempo de ejecución ACO en vivo: 137 ms
+2025-12-11 00:03:02.541 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.ACOService - Rutas guardadas en BD para 10 paquetes
+2025-12-11 00:03:02.557 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.ACOService - === FIN ACO EN VIVO ===
+2025-12-11 00:03:02.560 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Rutas asignadas y enviadas para 1 envíos nuevos
+2025-12-11 00:03:02.561 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:03-05:00[America/Lima] hasta: 2025-12-11T00:03-05:00[America/Lima]
+2025-12-11 00:03:02.562 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:03:02.562 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:03-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:03:02.563 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:03-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:03:02.592 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:03:02.592 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:03:02.593 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:03:02.611 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:03:02.612 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:03:02.631 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:03:02.631 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:03:02.635 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:03:33.154 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 0
+2025-12-11 00:03:33.155 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:03:33.155 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:03-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:03:33.155 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:03:31-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:03:33.165 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:03:33.165 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:03:33.166 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:03:33.166 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:03:33.166 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:03:31-05:00[America/Lima] hasta: 2025-12-11T00:03:31-05:00[America/Lima]
+2025-12-11 00:03:33.167 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:03:33.167 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:03:31-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:03:33.169 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:03:31-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:03:33.197 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:03:33.198 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:03:33.205 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:03:33.236 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:03:33.238 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:03:33.269 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:03:33.270 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:03:33.274 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:04:04.158 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 1
+2025-12-11 00:04:04.158 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:04:04.158 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:03:31-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:04:04.158 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:04:02-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:04:04.166 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:04:04.168 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:04:04.168 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:04:04.169 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:04:04.170 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:04:02-05:00[America/Lima] hasta: 2025-12-11T00:04:02-05:00[America/Lima]
+2025-12-11 00:04:04.170 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:04:04.170 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:04:02-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:04:04.170 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:04:02-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:04:04.229 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:04:04.315 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:04:04.332 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:04:04.370 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:04:04.371 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:04:04.397 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:04:04.398 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:04:04.400 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:04:16.393 [http-nio-8081-exec-5] INFO  com.dp1.backend.handlers.SocketConnectionHandler - ad78d29a-687d-52c4-e899-7a89ff030fed  desconectado del socket
+2025-12-11 00:04:33.828 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - 15bf579f-310d-1e61-08e0-375bf3154478  conectado al socket
+2025-12-11 00:04:34.016 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - === PRIMER CONTACTO - OPERACIÓN EN VIVO ===
+2025-12-11 00:04:34.016 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Hora actual: 2025-12-11T00:04:34-05:00[America/Lima]
+2025-12-11 00:04:34.017 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Buscando envíos desde: 2025-12-10T00:04:34-05:00[America/Lima] hasta: 2025-12-11T00:04:39-05:00[America/Lima]
+2025-12-11 00:04:34.017 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:04:34.018 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:04:34-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:04:34.018 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:04:39-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:04:34.041 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:04:34.044 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:04:34.045 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:04:34.056 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:04:34.057 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:04:34.085 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:04:34.087 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:04:34.100 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación: inicio2
+2025-12-11 00:04:34.153 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: inicio1158
+2025-12-11 00:04:50.326 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - 15bf579f-310d-1e61-08e0-375bf3154478  desconectado del socket
+2025-12-11 00:04:57.238 [http-nio-8081-exec-6] INFO  com.dp1.backend.handlers.SocketConnectionHandler - e3a850d0-f0cf-80ab-2322-7389e0465dc1  conectado al socket
+2025-12-11 00:04:57.471 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - === PRIMER CONTACTO - OPERACIÓN EN VIVO ===
+2025-12-11 00:04:57.472 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Hora actual: 2025-12-11T00:04:57-05:00[America/Lima]
+2025-12-11 00:04:57.472 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Buscando envíos desde: 2025-12-10T00:04:57-05:00[America/Lima] hasta: 2025-12-11T00:05:02-05:00[America/Lima]
+2025-12-11 00:04:57.474 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:04:57.475 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:04:57-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:04:57.475 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:05:02-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:04:57.502 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:04:57.504 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:04:57.505 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:04:57.528 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:04:57.530 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:04:57.555 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:04:57.556 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:04:57.560 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación: inicio2
+2025-12-11 00:04:57.615 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: inicio1158
+2025-12-11 00:05:29.209 [http-nio-8081-exec-2] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 0
+2025-12-11 00:05:29.209 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:05:29.210 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:04:57-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:05:29.210 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:05:28-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:05:29.216 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:05:29.216 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:05:29.217 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:05:29.217 [http-nio-8081-exec-2] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:05:29.218 [http-nio-8081-exec-2] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:05:28-05:00[America/Lima] hasta: 2025-12-11T00:05:28-05:00[America/Lima]
+2025-12-11 00:05:29.219 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:05:29.219 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:05:28-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:05:29.219 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:05:28-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:05:29.235 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:05:29.237 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:05:29.239 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:05:29.258 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:05:29.258 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:05:29.281 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:05:29.281 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:05:29.284 [http-nio-8081-exec-2] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:06:00.213 [http-nio-8081-exec-10] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 0
+2025-12-11 00:06:00.213 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:06:00.213 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:05:28-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:06:00.215 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:05:59-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:06:00.224 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:06:00.224 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:06:00.224 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:06:00.224 [http-nio-8081-exec-10] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:06:00.225 [http-nio-8081-exec-10] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:05:59-05:00[America/Lima] hasta: 2025-12-11T00:05:59-05:00[America/Lima]
+2025-12-11 00:06:00.225 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:06:00.226 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:05:59-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:06:00.226 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:05:59-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:06:00.247 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:06:00.248 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:06:00.248 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:06:00.265 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:06:00.265 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:06:00.282 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:06:00.436 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:06:00.441 [http-nio-8081-exec-10] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:06:31.211 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 5
+2025-12-11 00:06:31.211 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:06:31.212 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:05:59-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:06:31.217 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:06:30-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:06:31.240 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:06:31.240 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:06:31.241 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:06:31.242 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:06:31.242 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:06:30-05:00[America/Lima] hasta: 2025-12-11T00:06:30-05:00[America/Lima]
+2025-12-11 00:06:31.243 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:06:31.244 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:06:30-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:06:31.244 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:06:30-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:06:31.273 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:06:31.274 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:06:31.274 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:06:31.291 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:06:31.291 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:06:31.303 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:06:31.304 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:06:31.308 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:07:02.204 [http-nio-8081-exec-5] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 0
+2025-12-11 00:07:02.205 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:07:02.205 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:06:30-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:07:02.206 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:07:01-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:07:02.213 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:07:02.214 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:07:02.214 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:07:02.214 [http-nio-8081-exec-5] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:07:02.214 [http-nio-8081-exec-5] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:07:01-05:00[America/Lima] hasta: 2025-12-11T00:07:01-05:00[America/Lima]
+2025-12-11 00:07:02.215 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:07:02.215 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:07:01-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:07:02.215 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:07:01-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:07:02.243 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:07:02.244 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:07:02.244 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:07:02.252 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:07:02.253 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:07:02.273 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:07:02.273 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:07:02.276 [http-nio-8081-exec-5] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:07:33.546 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 0
+2025-12-11 00:07:33.548 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:07:33.548 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:07:01-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:07:33.549 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:07:32-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:07:33.565 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:07:33.566 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:07:33.567 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:07:33.568 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:07:33.570 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:07:32-05:00[America/Lima] hasta: 2025-12-11T00:07:32-05:00[America/Lima]
+2025-12-11 00:07:33.572 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:07:33.575 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:07:32-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:07:33.578 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:07:32-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:07:33.618 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:07:33.620 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:07:33.621 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:07:33.648 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:07:33.651 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:07:33.682 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:07:33.684 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:07:33.688 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:08:04.546 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 2
+2025-12-11 00:08:04.547 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:08:04.550 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:07:32-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:08:04.551 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:08:03-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:08:04.562 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:08:04.564 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:08:04.564 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:08:04.564 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:08:04.565 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:08:03-05:00[America/Lima] hasta: 2025-12-11T00:08:03-05:00[America/Lima]
+2025-12-11 00:08:04.565 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:08:04.566 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:08:03-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:08:04.567 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:08:03-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:08:04.594 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:08:04.595 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:08:04.596 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:08:04.607 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:08:04.609 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:08:04.631 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:08:04.631 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:08:04.634 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:09:40.437 [SpringApplicationShutdownHook] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-12-11 00:09:40.482 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-12-11 00:09:40.582 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-12-11 00:09:40.614 [SpringApplicationShutdownHook] INFO  com.dp1.backend.handlers.SocketConnectionHandler - e3a850d0-f0cf-80ab-2322-7389e0465dc1  desconectado del socket
+2025-12-11 00:15:22.571 [main] INFO  com.dp1.backend.BackendApplication - Starting BackendApplication using Java 24.0.1 with PID 4248 (C:\Users\Joseph\Documents\PUCP\25-2\Dp1\Nuevo\Back\MoraPack_Backend\target\classes started by Joseph in C:\Users\Joseph\Documents\PUCP\25-2\Dp1\Nuevo\Back\MoraPack_Backend)
+2025-12-11 00:15:22.597 [main] INFO  com.dp1.backend.BackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-12-11 00:15:24.778 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-11 00:15:25.050 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 237 ms. Found 10 JPA repository interfaces.
+2025-12-11 00:15:26.514 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2025-12-11 00:15:26.550 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2025-12-11 00:15:26.561 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2025-12-11 00:15:26.562 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-12-11 00:15:26.712 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-12-11 00:15:26.715 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3985 ms
+2025-12-11 00:15:27.202 [main] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-11 00:15:27.397 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2025-12-11 00:15:27.515 [main] INFO  org.hibernate.cache.internal.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-12-11 00:15:28.244 [main] INFO  org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-11 00:15:28.335 [main] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2025-12-11 00:15:28.336 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-12-11 00:15:28.898 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1b317e7d
+2025-12-11 00:15:28.903 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-12-11 00:15:32.248 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-12-11 00:15:32.627 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-11 00:15:32.661 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Inicializando DatosEnMemoriaService con working directory: C:\Users\Joseph\Documents\PUCP\25-2\Dp1\Nuevo\Back\MoraPack_Backend
+2025-12-11 00:15:32.676 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Aeropuertos cargados: 30
+2025-12-11 00:15:32.763 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Vuelos cargados: 2866
+2025-12-11 00:15:33.343 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo rutas posibles
+2025-12-11 00:15:33.774 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Colecciones rutas: 0
+2025-12-11 00:15:33.774 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Rutas posibles set: 0
+2025-12-11 00:15:34.166 [main] INFO  org.springframework.data.jpa.repository.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-12-11 00:15:35.957 [main] WARN  org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-11 00:15:37.352 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2025-12-11 00:15:37.456 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/api'
+2025-12-11 00:15:37.482 [main] INFO  com.dp1.backend.BackendApplication - Started BackendApplication in 16.219 seconds (process running for 19.595)
+2025-12-11 00:16:53.121 [http-nio-8081-exec-3] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-11 00:16:53.122 [http-nio-8081-exec-3] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-12-11 00:16:53.126 [http-nio-8081-exec-3] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+2025-12-11 00:16:53.377 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - 84347f06-1052-185c-1106-10977ee8b50e  conectado al socket
+2025-12-11 00:16:53.667 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - === PRIMER CONTACTO - OPERACIÓN EN VIVO ===
+2025-12-11 00:16:53.668 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Hora actual: 2025-12-11T00:16:53-05:00[America/Lima]
+2025-12-11 00:16:53.668 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Buscando envíos desde: 2025-12-10T00:16:53-05:00[America/Lima] hasta: 2025-12-11T00:16:58-05:00[America/Lima]
+2025-12-11 00:16:53.669 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:16:53.670 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:16:53-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:16:53.672 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:16:58-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:16:53.906 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:16:53.908 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:16:53.908 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:16:53.932 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:16:53.932 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:16:53.988 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:16:53.989 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:16:54.035 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación: inicio2
+2025-12-11 00:16:54.104 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: inicio1165
+2025-12-11 00:17:26.534 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 2
+2025-12-11 00:17:26.535 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:17:26.535 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:16:53-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:17:26.536 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:17:24-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:17:26.545 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:17:26.545 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:17:26.546 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:17:26.547 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:17:26.548 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:17:24-05:00[America/Lima] hasta: 2025-12-11T00:17:24-05:00[America/Lima]
+2025-12-11 00:17:26.548 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:17:26.548 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:17:24-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:17:26.549 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:17:24-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:17:26.583 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:17:26.589 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:17:26.590 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:17:26.606 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:17:26.607 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:17:26.629 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:17:26.630 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:17:26.633 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:17:57.557 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 0
+2025-12-11 00:17:57.559 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:17:57.561 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:17:24-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:17:57.563 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:17:55-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:17:57.581 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:17:57.583 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:17:57.584 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:17:57.584 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:17:57.586 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:17:55-05:00[America/Lima] hasta: 2025-12-11T00:17:55-05:00[America/Lima]
+2025-12-11 00:17:57.590 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:17:57.591 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:17:55-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:17:57.592 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:17:55-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:17:57.627 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:17:57.628 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:17:57.629 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:17:57.650 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:17:57.652 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:17:57.682 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:17:57.683 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:17:57.685 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:18:28.550 [http-nio-8081-exec-5] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 1
+2025-12-11 00:18:28.551 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:18:28.552 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:17:55-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:18:28.553 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:18:26-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:18:28.563 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:18:28.564 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:18:28.565 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:18:28.566 [http-nio-8081-exec-5] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:18:28.568 [http-nio-8081-exec-5] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:18:26-05:00[America/Lima] hasta: 2025-12-11T00:18:26-05:00[America/Lima]
+2025-12-11 00:18:28.569 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:18:28.571 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:18:26-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:18:28.571 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:18:26-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:18:28.609 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:18:28.610 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:18:28.612 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:18:28.633 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:18:28.634 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:18:28.662 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:18:28.663 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:18:28.665 [http-nio-8081-exec-5] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:19:17.379 [SpringApplicationShutdownHook] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-12-11 00:19:17.389 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-12-11 00:19:17.432 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-12-11 00:19:17.506 [SpringApplicationShutdownHook] INFO  com.dp1.backend.handlers.SocketConnectionHandler - 84347f06-1052-185c-1106-10977ee8b50e  desconectado del socket
+2025-12-11 00:19:36.773 [main] INFO  com.dp1.backend.BackendApplication - Starting BackendApplication using Java 24.0.1 with PID 22024 (C:\Users\Joseph\Documents\PUCP\25-2\Dp1\Nuevo\Back\MoraPack_Backend\target\classes started by Joseph in C:\Users\Joseph\Documents\PUCP\25-2\Dp1\Nuevo\Back\MoraPack_Backend)
+2025-12-11 00:19:36.802 [main] INFO  com.dp1.backend.BackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-12-11 00:19:38.842 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-11 00:19:39.069 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 197 ms. Found 10 JPA repository interfaces.
+2025-12-11 00:19:40.558 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2025-12-11 00:19:40.594 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2025-12-11 00:19:40.604 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2025-12-11 00:19:40.605 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-12-11 00:19:40.754 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-12-11 00:19:40.755 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3819 ms
+2025-12-11 00:19:41.206 [main] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-11 00:19:41.393 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2025-12-11 00:19:41.540 [main] INFO  org.hibernate.cache.internal.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-12-11 00:19:42.246 [main] INFO  org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-11 00:19:42.348 [main] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2025-12-11 00:19:42.349 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-12-11 00:19:42.761 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@591e5fd4
+2025-12-11 00:19:42.770 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-12-11 00:19:46.455 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-12-11 00:19:46.771 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-11 00:19:46.806 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Inicializando DatosEnMemoriaService con working directory: C:\Users\Joseph\Documents\PUCP\25-2\Dp1\Nuevo\Back\MoraPack_Backend
+2025-12-11 00:19:46.822 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Aeropuertos cargados: 30
+2025-12-11 00:19:46.910 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Vuelos cargados: 2866
+2025-12-11 00:19:47.516 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo rutas posibles
+2025-12-11 00:19:47.933 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Colecciones rutas: 0
+2025-12-11 00:19:47.933 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Rutas posibles set: 0
+2025-12-11 00:19:48.322 [main] INFO  org.springframework.data.jpa.repository.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-12-11 00:19:49.795 [main] WARN  org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-11 00:19:50.927 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2025-12-11 00:19:50.990 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/api'
+2025-12-11 00:19:51.010 [main] INFO  com.dp1.backend.BackendApplication - Started BackendApplication in 15.36 seconds (process running for 18.008)
+2025-12-11 00:20:06.552 [http-nio-8081-exec-2] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-11 00:20:06.562 [http-nio-8081-exec-2] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-12-11 00:20:06.572 [http-nio-8081-exec-2] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 5 ms
+2025-12-11 00:20:06.890 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - 47f771a5-9919-7c90-f961-9dfa5eb4e3dd  conectado al socket
+2025-12-11 00:20:07.307 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - === PRIMER CONTACTO - OPERACIÓN EN VIVO ===
+2025-12-11 00:20:07.308 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Hora actual: 2025-12-11T00:20:07-05:00[America/Lima]
+2025-12-11 00:20:07.308 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Buscando envíos desde: 2025-12-10T00:20:07-05:00[America/Lima] hasta: 2025-12-11T00:20:12-05:00[America/Lima]
+2025-12-11 00:20:07.310 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:20:07.310 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:20:07-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:20:07.311 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:20:12-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:20:07.606 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:20:07.607 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:20:07.608 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:20:07.638 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:20:07.640 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:20:07.706 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:20:07.707 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:20:07.753 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación: inicio2
+2025-12-11 00:20:07.818 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: inicio1164
+2025-12-11 00:20:40.206 [http-nio-8081-exec-6] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 0
+2025-12-11 00:20:40.207 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:20:40.208 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:20:07-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:20:40.209 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:20:38-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:20:40.230 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:20:40.234 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:20:40.235 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:20:40.238 [http-nio-8081-exec-6] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:20:40.240 [http-nio-8081-exec-6] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:20:38-05:00[America/Lima] hasta: 2025-12-11T00:20:38-05:00[America/Lima]
+2025-12-11 00:20:40.242 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:20:40.244 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:20:38-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:20:40.247 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:20:38-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:20:40.293 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:20:40.297 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:20:40.303 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:20:40.330 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:20:40.337 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:20:40.374 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:20:40.378 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:20:40.387 [http-nio-8081-exec-6] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:21:11.544 [http-nio-8081-exec-10] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 1
+2025-12-11 00:21:11.545 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:21:11.545 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:20:38-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:21:11.546 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:21:09-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:21:11.555 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:21:11.555 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:21:11.555 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:21:11.556 [http-nio-8081-exec-10] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:21:11.556 [http-nio-8081-exec-10] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:21:09-05:00[America/Lima] hasta: 2025-12-11T00:21:09-05:00[America/Lima]
+2025-12-11 00:21:11.556 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:21:11.557 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:21:09-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:21:11.557 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:21:09-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:21:11.581 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:21:11.582 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:21:11.583 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:21:11.599 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:21:11.600 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:21:11.628 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:21:11.628 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:21:11.630 [http-nio-8081-exec-10] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:21:42.547 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 0
+2025-12-11 00:21:42.548 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:21:42.548 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:21:09-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:21:42.549 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:21:40-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:21:42.568 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:21:42.570 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:21:42.573 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:21:42.574 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:21:42.575 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:21:40-05:00[America/Lima] hasta: 2025-12-11T00:21:40-05:00[America/Lima]
+2025-12-11 00:21:42.577 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:21:42.578 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:21:40-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:21:42.579 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:21:40-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:21:42.614 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:21:42.617 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:21:42.617 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:21:42.641 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:21:42.642 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:21:42.670 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:21:42.671 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:21:42.676 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:23:05.539 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 1
+2025-12-11 00:23:05.540 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:23:05.540 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:21:40-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:23:05.541 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:22:11-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:23:05.553 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:23:05.555 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:23:05.556 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:23:05.560 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:23:05.561 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:22:11-05:00[America/Lima] hasta: 2025-12-11T00:22:11-05:00[America/Lima]
+2025-12-11 00:23:05.563 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:23:05.563 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:22:11-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:23:05.565 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:22:11-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:23:05.592 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:23:05.593 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:23:05.595 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:23:05.616 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:23:05.619 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:23:05.667 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:23:05.669 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:23:05.671 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:23:36.542 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 0
+2025-12-11 00:23:36.543 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:23:36.544 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:22:11-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:23:36.544 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:22:42-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:23:36.558 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:23:36.558 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:23:36.558 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:23:36.560 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:23:36.561 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:22:42-05:00[America/Lima] hasta: 2025-12-11T00:22:42-05:00[America/Lima]
+2025-12-11 00:23:36.562 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:23:36.563 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:22:42-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:23:36.563 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:22:42-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:23:36.593 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:23:36.594 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:23:36.595 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:23:36.608 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:23:36.608 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:23:36.629 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:23:36.629 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:23:36.631 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:24:07.544 [http-nio-8081-exec-2] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 2
+2025-12-11 00:24:07.545 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:24:07.545 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:22:42-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:24:07.546 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:23:13-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:24:07.577 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:24:07.578 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:24:07.578 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:24:07.578 [http-nio-8081-exec-2] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:24:07.580 [http-nio-8081-exec-2] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:23:13-05:00[America/Lima] hasta: 2025-12-11T00:23:13-05:00[America/Lima]
+2025-12-11 00:24:07.580 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:24:07.581 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:23:13-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:24:07.581 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:23:13-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:24:07.610 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:24:07.611 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:24:07.612 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:24:07.640 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:24:07.640 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:24:07.675 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:24:07.680 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:24:07.691 [http-nio-8081-exec-2] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:27:41.152 [SpringApplicationShutdownHook] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-12-11 00:27:41.303 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-12-11 00:27:41.402 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-12-11 00:27:41.451 [SpringApplicationShutdownHook] INFO  com.dp1.backend.handlers.SocketConnectionHandler - 47f771a5-9919-7c90-f961-9dfa5eb4e3dd  desconectado del socket
+2025-12-11 00:28:16.452 [main] INFO  com.dp1.backend.BackendApplication - Starting BackendApplication using Java 24.0.1 with PID 24092 (C:\Users\Joseph\Documents\PUCP\25-2\Dp1\Nuevo\Back\MoraPack_Backend\target\classes started by Joseph in C:\Users\Joseph\Documents\PUCP\25-2\Dp1\Nuevo\Back\MoraPack_Backend)
+2025-12-11 00:28:16.482 [main] INFO  com.dp1.backend.BackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-12-11 00:28:18.505 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-11 00:28:18.716 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 184 ms. Found 10 JPA repository interfaces.
+2025-12-11 00:28:20.150 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2025-12-11 00:28:20.184 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2025-12-11 00:28:20.193 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2025-12-11 00:28:20.194 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-12-11 00:28:20.346 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-12-11 00:28:20.348 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3722 ms
+2025-12-11 00:28:20.807 [main] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-11 00:28:21.015 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2025-12-11 00:28:21.122 [main] INFO  org.hibernate.cache.internal.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-12-11 00:28:21.932 [main] INFO  org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-11 00:28:22.032 [main] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2025-12-11 00:28:22.034 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-12-11 00:28:22.772 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7f70e244
+2025-12-11 00:28:22.778 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-12-11 00:28:25.832 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-12-11 00:28:26.270 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-11 00:28:26.314 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Inicializando DatosEnMemoriaService con working directory: C:\Users\Joseph\Documents\PUCP\25-2\Dp1\Nuevo\Back\MoraPack_Backend
+2025-12-11 00:28:26.330 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Aeropuertos cargados: 30
+2025-12-11 00:28:26.455 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Vuelos cargados: 2866
+2025-12-11 00:28:27.086 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo rutas posibles
+2025-12-11 00:28:27.522 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Colecciones rutas: 0
+2025-12-11 00:28:27.524 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Rutas posibles set: 0
+2025-12-11 00:28:27.895 [main] INFO  org.springframework.data.jpa.repository.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-12-11 00:28:29.766 [main] WARN  org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-11 00:28:30.942 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2025-12-11 00:28:31.063 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/api'
+2025-12-11 00:28:31.114 [main] INFO  com.dp1.backend.BackendApplication - Started BackendApplication in 16.188 seconds (process running for 21.409)
+2025-12-11 00:29:41.278 [http-nio-8081-exec-3] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-11 00:29:41.280 [http-nio-8081-exec-3] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-12-11 00:29:41.292 [http-nio-8081-exec-3] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 11 ms
+2025-12-11 00:29:41.547 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - 61a5b1ca-522c-8417-d1a4-617a5b01396b  conectado al socket
+2025-12-11 00:29:41.983 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - === PRIMER CONTACTO - OPERACIÓN EN VIVO ===
+2025-12-11 00:29:41.984 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Hora actual: 2025-12-11T00:29:41-05:00[America/Lima]
+2025-12-11 00:29:41.984 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Buscando envíos desde: 2025-12-10T00:29:41-05:00[America/Lima] hasta: 2025-12-11T00:29:46-05:00[America/Lima]
+2025-12-11 00:29:41.986 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:29:41.987 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:29:41-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:29:41.988 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:29:46-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:29:42.327 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:29:42.328 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:29:42.330 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:29:42.362 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:29:42.363 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:29:42.442 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:29:42.443 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:29:42.513 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación: inicio2
+2025-12-11 00:29:42.593 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: inicio1164
+2025-12-11 00:30:14.983 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 1
+2025-12-11 00:30:14.983 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:30:14.985 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:29:41-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:30:14.987 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:30:12-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:30:15.005 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:30:15.005 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:30:15.007 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:30:15.009 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:30:15.010 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:30:12-05:00[America/Lima] hasta: 2025-12-11T00:30:12-05:00[America/Lima]
+2025-12-11 00:30:15.011 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:30:15.012 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:30:12-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:30:15.013 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:30:12-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:30:15.083 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:30:15.084 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:30:15.085 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:30:15.112 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:30:15.112 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:30:15.145 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:30:15.145 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:30:15.148 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:30:45.985 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 0
+2025-12-11 00:30:45.986 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:30:45.986 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:30:12-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:30:45.986 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:30:43-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:30:45.996 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:30:45.996 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:30:45.998 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:30:45.999 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:30:46.000 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:30:43-05:00[America/Lima] hasta: 2025-12-11T00:30:43-05:00[America/Lima]
+2025-12-11 00:30:46.001 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:30:46.004 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:30:43-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:30:46.006 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:30:43-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:30:46.062 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:30:46.063 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:30:46.064 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:30:46.092 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:30:46.093 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:30:46.127 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:30:46.129 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:30:46.132 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:31:16.988 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 1
+2025-12-11 00:31:16.990 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:31:16.990 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:30:43-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:31:16.991 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:31:14-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:31:17.006 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:31:17.012 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:31:17.012 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:31:17.015 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:31:17.017 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:31:14-05:00[America/Lima] hasta: 2025-12-11T00:31:14-05:00[America/Lima]
+2025-12-11 00:31:17.026 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:31:17.028 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:31:14-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:31:17.028 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:31:14-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:31:17.071 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:31:17.075 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:31:17.076 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:31:17.124 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:31:17.126 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:31:17.156 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:31:17.158 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:31:17.162 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:31:47.979 [http-nio-8081-exec-6] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 0
+2025-12-11 00:31:47.981 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:31:47.982 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:31:14-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:31:47.983 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:31:45-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:31:47.997 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:31:47.998 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:31:47.999 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:31:48.001 [http-nio-8081-exec-6] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:31:48.002 [http-nio-8081-exec-6] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:31:45-05:00[America/Lima] hasta: 2025-12-11T00:31:45-05:00[America/Lima]
+2025-12-11 00:31:48.003 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:31:48.004 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:31:45-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:31:48.005 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:31:45-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:31:48.047 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:31:48.051 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:31:48.053 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:31:48.078 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:31:48.080 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:31:48.118 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:31:48.119 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:31:48.122 [http-nio-8081-exec-6] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:32:18.977 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 2
+2025-12-11 00:32:18.979 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:32:18.980 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:31:45-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:32:18.981 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:32:16-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:32:18.991 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:32:18.992 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:32:18.992 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:32:18.994 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:32:18.998 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:32:16-05:00[America/Lima] hasta: 2025-12-11T00:32:16-05:00[America/Lima]
+2025-12-11 00:32:18.999 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:32:19.001 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:32:16-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:32:19.002 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:32:16-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:32:19.046 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:32:19.047 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:32:19.048 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:32:19.074 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:32:19.076 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:32:19.104 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:32:19.106 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:32:19.110 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:32:49.978 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 0
+2025-12-11 00:32:49.980 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:32:49.980 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-11T00:32:16-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:32:49.981 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:32:47-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:32:49.997 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 0
+2025-12-11 00:32:49.998 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 0
+2025-12-11 00:32:49.999 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:32:50.000 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - No hay envíos nuevos desde última actualización
+2025-12-11 00:32:50.000 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Actualizando envíos en operación desde: 2025-12-10T00:32:47-05:00[America/Lima] hasta: 2025-12-11T00:32:47-05:00[America/Lima]
+2025-12-11 00:32:50.001 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - === BUSCANDO ENVIOS EN VIVO ===
+2025-12-11 00:32:50.002 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Fecha inicio: 2025-12-10T00:32:47-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:32:50.003 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Fecha fin: 2025-12-11T00:32:47-05:00[America/Lima] (Zona: America/Lima)
+2025-12-11 00:32:50.052 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Total envios encontrados despues de fecha inicio: 2
+2025-12-11 00:32:50.059 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Evaluando envio SPIM5 - Fecha salida: 2025-12-11T04:17:00.337335Z (Zona: Z)
+2025-12-11 00:32:50.062 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - ✓ Envio SPIM5 está en el rango
+2025-12-11 00:32:50.109 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Evaluando envio EBCI6 - Fecha salida: 2025-12-11T05:02:43.807862Z (Zona: Z)
+2025-12-11 00:32:50.111 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - ✓ Envio EBCI6 está en el rango
+2025-12-11 00:32:50.141 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - Envios en rango encontrados: 2
+2025-12-11 00:32:50.142 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.EnvioService - === FIN BUSQUEDA ENVIOS EN VIVO ===
+2025-12-11 00:32:50.148 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de envios en operación (últimos 2 minutos): 2
+2025-12-11 00:33:04.810 [SpringApplicationShutdownHook] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-12-11 00:33:04.820 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-12-11 00:33:04.848 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-12-11 00:33:04.863 [SpringApplicationShutdownHook] INFO  com.dp1.backend.handlers.SocketConnectionHandler - 61a5b1ca-522c-8417-d1a4-617a5b01396b  desconectado del socket
