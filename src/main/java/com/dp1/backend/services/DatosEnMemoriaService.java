@@ -347,4 +347,78 @@ public class DatosEnMemoriaService {
         }
     }
 
+    public void insertarCadena(String cadena) {
+        // Procesa la cadena igual que leerEnvios de FuncionesLectura
+        try {
+            if (cadena == null || cadena.isEmpty()) return;
+            String[] parts = cadena.split("-");
+            if (parts.length < 5) return;
+
+            String ciudadOrigenEnvio = parts[0];
+            // Extraer solo los dígitos del id para construir el código correctamente
+            String envioIdStrOriginal = parts[1];
+            String envioIdStr = envioIdStrOriginal.replaceAll("\\D", "");
+            int envioId = 0;
+            try { envioId = Integer.parseInt(envioIdStr); } catch(Exception e) {}
+            String fechaStr = parts[2]; // yyyyMMdd
+            String horaStr = parts[3]; // HH:mm:ss
+            String[] destinoParts = parts[4].split(":");
+            if (destinoParts.length < 2) return;
+            String ciudadDestino = destinoParts[0];
+            int cantidadPaquetes = Integer.parseInt(destinoParts[1]);
+
+            Aeropuerto origen = aeropuertos.getOrDefault(ciudadOrigenEnvio, aeropuertos.get("EKCH"));
+            Aeropuerto destino = aeropuertos.getOrDefault(ciudadDestino, aeropuertos.get("EKCH"));
+
+            java.time.format.DateTimeFormatter fechaFmt = java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd");
+            java.time.format.DateTimeFormatter horaFmt = java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss");
+            LocalDate fechaOrigen = LocalDate.parse(fechaStr, fechaFmt);
+            java.time.LocalTime horaOrigen = java.time.LocalTime.parse(horaStr, horaFmt);
+
+            java.time.ZoneId zonaOrigen = origen.getZoneId();
+            java.time.ZoneId zonaDestino = destino.getZoneId();
+
+            ZonedDateTime horaOrigenZoned = ZonedDateTime.of(fechaOrigen, horaOrigen, zonaOrigen);
+            ZonedDateTime horaDestinoZoned;
+            if (!origen.getContinente().equals(destino.getContinente())) {
+                horaDestinoZoned = horaOrigenZoned.plusDays(2).withZoneSameInstant(zonaDestino);
+            } else {
+                horaDestinoZoned = horaOrigenZoned.plusDays(1).withZoneSameInstant(zonaDestino);
+            }
+
+            ArrayList<Paquete> paquetes = new ArrayList<>();
+            for (int i = 0; i < cantidadPaquetes; i++) {
+                Paquete paquete = new Paquete();
+                paquete.setCodigoEnvio(ciudadOrigenEnvio + envioIdStr); // Solo números en el código
+                if (origen.getIdAeropuerto() != 0) {
+                    paquete.setIdPaquete(1000000 * origen.getIdAeropuerto() + 100 * envioId + (i + 1));
+                }
+                if (!origen.getContinente().equals(destino.getContinente())) {
+                    paquete.setTiempoRestanteDinamico(java.time.Duration.ofDays(2));
+                    paquete.setTiempoRestante(java.time.Duration.ofDays(2));
+                } else {
+                    paquete.setTiempoRestanteDinamico(java.time.Duration.ofDays(1));
+                    paquete.setTiempoRestante(java.time.Duration.ofDays(1));
+                }
+                paquetes.add(paquete);
+            }
+
+            Envio nuevoEnvio = new Envio(ciudadOrigenEnvio, ciudadDestino, horaOrigenZoned, cantidadPaquetes, paquetes);
+            nuevoEnvio.setIdEnvio(envioId);
+            nuevoEnvio.setFechaHoraLlegadaPrevista(horaDestinoZoned);
+            String codigo = ciudadOrigenEnvio + envioIdStr; // Solo números en el código
+            nuevoEnvio.setCodigoEnvio(codigo);
+            envios.put(codigo, nuevoEnvio);
+            logger.info("[NUEVO ENVIO] Cadena: " + cadena + " | idEnvio asignado: " + nuevoEnvio.getIdEnvio() + " | codigo: " + codigo);
+            // Validar que la cadena registrada esté agregada
+            if (envios.containsKey(codigo)) {
+                logger.info("[VALIDADO] El envío con código " + codigo + " fue agregado correctamente.");
+            } else {
+                logger.warn("[ERROR] El envío con código " + codigo + " NO fue agregado.");
+            }
+        } catch (Exception e) {
+            logger.error("Error al insertar cadena en memoria: " + e.getMessage());
+        }
+    }
+
 }
