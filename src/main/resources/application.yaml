@@ -6,9 +6,9 @@ spring:
       enabled: true
 
   datasource:
-    url: jdbc:mysql://localhost:3306/morapack5?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/morapack2?useSSL=false&serverTimezone=UTC
     username: root
-    password: J0s3ph234!
+    password: "#osorizaMS12"  # ← Agregar comillas aquí
     driver-class-name: com.mysql.cj.jdbc.Driver
 
     hikari:
@@ -21,8 +21,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-      show-sql: true
-      format-sql: true
+    show-sql: true
+    format-sql: true
     generate-ddl: true
 
   mvc:

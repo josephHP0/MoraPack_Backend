@@ -1,406 +1,546 @@
-2025-12-22 00:00:21.148 [main] INFO  com.dp1.backend.BackendApplication - Starting BackendApplication using Java 24.0.1 with PID 11888 (C:\Users\Joseph\Documents\PUCP\25-2\Dp1\Nuevo\Back\MoraPack_Backend\target\classes started by Joseph in C:\Users\Joseph\Documents\PUCP\25-2\Dp1\Nuevo\Back\MoraPack_Backend)
-2025-12-22 00:00:21.182 [main] INFO  com.dp1.backend.BackendApplication - No active profile set, falling back to 1 default profile: "default"
-2025-12-22 00:00:22.756 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-12-22 00:00:22.996 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 213 ms. Found 10 JPA repository interfaces.
-2025-12-22 00:00:24.334 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
-2025-12-22 00:00:24.366 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
-2025-12-22 00:00:24.374 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
-2025-12-22 00:00:24.376 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
-2025-12-22 00:00:24.513 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring embedded WebApplicationContext
-2025-12-22 00:00:24.514 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3228 ms
-2025-12-22 00:00:24.967 [main] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2025-12-22 00:00:25.130 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
-2025-12-22 00:00:25.207 [main] INFO  org.hibernate.cache.internal.RegionFactoryInitiator - HHH000026: Second-level cache disabled
-2025-12-22 00:00:25.826 [main] INFO  org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-12-22 00:00:25.906 [main] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
-2025-12-22 00:00:25.907 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2025-12-22 00:00:26.221 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6e668322
-2025-12-22 00:00:26.224 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2025-12-22 00:00:28.688 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2025-12-22 00:00:28.944 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-12-22 00:00:28.965 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Inicializando DatosEnMemoriaService con working directory: C:\Users\Joseph\Documents\PUCP\25-2\Dp1\Nuevo\Back\MoraPack_Backend
-2025-12-22 00:00:28.978 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Aeropuertos cargados: 30
-2025-12-22 00:00:29.043 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Vuelos cargados: 2866
-2025-12-22 00:00:29.474 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo rutas posibles
-2025-12-22 00:00:29.764 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Colecciones rutas: 0
-2025-12-22 00:00:29.765 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Rutas posibles set: 0
-2025-12-22 00:00:30.011 [main] INFO  org.springframework.data.jpa.repository.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
-2025-12-22 00:00:31.157 [main] WARN  org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-12-22 00:00:32.057 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
-2025-12-22 00:00:32.104 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/api'
-2025-12-22 00:00:32.121 [main] INFO  com.dp1.backend.BackendApplication - Started BackendApplication in 12.121 seconds (process running for 14.544)
-2025-12-22 00:01:24.746 [http-nio-8081-exec-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2025-12-22 00:01:24.747 [http-nio-8081-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2025-12-22 00:01:24.750 [http-nio-8081-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 2 ms
-2025-12-22 00:01:24.959 [http-nio-8081-exec-2] INFO  com.dp1.backend.handlers.SocketConnectionHandler - 80e18fe0-fabe-13d7-0f84-21d70e950334  conectado al socket
-2025-12-22 00:01:24.993 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_EDDI_.txt
-2025-12-22 00:01:25.316 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_EHAM_.txt
-2025-12-22 00:01:25.696 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_EKCH_.txt
-2025-12-22 00:01:26.087 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_LATI_.txt
-2025-12-22 00:01:26.461 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_LBSF_.txt
-2025-12-22 00:01:26.753 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_LDZA_.txt
-2025-12-22 00:01:27.011 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_LKPR_.txt
-2025-12-22 00:01:27.302 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_LOWW_.txt
-2025-12-22 00:01:27.654 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OAKB_.txt
-2025-12-22 00:01:27.934 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OERK_.txt
-2025-12-22 00:01:28.370 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OJAI_.txt
-2025-12-22 00:01:28.652 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OMDB_.txt
-2025-12-22 00:01:28.946 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OOMS_.txt
-2025-12-22 00:01:29.173 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OPKC_.txt
-2025-12-22 00:01:29.470 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OSDI_.txt
-2025-12-22 00:01:29.815 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OYSN_.txt
-2025-12-22 00:01:30.154 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SABE_.txt
-2025-12-22 00:01:30.426 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SBBR_.txt
-2025-12-22 00:01:30.788 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SCEL_.txt
-2025-12-22 00:01:31.128 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SEQM_.txt
-2025-12-22 00:01:31.438 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SGAS_.txt
-2025-12-22 00:01:31.730 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SKBO_.txt
-2025-12-22 00:01:32.054 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SLLP_.txt
-2025-12-22 00:01:32.251 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SUAA_.txt
-2025-12-22 00:01:32.688 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SVMI_.txt
-2025-12-22 00:01:33.127 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_UMMS_.txt
-2025-12-22 00:01:33.487 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_VIDP_.txt
-2025-12-22 00:01:33.732 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Envios cargados: 48456
-2025-12-22 00:01:33.782 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Ejecutando ACO para: 
-2025-12-22 00:01:33.783 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Aeropuertos: 30
-2025-12-22 00:01:33.784 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Vuelos: 2866
-2025-12-22 00:01:33.785 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Envios: 4646
-2025-12-22 00:01:33.785 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Paquetes: 9469
-2025-12-22 00:02:33.689 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Tiempo de ejecución: 59903 ms
-2025-12-22 00:02:34.333 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Paquetes entregados con función André: 9309
-2025-12-22 00:02:35.003 [http-nio-8081-exec-2] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: inicio1158
-2025-12-22 00:02:41.825 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 47
-2025-12-22 00:02:47.822 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 43
-2025-12-22 00:02:53.818 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 61
-2025-12-22 00:02:59.826 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 39
-2025-12-22 00:03:05.821 [http-nio-8081-exec-2] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 43
-2025-12-22 00:03:11.818 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 47
-2025-12-22 00:03:17.824 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 50
-2025-12-22 00:03:21.748 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.ClienteService - Creando cliente con datos: dsf fb silviatomaosores@gmail.com 
-2025-12-22 00:03:21.817 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.ACOService - Desde - hasta: 2025-12-22T00:05:24-05:00[America/Lima] - 2025-12-22T03:05:24-05:00[America/Lima]
-2025-12-22 00:03:21.849 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.ACOService - Ejecutando ACO para: 
-2025-12-22 00:03:21.856 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.ACOService - Aeropuertos: 30
-2025-12-22 00:03:21.857 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.ACOService - Vuelos: 2866
-2025-12-22 00:03:21.858 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.ACOService - Envios: 784
-2025-12-22 00:03:21.859 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.ACOService - Paquetes: 1582
-2025-12-22 00:03:21.976 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.ClienteService - Cliente creado exitosamente con ID: 41
-2025-12-22 00:03:22.030 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.ClienteService - Creando cliente con datos: sdf sdf fergegr@mp.com 
-2025-12-22 00:03:22.047 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.ClienteService - Cliente creado exitosamente con ID: 42
-2025-12-22 00:03:22.111 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Envío llegando con fecha de salida desde frontend: null
-2025-12-22 00:03:22.112 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Fecha de salida final: 2025-12-22T07:03:22.110622+02:00
-2025-12-22 00:03:22.143 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Todo bien hasta primer guardado
-2025-12-22 00:03:22.204 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Todo bien hasta segundo guardado
-2025-12-22 00:03:22.953 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.EnvioService - Todo bien hasta guardado de paquetes
-2025-12-22 00:03:23.004 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - [NUEVO ENVIO] Cadena: EBCI-0003-20251222-00:03:00-OJAI:50 | idEnvio asignado: 3 | codigo: EBCI0003
-2025-12-22 00:03:23.005 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - [VALIDADO] El envío con código EBCI0003 fue agregado correctamente.
-2025-12-22 00:03:31.829 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.ACOService - Tiempo de ejecución: 9969 ms
-2025-12-22 00:03:31.875 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.ACOService - Paquetes entregados con función André: 1569
-2025-12-22 00:03:31.975 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando resultado del algoritmo 'para los vuelos en el aire'
-2025-12-22 00:03:31.987 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 38
-2025-12-22 00:03:31.999 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 44
-2025-12-22 00:03:35.820 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 53
-2025-12-22 00:03:41.828 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 46
-2025-12-22 00:03:47.817 [http-nio-8081-exec-6] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 54
-2025-12-22 00:03:53.824 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 53
-2025-12-22 00:03:59.823 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 66
-2025-12-22 00:04:05.820 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 49
-2025-12-22 00:04:07.824 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.ACOService - Desde - hasta: 2025-12-22T03:09:24-05:00[America/Lima] - 2025-12-22T06:09:24-05:00[America/Lima]
-2025-12-22 00:04:07.847 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.ACOService - Ejecutando ACO para: 
-2025-12-22 00:04:07.847 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.ACOService - Aeropuertos: 30
-2025-12-22 00:04:07.848 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.ACOService - Vuelos: 2866
-2025-12-22 00:04:07.849 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.ACOService - Envios: 760
-2025-12-22 00:04:07.849 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.ACOService - Paquetes: 1383
-2025-12-22 00:04:16.585 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.ACOService - Tiempo de ejecución: 8735 ms
-2025-12-22 00:04:16.621 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.ACOService - Paquetes entregados con función André: 1376
-2025-12-22 00:04:16.700 [http-nio-8081-exec-6] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando resultado del algoritmo 'para los vuelos en el aire'
-2025-12-22 00:04:16.713 [http-nio-8081-exec-6] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 46
-2025-12-22 00:04:17.829 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 50
-2025-12-22 00:04:23.826 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 49
-2025-12-22 00:04:29.832 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 46
-2025-12-22 00:04:35.819 [http-nio-8081-exec-6] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 44
-2025-12-22 00:04:41.831 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 52
-2025-12-22 00:04:47.829 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 47
-2025-12-22 00:04:53.823 [http-nio-8081-exec-2] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 52
-2025-12-22 00:04:53.824 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Desde - hasta: 2025-12-22T06:13:24-05:00[America/Lima] - 2025-12-22T09:13:24-05:00[America/Lima]
-2025-12-22 00:04:53.842 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Ejecutando ACO para: 
-2025-12-22 00:04:53.843 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Aeropuertos: 30
-2025-12-22 00:04:53.844 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Vuelos: 2866
-2025-12-22 00:04:53.845 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Envios: 763
-2025-12-22 00:04:53.845 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Paquetes: 1280
-2025-12-22 00:05:00.317 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Tiempo de ejecución: 6471 ms
-2025-12-22 00:05:00.358 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Paquetes entregados con función André: 1263
-2025-12-22 00:05:00.420 [http-nio-8081-exec-2] INFO  com.dp1.backend.handlers.SocketConnectionHandler - 80e18fe0-fabe-13d7-0f84-21d70e950334  desconectado del socket
-2025-12-22 00:05:00.426 [http-nio-8081-exec-2] ERROR com.dp1.backend.handlers.SocketConnectionHandler - Error en ejecución del algoritmo: The current thread was interrupted while waiting for a blocking send to complete
-2025-12-22 00:05:00.438 [SpringApplicationShutdownHook] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
-2025-12-22 00:05:00.446 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
-2025-12-22 00:05:00.480 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
-2025-12-22 00:06:16.539 [main] INFO  com.dp1.backend.BackendApplication - Starting BackendApplication using Java 24.0.1 with PID 17440 (C:\Users\Joseph\Documents\PUCP\25-2\Dp1\Nuevo\Back\MoraPack_Backend\target\classes started by Joseph in C:\Users\Joseph\Documents\PUCP\25-2\Dp1\Nuevo\Back\MoraPack_Backend)
-2025-12-22 00:06:16.568 [main] INFO  com.dp1.backend.BackendApplication - No active profile set, falling back to 1 default profile: "default"
-2025-12-22 00:06:18.239 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-12-22 00:06:18.439 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 176 ms. Found 10 JPA repository interfaces.
-2025-12-22 00:06:19.884 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
-2025-12-22 00:06:19.918 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
-2025-12-22 00:06:19.924 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
-2025-12-22 00:06:19.925 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
-2025-12-22 00:06:20.071 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring embedded WebApplicationContext
-2025-12-22 00:06:20.074 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3391 ms
-2025-12-22 00:06:20.502 [main] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2025-12-22 00:06:20.668 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
-2025-12-22 00:06:20.787 [main] INFO  org.hibernate.cache.internal.RegionFactoryInitiator - HHH000026: Second-level cache disabled
-2025-12-22 00:06:21.722 [main] INFO  org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-12-22 00:06:21.817 [main] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
-2025-12-22 00:06:21.818 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2025-12-22 00:06:22.267 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@56b66a26
-2025-12-22 00:06:22.272 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2025-12-22 00:06:26.172 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2025-12-22 00:06:26.471 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-12-22 00:06:26.506 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Inicializando DatosEnMemoriaService con working directory: C:\Users\Joseph\Documents\PUCP\25-2\Dp1\Nuevo\Back\MoraPack_Backend
-2025-12-22 00:06:26.523 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Aeropuertos cargados: 30
-2025-12-22 00:06:26.602 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Vuelos cargados: 2866
-2025-12-22 00:06:27.134 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo rutas posibles
-2025-12-22 00:06:27.482 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Colecciones rutas: 0
-2025-12-22 00:06:27.484 [main] INFO  com.dp1.backend.services.DatosEnMemoriaService - Rutas posibles set: 0
-2025-12-22 00:06:27.789 [main] INFO  org.springframework.data.jpa.repository.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
-2025-12-22 00:06:29.078 [main] WARN  org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-12-22 00:06:29.955 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
-2025-12-22 00:06:30.010 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/api'
-2025-12-22 00:06:30.034 [main] INFO  com.dp1.backend.BackendApplication - Started BackendApplication in 14.504 seconds (process running for 17.17)
-2025-12-22 00:08:12.455 [http-nio-8081-exec-2] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2025-12-22 00:08:12.456 [http-nio-8081-exec-2] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2025-12-22 00:08:12.460 [http-nio-8081-exec-2] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 3 ms
-2025-12-22 00:08:12.644 [http-nio-8081-exec-2] INFO  com.dp1.backend.handlers.SocketConnectionHandler - 1d8c8306-ceb9-8709-24de-b7698db7cbca  conectado al socket
-2025-12-22 00:08:12.676 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_EDDI_.txt
-2025-12-22 00:08:13.029 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_EHAM_.txt
-2025-12-22 00:08:13.332 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_EKCH_.txt
-2025-12-22 00:08:13.687 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_LATI_.txt
-2025-12-22 00:08:14.046 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_LBSF_.txt
-2025-12-22 00:08:14.437 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_LDZA_.txt
-2025-12-22 00:08:14.657 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_LKPR_.txt
-2025-12-22 00:08:14.944 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_LOWW_.txt
-2025-12-22 00:08:15.274 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OAKB_.txt
-2025-12-22 00:08:15.720 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OERK_.txt
-2025-12-22 00:08:16.016 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OJAI_.txt
-2025-12-22 00:08:16.257 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OMDB_.txt
-2025-12-22 00:08:16.582 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OOMS_.txt
-2025-12-22 00:08:16.837 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OPKC_.txt
-2025-12-22 00:08:17.122 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OSDI_.txt
-2025-12-22 00:08:17.445 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OYSN_.txt
-2025-12-22 00:08:17.707 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SABE_.txt
-2025-12-22 00:08:17.918 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SBBR_.txt
-2025-12-22 00:08:18.209 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SCEL_.txt
-2025-12-22 00:08:18.486 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SEQM_.txt
-2025-12-22 00:08:18.813 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SGAS_.txt
-2025-12-22 00:08:19.166 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SKBO_.txt
-2025-12-22 00:08:19.526 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SLLP_.txt
-2025-12-22 00:08:19.714 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SUAA_.txt
-2025-12-22 00:08:20.089 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SVMI_.txt
-2025-12-22 00:08:20.424 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_UMMS_.txt
-2025-12-22 00:08:20.692 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_VIDP_.txt
-2025-12-22 00:08:20.902 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.DatosEnMemoriaService - Envios cargados: 48450
-2025-12-22 00:08:20.952 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Ejecutando ACO para: 
-2025-12-22 00:08:20.954 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Aeropuertos: 30
-2025-12-22 00:08:20.955 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Vuelos: 2866
-2025-12-22 00:08:20.956 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Envios: 4650
-2025-12-22 00:08:20.957 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Paquetes: 9477
-2025-12-22 00:09:25.534 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Tiempo de ejecución: 64576 ms
-2025-12-22 00:09:26.205 [http-nio-8081-exec-2] INFO  com.dp1.backend.services.ACOService - Paquetes entregados con función André: 9347
-2025-12-22 00:09:27.027 [http-nio-8081-exec-2] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: inicio1156
-2025-12-22 00:09:33.872 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 46
-2025-12-22 00:09:39.865 [http-nio-8081-exec-5] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 43
-2025-12-22 00:09:45.870 [http-nio-8081-exec-10] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 62
-2025-12-22 00:09:51.859 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 42
-2025-12-22 00:09:57.858 [http-nio-8081-exec-2] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 41
-2025-12-22 00:10:04.321 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 47
-2025-12-22 00:10:09.859 [http-nio-8081-exec-5] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 53
-2025-12-22 00:10:12.797 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.ClienteService - Creando cliente con datos: asd asf gianfranco.mpc@gmail.com 
-2025-12-22 00:10:12.964 [http-nio-8081-exec-6] INFO  com.dp1.backend.services.ClienteService - Cliente creado exitosamente con ID: 43
-2025-12-22 00:10:13.011 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.ClienteService - Creando cliente con datos: sdfs dvs aa@cc.com 
-2025-12-22 00:10:13.025 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.ClienteService - Cliente creado exitosamente con ID: 44
-2025-12-22 00:10:13.076 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Envío llegando con fecha de salida desde frontend: null
-2025-12-22 00:10:13.077 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Fecha de salida final: 2025-12-22T07:10:13.076869400+02:00
-2025-12-22 00:10:13.111 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Todo bien hasta primer guardado
-2025-12-22 00:10:13.177 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Todo bien hasta segundo guardado
-2025-12-22 00:10:13.481 [http-nio-8081-exec-10] INFO  com.dp1.backend.services.EnvioService - Todo bien hasta guardado de paquetes
-2025-12-22 00:10:13.515 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - [NUEVO ENVIO] Cadena: EBCI-0010-20251222-00:10:00-OMDB:15 | idEnvio asignado: 10 | codigo: EBCI0010
-2025-12-22 00:10:13.516 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - [VALIDADO] El envío con código EBCI0010 fue agregado correctamente.
-2025-12-22 00:10:13.865 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.ACOService - Desde - hasta: 2025-12-22T00:12:12-05:00[America/Lima] - 2025-12-22T03:12:12-05:00[America/Lima]
-2025-12-22 00:10:13.885 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.ACOService - Ejecutando ACO para: 
-2025-12-22 00:10:13.885 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.ACOService - Aeropuertos: 30
-2025-12-22 00:10:13.888 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.ACOService - Vuelos: 2866
-2025-12-22 00:10:13.889 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.ACOService - Envios: 792
-2025-12-22 00:10:13.890 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.ACOService - Paquetes: 1592
-2025-12-22 00:10:22.095 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.ACOService - Tiempo de ejecución: 8205 ms
-2025-12-22 00:10:22.152 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.ACOService - Paquetes entregados con función André: 1577
-2025-12-22 00:10:22.249 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando resultado del algoritmo 'para los vuelos en el aire'
-2025-12-22 00:10:22.258 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 32
-2025-12-22 00:10:22.270 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 52
-2025-12-22 00:10:27.866 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 47
-2025-12-22 00:10:33.877 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 55
-2025-12-22 00:10:39.862 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 49
-2025-12-22 00:10:45.868 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 63
-2025-12-22 00:10:53.424 [http-nio-8081-exec-5] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 56
-2025-12-22 00:10:59.287 [http-nio-8081-exec-2] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 44
-2025-12-22 00:11:01.269 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.ACOService - Desde - hasta: 2025-12-22T03:16:12-05:00[America/Lima] - 2025-12-22T06:16:12-05:00[America/Lima]
-2025-12-22 00:11:01.296 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.ACOService - Ejecutando ACO para: 
-2025-12-22 00:11:01.298 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.ACOService - Aeropuertos: 30
-2025-12-22 00:11:01.299 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.ACOService - Vuelos: 2866
-2025-12-22 00:11:01.300 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.ACOService - Envios: 765
-2025-12-22 00:11:01.300 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.ACOService - Paquetes: 1408
-2025-12-22 00:11:09.073 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.ACOService - Tiempo de ejecución: 7773 ms
-2025-12-22 00:11:09.113 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.ACOService - Paquetes entregados con función André: 1401
-2025-12-22 00:11:09.192 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando resultado del algoritmo 'para los vuelos en el aire'
-2025-12-22 00:11:09.203 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 52
-2025-12-22 00:11:11.288 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 47
-2025-12-22 00:11:17.287 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 46
-2025-12-22 00:11:23.281 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 51
-2025-12-22 00:11:28.719 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - 1f6a8b02-25c7-2487-2e8a-60d36fffe5c7  conectado al socket
-2025-12-22 00:11:28.738 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_EDDI_.txt
-2025-12-22 00:11:29.007 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_EHAM_.txt
-2025-12-22 00:11:29.313 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_EKCH_.txt
-2025-12-22 00:11:29.348 [http-nio-8081-exec-2] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 48
-2025-12-22 00:11:29.754 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_LATI_.txt
-2025-12-22 00:11:30.054 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_LBSF_.txt
-2025-12-22 00:11:30.363 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_LDZA_.txt
-2025-12-22 00:11:30.640 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_LKPR_.txt
-2025-12-22 00:11:30.935 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_LOWW_.txt
-2025-12-22 00:11:31.262 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OAKB_.txt
-2025-12-22 00:11:31.605 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OERK_.txt
-2025-12-22 00:11:31.922 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OJAI_.txt
-2025-12-22 00:11:32.207 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OMDB_.txt
-2025-12-22 00:11:32.512 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OOMS_.txt
-2025-12-22 00:11:32.753 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OPKC_.txt
-2025-12-22 00:11:33.053 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OSDI_.txt
-2025-12-22 00:11:33.361 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OYSN_.txt
-2025-12-22 00:11:33.640 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SABE_.txt
-2025-12-22 00:11:33.859 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SBBR_.txt
-2025-12-22 00:11:34.151 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SCEL_.txt
-2025-12-22 00:11:34.531 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SEQM_.txt
-2025-12-22 00:11:34.887 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SGAS_.txt
-2025-12-22 00:11:35.179 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SKBO_.txt
-2025-12-22 00:11:35.293 [http-nio-8081-exec-6] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 48
-2025-12-22 00:11:35.552 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SLLP_.txt
-2025-12-22 00:11:35.745 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SUAA_.txt
-2025-12-22 00:11:36.069 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SVMI_.txt
-2025-12-22 00:11:36.425 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_UMMS_.txt
-2025-12-22 00:11:36.838 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_VIDP_.txt
-2025-12-22 00:11:37.171 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.DatosEnMemoriaService - Envios cargados: 48460
-2025-12-22 00:11:37.204 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.ACOService - Ejecutando ACO para: 
-2025-12-22 00:11:37.204 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.ACOService - Aeropuertos: 30
-2025-12-22 00:11:37.204 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.ACOService - Vuelos: 2866
-2025-12-22 00:11:37.205 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.ACOService - Envios: 4652
-2025-12-22 00:11:37.205 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.ACOService - Paquetes: 9480
-2025-12-22 00:11:41.283 [http-nio-8081-exec-8] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 46
-2025-12-22 00:11:47.287 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 48
-2025-12-22 00:11:47.288 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.ACOService - Desde - hasta: 2025-12-22T06:20:12-05:00[America/Lima] - 2025-12-22T09:20:12-05:00[America/Lima]
-2025-12-22 00:11:47.297 [http-nio-8081-exec-1] ERROR com.dp1.backend.services.ACOService - Error en ejecutarAco: null
-2025-12-22 00:11:47.309 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.ACOService - Ejecutando ACO para: 
-2025-12-22 00:11:47.310 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.ACOService - Aeropuertos: 30
-2025-12-22 00:11:47.310 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.ACOService - Vuelos: 2866
-2025-12-22 00:11:47.310 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.ACOService - Envios: 763
-2025-12-22 00:11:47.311 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.ACOService - Paquetes: 1271
-2025-12-22 00:11:47.299 [http-nio-8081-exec-1] ERROR org.springframework.web.socket.handler.ExceptionWebSocketHandlerDecorator - Closing session due to exception for StandardWebSocketSession[id=1f6a8b02-25c7-2487-2e8a-60d36fffe5c7, uri=ws://localhost:8081/api/socket]
-java.lang.NullPointerException: Cannot invoke "java.lang.CharSequence.toString()" because "payload" is null
-	at org.springframework.web.socket.TextMessage.<init>(TextMessage.java:40) ~[spring-websocket-6.1.6.jar:6.1.6]
-	at com.dp1.backend.handlers.SocketConnectionHandler.handlePrimerContactoSimulacion(SocketConnectionHandler.java:256) ~[classes/:?]
-	at com.dp1.backend.handlers.SocketConnectionHandler.handleMessage(SocketConnectionHandler.java:132) ~[classes/:?]
-	at org.springframework.web.socket.handler.WebSocketHandlerDecorator.handleMessage(WebSocketHandlerDecorator.java:75) ~[spring-websocket-6.1.6.jar:6.1.6]
-	at org.springframework.web.socket.handler.LoggingWebSocketHandlerDecorator.handleMessage(LoggingWebSocketHandlerDecorator.java:56) ~[spring-websocket-6.1.6.jar:6.1.6]
-	at org.springframework.web.socket.handler.ExceptionWebSocketHandlerDecorator.handleMessage(ExceptionWebSocketHandlerDecorator.java:58) [spring-websocket-6.1.6.jar:6.1.6]
-	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter.handleTextMessage(StandardWebSocketHandlerAdapter.java:113) [spring-websocket-6.1.6.jar:6.1.6]
-	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter$3.onMessage(StandardWebSocketHandlerAdapter.java:84) [spring-websocket-6.1.6.jar:6.1.6]
-	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter$3.onMessage(StandardWebSocketHandlerAdapter.java:81) [spring-websocket-6.1.6.jar:6.1.6]
-	at org.apache.tomcat.websocket.WsFrameBase.sendMessageText(WsFrameBase.java:390) [tomcat-embed-websocket-10.1.19.jar:10.1.19]
-	at org.apache.tomcat.websocket.server.WsFrameServer.sendMessageText(WsFrameServer.java:130) [tomcat-embed-websocket-10.1.19.jar:10.1.19]
-	at org.apache.tomcat.websocket.WsFrameBase.processDataText(WsFrameBase.java:484) [tomcat-embed-websocket-10.1.19.jar:10.1.19]
-	at org.apache.tomcat.websocket.WsFrameBase.processData(WsFrameBase.java:284) [tomcat-embed-websocket-10.1.19.jar:10.1.19]
-	at org.apache.tomcat.websocket.WsFrameBase.processInputBuffer(WsFrameBase.java:130) [tomcat-embed-websocket-10.1.19.jar:10.1.19]
-	at org.apache.tomcat.websocket.server.WsFrameServer.onDataAvailable(WsFrameServer.java:85) [tomcat-embed-websocket-10.1.19.jar:10.1.19]
-	at org.apache.tomcat.websocket.server.WsFrameServer.doOnDataAvailable(WsFrameServer.java:184) [tomcat-embed-websocket-10.1.19.jar:10.1.19]
-	at org.apache.tomcat.websocket.server.WsFrameServer.notifyDataAvailable(WsFrameServer.java:164) [tomcat-embed-websocket-10.1.19.jar:10.1.19]
-	at org.apache.tomcat.websocket.server.WsHttpUpgradeHandler.upgradeDispatch(WsHttpUpgradeHandler.java:152) [tomcat-embed-websocket-10.1.19.jar:10.1.19]
-	at org.apache.coyote.http11.upgrade.UpgradeProcessorInternal.dispatch(UpgradeProcessorInternal.java:60) [tomcat-embed-core-10.1.19.jar:10.1.19]
-	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:57) [tomcat-embed-core-10.1.19.jar:10.1.19]
-	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896) [tomcat-embed-core-10.1.19.jar:10.1.19]
-	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744) [tomcat-embed-core-10.1.19.jar:10.1.19]
-	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) [tomcat-embed-core-10.1.19.jar:10.1.19]
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) [tomcat-embed-core-10.1.19.jar:10.1.19]
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) [tomcat-embed-core-10.1.19.jar:10.1.19]
-	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) [tomcat-embed-core-10.1.19.jar:10.1.19]
-	at java.base/java.lang.Thread.run(Thread.java:1447) [?:?]
-2025-12-22 00:11:47.354 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - 1f6a8b02-25c7-2487-2e8a-60d36fffe5c7  desconectado del socket
-2025-12-22 00:11:55.768 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.ACOService - Tiempo de ejecución: 8457 ms
-2025-12-22 00:11:55.848 [http-nio-8081-exec-7] INFO  com.dp1.backend.services.ACOService - Paquetes entregados con función André: 1262
-2025-12-22 00:11:55.957 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando resultado del algoritmo 'para los vuelos en el aire'
-2025-12-22 00:13:06.707 [http-nio-8081-exec-2] INFO  com.dp1.backend.handlers.SocketConnectionHandler - 1d8c8306-ceb9-8709-24de-b7698db7cbca  desconectado del socket
-2025-12-22 00:13:28.247 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - 619bb0db-ddaf-1504-ee13-3e7bb5dc47c5  conectado al socket
-2025-12-22 00:13:28.258 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_EDDI_.txt
-2025-12-22 00:13:28.540 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_EHAM_.txt
-2025-12-22 00:13:28.873 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_EKCH_.txt
-2025-12-22 00:13:29.204 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_LATI_.txt
-2025-12-22 00:13:29.560 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_LBSF_.txt
-2025-12-22 00:13:29.932 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_LDZA_.txt
-2025-12-22 00:13:30.177 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_LKPR_.txt
-2025-12-22 00:13:30.480 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_LOWW_.txt
-2025-12-22 00:13:30.818 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OAKB_.txt
-2025-12-22 00:13:31.134 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OERK_.txt
-2025-12-22 00:13:31.455 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OJAI_.txt
-2025-12-22 00:13:31.699 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OMDB_.txt
-2025-12-22 00:13:32.020 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OOMS_.txt
-2025-12-22 00:13:32.254 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OPKC_.txt
-2025-12-22 00:13:32.532 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OSDI_.txt
-2025-12-22 00:13:32.835 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_OYSN_.txt
-2025-12-22 00:13:33.126 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SABE_.txt
-2025-12-22 00:13:33.399 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SBBR_.txt
-2025-12-22 00:13:33.683 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SCEL_.txt
-2025-12-22 00:13:33.982 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SEQM_.txt
-2025-12-22 00:13:34.290 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SGAS_.txt
-2025-12-22 00:13:34.685 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SKBO_.txt
-2025-12-22 00:13:35.024 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SLLP_.txt
-2025-12-22 00:13:35.295 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SUAA_.txt
-2025-12-22 00:13:35.625 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_SVMI_.txt
-2025-12-22 00:13:35.973 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_UMMS_.txt
-2025-12-22 00:13:36.250 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Leyendo archivo: data\envios\pack_enviado_VIDP_.txt
-2025-12-22 00:13:36.491 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.DatosEnMemoriaService - Envios cargados: 48467
-2025-12-22 00:13:36.512 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.ACOService - Ejecutando ACO para: 
-2025-12-22 00:13:36.513 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.ACOService - Aeropuertos: 30
-2025-12-22 00:13:36.513 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.ACOService - Vuelos: 2866
-2025-12-22 00:13:36.514 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.ACOService - Envios: 4658
-2025-12-22 00:13:36.514 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.ACOService - Paquetes: 9487
-2025-12-22 00:14:32.741 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.ACOService - Tiempo de ejecución: 56226 ms
-2025-12-22 00:14:33.321 [http-nio-8081-exec-4] INFO  com.dp1.backend.services.ACOService - Paquetes entregados con función André: 9326
-2025-12-22 00:14:33.911 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: inicio1160
-2025-12-22 00:14:40.700 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 44
-2025-12-22 00:14:46.697 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 47
-2025-12-22 00:14:52.704 [http-nio-8081-exec-3] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 56
-2025-12-22 00:14:58.697 [http-nio-8081-exec-6] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 41
-2025-12-22 00:15:04.707 [http-nio-8081-exec-4] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 46
-2025-12-22 00:15:10.699 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 50
-2025-12-22 00:15:16.707 [http-nio-8081-exec-7] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 47
-2025-12-22 00:15:20.708 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.ACOService - Desde - hasta: 2025-12-22T00:17:28-05:00[America/Lima] - 2025-12-22T03:17:28-05:00[America/Lima]
-2025-12-22 00:15:20.725 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.ACOService - Ejecutando ACO para: 
-2025-12-22 00:15:20.726 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.ACOService - Aeropuertos: 30
-2025-12-22 00:15:20.726 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.ACOService - Vuelos: 2866
-2025-12-22 00:15:20.728 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.ACOService - Envios: 789
-2025-12-22 00:15:20.728 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.ACOService - Paquetes: 1578
-2025-12-22 00:15:27.776 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.ACOService - Tiempo de ejecución: 7048 ms
-2025-12-22 00:15:27.861 [http-nio-8081-exec-9] INFO  com.dp1.backend.services.ACOService - Paquetes entregados con función André: 1566
-2025-12-22 00:15:27.958 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando resultado del algoritmo 'para los vuelos en el aire'
-2025-12-22 00:15:27.966 [http-nio-8081-exec-9] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 33
-2025-12-22 00:15:28.026 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.ClienteService - Creando cliente con datos: sdv xv asd@cc.casd 
-2025-12-22 00:15:28.060 [http-nio-8081-exec-3] INFO  com.dp1.backend.services.ClienteService - Cliente creado exitosamente con ID: 45
-2025-12-22 00:15:28.326 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.ClienteService - Creando cliente con datos: sca asc asd@asa.asc 
-2025-12-22 00:15:28.342 [http-nio-8081-exec-5] INFO  com.dp1.backend.services.ClienteService - Cliente creado exitosamente con ID: 46
-2025-12-22 00:15:28.363 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Envío llegando con fecha de salida desde frontend: null
-2025-12-22 00:15:28.364 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Fecha de salida final: 2025-12-22T07:15:28.363171600+02:00
-2025-12-22 00:15:28.382 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Todo bien hasta primer guardado
-2025-12-22 00:15:28.406 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Todo bien hasta segundo guardado
-2025-12-22 00:15:28.661 [http-nio-8081-exec-1] INFO  com.dp1.backend.services.EnvioService - Todo bien hasta guardado de paquetes
-2025-12-22 00:15:28.680 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.DatosEnMemoriaService - [NUEVO ENVIO] Cadena: EBCI-0015-20251222-00:15:00-OJAI:15 | idEnvio asignado: 15 | codigo: EBCI0015
-2025-12-22 00:15:28.681 [http-nio-8081-exec-8] INFO  com.dp1.backend.services.DatosEnMemoriaService - [VALIDADO] El envío con código EBCI0015 fue agregado correctamente.
-2025-12-22 00:15:28.728 [http-nio-8081-exec-10] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 57
-2025-12-22 00:15:34.705 [http-nio-8081-exec-1] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 41
-2025-12-22 00:15:40.707 [http-nio-8081-exec-2] INFO  com.dp1.backend.handlers.SocketConnectionHandler - Enviando # de vuelos en el aire: 57
-2025-12-22 00:15:44.518 [SpringApplicationShutdownHook] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
-2025-12-22 00:15:44.531 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
-2025-12-22 00:15:44.584 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
-2025-12-22 00:15:44.598 [SpringApplicationShutdownHook] INFO  com.dp1.backend.handlers.SocketConnectionHandler - 619bb0db-ddaf-1504-ee13-3e7bb5dc47c5  desconectado del socket
+2025-12-24 07:12:38.263 [main] INFO  com.dp1.backend.BackendApplication - Starting BackendApplication using Java 21.0.2 with PID 7624 (C:\Users\pelem\OneDrive\Escritorio\PercyLeon\CICLO 2025-2\DP1\Proyecto Final\MoraPack_Backend\target\classes started by pelem in C:\Users\pelem\OneDrive\Escritorio\PercyLeon\CICLO 2025-2\DP1\Proyecto Final\MoraPack_Backend)
+2025-12-24 07:12:38.292 [main] INFO  com.dp1.backend.BackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-12-24 07:12:39.720 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-24 07:12:39.889 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 151 ms. Found 10 JPA repository interfaces.
+2025-12-24 07:12:40.882 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2025-12-24 07:12:40.909 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2025-12-24 07:12:40.917 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2025-12-24 07:12:40.919 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-12-24 07:12:41.047 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-12-24 07:12:41.049 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2684 ms
+2025-12-24 07:12:41.372 [main] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-24 07:12:41.521 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2025-12-24 07:12:41.597 [main] INFO  org.hibernate.cache.internal.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-12-24 07:12:42.145 [main] INFO  org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-24 07:12:42.215 [main] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2025-12-24 07:12:42.215 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-12-24 07:12:43.497 [main] ERROR com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Exception during pool initialization.
+java.sql.SQLNonTransientConnectionException: Public Key Retrieval is not allowed
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:111) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:815) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:438) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:241) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:189) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138) ~[HikariCP-5.0.1.jar:?]
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:359) ~[HikariCP-5.0.1.jar:?]
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:201) ~[HikariCP-5.0.1.jar:?]
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:470) ~[HikariCP-5.0.1.jar:?]
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561) ~[HikariCP-5.0.1.jar:?]
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:100) ~[HikariCP-5.0.1.jar:?]
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112) ~[HikariCP-5.0.1.jar:?]
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:122) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:428) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:61) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:276) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:107) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:68) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:223) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:191) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:170) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1432) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1503) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:388) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:364) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) [spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) [spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) [spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1231) [spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:949) [spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624) [spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343) [spring-boot-3.2.3.jar:3.2.3]
+	at com.dp1.backend.BackendApplication.main(BackendApplication.java:21) [classes/:?]
+Caused by: com.mysql.cj.exceptions.UnableToConnectException: Public Key Retrieval is not allowed
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62) ~[?:?]
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502) ~[?:?]
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486) ~[?:?]
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:61) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:85) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.protocol.a.authentication.CachingSha2PasswordPlugin.nextAuthenticationStep(CachingSha2PasswordPlugin.java:131) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.protocol.a.authentication.CachingSha2PasswordPlugin.nextAuthenticationStep(CachingSha2PasswordPlugin.java:49) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.protocol.a.NativeAuthenticationProvider.proceedHandshakeWithPluggableAuthentication(NativeAuthenticationProvider.java:446) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.protocol.a.NativeAuthenticationProvider.connect(NativeAuthenticationProvider.java:215) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.protocol.a.NativeProtocol.connect(NativeProtocol.java:1428) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.NativeSession.connect(NativeSession.java:133) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:935) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:805) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	... 49 more
+2025-12-24 07:12:43.576 [main] WARN  org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator - HHH000342: Could not obtain connection to query metadata
+java.lang.NullPointerException: Cannot invoke "org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(java.sql.SQLException, String)" because the return value of "org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.sqlExceptionHelper()" is null
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:116) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:276) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:107) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:68) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:223) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:191) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:170) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1432) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1503) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:388) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:364) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) [spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) [spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) [spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1231) [spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:949) [spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624) [spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343) [spring-boot-3.2.3.jar:3.2.3]
+	at com.dp1.backend.BackendApplication.main(BackendApplication.java:21) [classes/:?]
+2025-12-24 07:12:43.584 [main] ERROR org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Failed to initialize JPA EntityManagerFactory: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+2025-12-24 07:12:43.602 [main] WARN  org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+2025-12-24 07:12:43.617 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2025-12-24 07:12:43.652 [main] INFO  org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-12-24 07:12:43.696 [main] ERROR org.springframework.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1786) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1231) ~[spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:949) ~[spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624) ~[spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343) [spring-boot-3.2.3.jar:3.2.3]
+	at com.dp1.backend.BackendApplication.main(BackendApplication.java:21) [classes/:?]
+Caused by: org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:276) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:223) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:191) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:170) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1432) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1503) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:388) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:364) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782) ~[spring-beans-6.1.4.jar:6.1.4]
+	... 16 more
+Caused by: org.hibernate.HibernateException: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+	at org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl.determineDialect(DialectFactoryImpl.java:191) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl.buildDialect(DialectFactoryImpl.java:87) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentWithDefaults(JdbcEnvironmentInitiator.java:143) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:348) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:107) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:68) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:223) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:191) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:170) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1432) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1503) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:388) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:364) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782) ~[spring-beans-6.1.4.jar:6.1.4]
+	... 16 more
+2025-12-24 07:14:51.280 [main] INFO  com.dp1.backend.BackendApplication - Starting BackendApplication using Java 21.0.2 with PID 23108 (C:\Users\pelem\OneDrive\Escritorio\PercyLeon\CICLO 2025-2\DP1\Proyecto Final\MoraPack_Backend\target\classes started by pelem in C:\Users\pelem\OneDrive\Escritorio\PercyLeon\CICLO 2025-2\DP1\Proyecto Final\MoraPack_Backend)
+2025-12-24 07:14:51.290 [main] INFO  com.dp1.backend.BackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-12-24 07:14:52.082 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-24 07:14:52.167 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 77 ms. Found 10 JPA repository interfaces.
+2025-12-24 07:14:52.800 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2025-12-24 07:14:52.816 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2025-12-24 07:14:52.819 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2025-12-24 07:14:52.820 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-12-24 07:14:52.884 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-12-24 07:14:52.888 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1549 ms
+2025-12-24 07:14:53.076 [main] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-24 07:14:53.162 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2025-12-24 07:14:53.197 [main] INFO  org.hibernate.cache.internal.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-12-24 07:14:53.425 [main] INFO  org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-24 07:14:53.457 [main] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2025-12-24 07:14:53.458 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-12-24 07:14:54.659 [main] ERROR com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Exception during pool initialization.
+java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: NO)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:815) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:438) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:241) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:189) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138) ~[HikariCP-5.0.1.jar:?]
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:359) ~[HikariCP-5.0.1.jar:?]
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:201) ~[HikariCP-5.0.1.jar:?]
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:470) ~[HikariCP-5.0.1.jar:?]
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561) ~[HikariCP-5.0.1.jar:?]
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:100) ~[HikariCP-5.0.1.jar:?]
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112) ~[HikariCP-5.0.1.jar:?]
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:122) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:428) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:61) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:276) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:107) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:68) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:223) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:191) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:170) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1432) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1503) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:388) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:364) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) [spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) [spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) [spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1231) [spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:949) [spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624) [spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343) [spring-boot-3.2.3.jar:3.2.3]
+	at com.dp1.backend.BackendApplication.main(BackendApplication.java:21) [classes/:?]
+2025-12-24 07:14:54.684 [main] WARN  org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator - HHH000342: Could not obtain connection to query metadata
+java.lang.NullPointerException: Cannot invoke "org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(java.sql.SQLException, String)" because the return value of "org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.sqlExceptionHelper()" is null
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:116) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:276) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:107) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:68) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:223) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:191) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:170) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1432) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1503) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:388) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:364) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) [spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) [spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) [spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1231) [spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:949) [spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624) [spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343) [spring-boot-3.2.3.jar:3.2.3]
+	at com.dp1.backend.BackendApplication.main(BackendApplication.java:21) [classes/:?]
+2025-12-24 07:14:54.690 [main] ERROR org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Failed to initialize JPA EntityManagerFactory: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+2025-12-24 07:14:54.696 [main] WARN  org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+2025-12-24 07:14:54.705 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2025-12-24 07:14:54.743 [main] INFO  org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-12-24 07:14:54.799 [main] ERROR org.springframework.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1786) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1231) ~[spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:949) ~[spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624) ~[spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343) [spring-boot-3.2.3.jar:3.2.3]
+	at com.dp1.backend.BackendApplication.main(BackendApplication.java:21) [classes/:?]
+Caused by: org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:276) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:223) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:191) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:170) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1432) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1503) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:388) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:364) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782) ~[spring-beans-6.1.4.jar:6.1.4]
+	... 16 more
+Caused by: org.hibernate.HibernateException: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+	at org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl.determineDialect(DialectFactoryImpl.java:191) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl.buildDialect(DialectFactoryImpl.java:87) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentWithDefaults(JdbcEnvironmentInitiator.java:143) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:348) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:107) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:68) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:223) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:191) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:170) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1432) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1503) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:388) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:364) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782) ~[spring-beans-6.1.4.jar:6.1.4]
+	... 16 more
+2025-12-24 07:16:24.129 [main] INFO  com.dp1.backend.BackendApplication - Starting BackendApplication using Java 21.0.2 with PID 5804 (C:\Users\pelem\OneDrive\Escritorio\PercyLeon\CICLO 2025-2\DP1\Proyecto Final\MoraPack_Backend\target\classes started by pelem in C:\Users\pelem\OneDrive\Escritorio\PercyLeon\CICLO 2025-2\DP1\Proyecto Final\MoraPack_Backend)
+2025-12-24 07:16:24.137 [main] INFO  com.dp1.backend.BackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-12-24 07:16:24.929 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-24 07:16:25.034 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 94 ms. Found 10 JPA repository interfaces.
+2025-12-24 07:16:25.662 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2025-12-24 07:16:25.679 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2025-12-24 07:16:25.682 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2025-12-24 07:16:25.683 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-12-24 07:16:25.746 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-12-24 07:16:25.749 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1565 ms
+2025-12-24 07:16:25.950 [main] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-24 07:16:26.039 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2025-12-24 07:16:26.079 [main] INFO  org.hibernate.cache.internal.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-12-24 07:16:26.311 [main] INFO  org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-24 07:16:26.344 [main] WARN  com.zaxxer.hikari.HikariConfig - HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2025-12-24 07:16:26.345 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-12-24 07:16:27.557 [main] ERROR com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Exception during pool initialization.
+java.sql.SQLSyntaxErrorException: Unknown database 'morapack5'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:815) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:438) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:241) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:189) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138) ~[HikariCP-5.0.1.jar:?]
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:359) ~[HikariCP-5.0.1.jar:?]
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:201) ~[HikariCP-5.0.1.jar:?]
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:470) ~[HikariCP-5.0.1.jar:?]
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561) ~[HikariCP-5.0.1.jar:?]
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:100) ~[HikariCP-5.0.1.jar:?]
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112) ~[HikariCP-5.0.1.jar:?]
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:122) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:428) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:61) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:276) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:107) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:68) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:223) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:191) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:170) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1432) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1503) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:388) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:364) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) [spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) [spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) [spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1231) [spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:949) [spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624) [spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343) [spring-boot-3.2.3.jar:3.2.3]
+	at com.dp1.backend.BackendApplication.main(BackendApplication.java:21) [classes/:?]
+2025-12-24 07:16:27.580 [main] WARN  org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator - HHH000342: Could not obtain connection to query metadata
+java.lang.NullPointerException: Cannot invoke "org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(java.sql.SQLException, String)" because the return value of "org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.sqlExceptionHelper()" is null
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:116) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:276) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:107) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:68) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:223) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:191) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:170) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1432) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1503) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:388) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:364) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) [spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) [spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) [spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1231) [spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:949) [spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624) [spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343) [spring-boot-3.2.3.jar:3.2.3]
+	at com.dp1.backend.BackendApplication.main(BackendApplication.java:21) [classes/:?]
+2025-12-24 07:16:27.585 [main] ERROR org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Failed to initialize JPA EntityManagerFactory: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+2025-12-24 07:16:27.587 [main] WARN  org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+2025-12-24 07:16:27.595 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2025-12-24 07:16:27.636 [main] INFO  org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-12-24 07:16:27.690 [main] ERROR org.springframework.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1786) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1231) ~[spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:949) ~[spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624) ~[spring-context-6.1.4.jar:6.1.4]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) [spring-boot-3.2.3.jar:3.2.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343) [spring-boot-3.2.3.jar:3.2.3]
+	at com.dp1.backend.BackendApplication.main(BackendApplication.java:21) [classes/:?]
+Caused by: org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:276) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:223) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:191) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:170) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1432) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1503) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:388) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:364) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782) ~[spring-beans-6.1.4.jar:6.1.4]
+	... 16 more
+Caused by: org.hibernate.HibernateException: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+	at org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl.determineDialect(DialectFactoryImpl.java:191) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl.buildDialect(DialectFactoryImpl.java:87) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentWithDefaults(JdbcEnvironmentInitiator.java:143) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:348) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:107) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:68) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:223) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:191) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:170) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1432) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1503) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:388) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:364) ~[spring-orm-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833) ~[spring-beans-6.1.4.jar:6.1.4]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782) ~[spring-beans-6.1.4.jar:6.1.4]
+	... 16 more
